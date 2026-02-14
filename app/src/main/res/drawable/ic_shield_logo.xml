@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="80dp"
+    android:height="80dp"
+    android:viewportWidth="80"
+    android:viewportHeight="80">
+    
+    <!-- Shield Shape -->
+    <path
+        android:fillColor="#2563EB"
+        android:pathData="M40,10 L55,15 C58,15 60,17 60,20 L60,35 C60,45 55,55 40,65 C25,55 20,45 20,35 L20,20 C20,17 22,15 25,15 L40,10 Z" />
+    
+    <!-- Heartbeat/Pulse Line -->
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="2.5"
+        android:fillColor="@android:color/transparent"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M28,40 L33,40 L36,30 L40,50 L44,35 L47,40 L52,40" />
+</vector>

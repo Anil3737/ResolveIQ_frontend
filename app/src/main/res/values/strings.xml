@@ -1,0 +1,43 @@
+<resources>
+    <string name="app_name">resolveiq_frontend</string>
+    <string name="app_logo">Application Logo</string>
+    <string name="security_icon">Security Icon</string>
+    <string name="tagline_main">Prioritizing with Precision</string>
+    <string name="tagline_subtitle">ENTERPRISE AI SUPPORT</string>
+    <string name="footer_security">ENTERPRISE GRADE SECURITY</string>
+    
+    <!-- Onboarding Strings -->
+    <string name="onboarding_title_1">Prevent Breaches Before They Happen</string>
+    <string name="onboarding_subtitle_1">AI-Powered Predictive Analytics for Alerts allowing you to focus on what matters most.</string>
+    <string name="onboarding_title_2">Every priority scored automatically</string>
+    <string name="onboarding_subtitle_2">AI-Powered Predictive Analytics for Alerts allowing you to focus on what matters most.</string>
+    <string name="page3_title">Automated Workload Balancing</string>
+    <string name="page3_subtitle">Seamless scaling and resource allocation</string>
+    <string name="onboarding_title_3">Automated Workload Balancing</string>
+    <string name="onboarding_subtitle_3">Seamless scaling and resource allocation</string>
+    
+    <!-- Login Screen -->
+    <string name="welcome_to_resolveiq">Welcome to ResolveIQ</string>
+    <string name="sign_to_access_account">Sign to access your account</string>
+    <string name="email_address">Email Address</string>
+    <string name="email_hint">you@company.co.com</string>
+    <string name="email_added_successfully">Email added Successfully</string>
+    <string name="enter_password">Enter your Password</string>
+    <string name="password_hint">Password</string>
+    <string name="password_entered_successfully">Password Entered Successfully</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="remember_password_link">Remember Password....co.com</string>
+    <string name="sign_in">Sign In</string>
+    <string name="toggle_password_visibility">Toggle password visibility</string>
+    
+    <!-- Accessibility descriptions -->
+    <string name="network_icon_desc">Network connectivity icon</string>
+    <string name="sales_icon_desc">Sales module icon</string>
+    <string name="prev_os_icon_desc">Previous OS icon</string>
+    <string name="billing_icon_desc">Billing module icon</string>
+    <string name="skip">Skip</string>
+    <string name="next">Next</string>
+    <string name="get_started">Get Started</string>
+    <string name="decorative_icon">Decorative Icon</string>
+    <string name="central_icon">Central Feature Icon</string>
+</resources>

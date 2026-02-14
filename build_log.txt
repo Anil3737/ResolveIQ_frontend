@@ -1,0 +1,76 @@
+﻿./gradlew : 
+At line:1 char:50
++ ... VA_HOME = 
+'C:\Program 
+Files\Java\jdk-22'; 
+./gradlew help 2>&1 
+| Out-F ...
++                    
+                     
+      
+~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo   
+           : NotSpe  
+  cified: (:String   
+ ) [], RemoteExce    
+ption
+    + FullyQualified 
+   ErrorId : Native  
+  CommandError
+ 
+FAILURE: Build 
+failed with an 
+exception.
+
+* What went wrong:
+A problem occurred 
+configuring project 
+':app'.
+> Using 
+kotlin.sourceSets 
+DSL to add Kotlin 
+sources is not 
+allowed with 
+built-in Kotlin.
+  Kotlin source set 
+'debug' contains: [C:
+\Users\DELL\AndroidSt
+udioProjects\resolvei
+q_frontend\app\build\
+generated\ksp\debug\k
+otlin, C:\Users\DELL\
+AndroidStudioProjects
+\resolveiq_frontend\a
+pp\build\generated\ks
+p\debug\java]
+  Solution: Use 
+android.sourceSets 
+DSL instead.
+  For more 
+information, see http
+s://developer.android
+.com/r/tools/built-in
+-kotlin
+  To suppress this 
+error, set android.di
+sallowKotlinSourceSet
+s=false in 
+gradle.properties.
+
+* Try:
+> Run with 
+--stacktrace option 
+to get the stack 
+trace.
+> Run with --info or 
+--debug option to 
+get more log output.
+> Run with --scan to 
+generate a Build 
+Scan (Powered by 
+Develocity).
+> Get more help at ht
+tps://help.gradle.org
+.
+
+BUILD FAILED in 8s

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="326dp"
+    android:height="326dp"
+    android:viewportWidth="326"
+    android:viewportHeight="326">
+    
+    <!-- Partial arc indicator (about 240 degrees) -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#137FEC"
+        android:strokeWidth="6"
+        android:pathData="M 298,163 A 135,135 0 1,1 28,163"
+        android:strokeLineCap="round" />
+    
+</vector>

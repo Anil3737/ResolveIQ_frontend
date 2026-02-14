@@ -1,0 +1,51 @@
+package com.simats.resolveiq_frontend
+
+import android.content.Intent
+import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.view.animation.AnimationUtils
+import android.widget.ImageView
+import android.widget.ProgressBar
+import androidx.appcompat.app.AppCompatActivity
+
+class SplashActivity : AppCompatActivity() {
+    
+    private val SPLASH_DURATION = 3000L // 3 seconds
+    
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_splash)
+        
+        // Animate the logo
+        val logo = findViewById<ImageView>(R.id.ivLogo)
+        val scaleAnimation = AnimationUtils.loadAnimation(this, android.R.anim.fade_in)
+        logo.startAnimation(scaleAnimation)
+        
+        // Animate progress bar
+        val progressBar = findViewById<ProgressBar>(R.id.progressBar)
+        animateProgressBar(progressBar)
+        
+        // Navigate to OnboardingActivity after delay
+        Handler(Looper.getMainLooper()).postDelayed({
+            startActivity(Intent(this, OnboardingActivity::class.java))
+            finish()
+        }, SPLASH_DURATION)
+    }
+    
+    private fun animateProgressBar(progressBar: ProgressBar) {
+        val handler = Handler(Looper.getMainLooper())
+        var progress = 0
+        
+        val runnable = object : Runnable {
+            override fun run() {
+                if (progress < 100) {
+                    progress += 2
+                    progressBar.progress = progress
+                    handler.postDelayed(this, 30)
+                }
+            }
+        }
+        handler.post(runnable)
+    }
+}

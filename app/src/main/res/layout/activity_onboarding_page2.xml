@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/onboarding_background">
+
+    <!-- Status Bar Area -->
+    <TextView
+        android:id="@+id/tvTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="36dp"
+        android:text="6:47"
+        android:textColor="#0F172A"
+        android:textSize="14sp"
+        android:fontFamily="sans-serif-medium"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Title Section -->
+    <TextView
+        android:id="@+id/tvTitle2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginTop="100dp"
+        android:text="@string/onboarding_title_2"
+        android:textColor="#0F172A"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvSubtitle2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/onboarding_subtitle_2"
+        android:textColor="#64748B"
+        android:textSize="14sp"
+        android:gravity="center"
+        android:lineSpacingExtra="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvTitle2" />
+
+    <!-- Large Circle Container -->
+    <View
+        android:id="@+id/largeCircle"
+        android:layout_width="326dp"
+        android:layout_height="326dp"
+        android:background="@drawable/circle_outline_xlarge"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvSubtitle2"
+        app:layout_constraintVertical_bias="0.35" />
+
+    <!-- Triangle indicator (top left) -->
+    <View
+        android:id="@+id/triangleTop"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:background="@drawable/ic_triangle_indicator"
+        android:layout_marginStart="-20dp"
+        android:layout_marginTop="-10dp"
+        app:layout_constraintStart_toStartOf="@id/largeCircle"
+        app:layout_constraintTop_toTopOf="@id/largeCircle" />
+
+    <!-- Triangle indicator (bottom right) -->
+    <View
+        android:id="@+id/triangleBottom"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="@drawable/ic_triangle_indicator"
+        android:rotation="180"
+        android:layout_marginEnd="-30dp"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintEnd_toEndOf="@id/largeCircle"
+        app:layout_constraintBottom_toBottomOf="@id/largeCircle" />
+
+    <!-- Central White Circle -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/centralCircleCard"
+        android:layout_width="176dp"
+        android:layout_height="176dp"
+        app:cardCornerRadius="88dp"
+        app:cardElevation="8dp"
+        app:cardBackgroundColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="@id/largeCircle"
+        app:layout_constraintEnd_toEndOf="@id/largeCircle"
+        app:layout_constraintStart_toStartOf="@id/largeCircle"
+        app:layout_constraintTop_toTopOf="@id/largeCircle">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!-- Priority Label -->
+            <TextView
+                android:id="@+id/tvPriorityLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="#5 PRIORITY"
+                android:textColor="#137FEC"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.05"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="40dp" />
+
+            <!-- Large Number -->
+            <TextView
+                android:id="@+id/tvPriorityNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1000"
+                android:textColor="#0F172A"
+                android:textSize="48sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvPriorityLabel"
+                app:layout_constraintVertical_bias="0.3" />
+
+            <!-- Subtitle under number -->
+            <TextView
+                android:id="@+id/tvPrioritySubtext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="out of 1700"
+                android:textColor="#94A3B8"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvPriorityNumber"
+                android:layout_marginTop="4dp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <!-- Partial Circle Arc Indicator -->
+    <View
+        android:id="@+id/arcIndicator"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/ic_arc_indicator"
+        app:layout_constraintBottom_toBottomOf="@id/largeCircle"
+        app:layout_constraintEnd_toEndOf="@id/largeCircle"
+        app:layout_constraintStart_toStartOf="@id/largeCircle"
+        app:layout_constraintTop_toTopOf="@id/largeCircle" />
+
+    <!-- Bottom Section -->
+    <TextView
+        android:id="@+id/tvWhatsNew"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="What's new??"
+        android:textColor="#0F172A"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="160dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Page Indicators -->
+    <LinearLayout
+        android:id="@+id/pageIndicators2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="80dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <View
+            android:id="@+id/indicator1_p2"
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_margin="4dp"
+            android:background="@drawable/indicator_inactive" />
+
+        <View
+            android:id="@+id/indicator2_p2"
+            android:layout_width="24dp"
+            android:layout_height="8dp"
+            android:layout_margin="4dp"
+            android:background="@drawable/indicator_active" />
+
+        <View
+            android:id="@+id/indicator3_p2"
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_margin="4dp"
+            android:background="@drawable/indicator_inactive" />
+
+    </LinearLayout>
+
+    <!-- Skip and Next buttons -->
+    <TextView
+        android:id="@+id/tvSkip2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/skip"
+        android:textColor="#64748B"
+        android:textSize="16sp"
+        android:padding="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btnNext2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/next"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#0047AB"
+        android:paddingStart="32dp"
+        android:paddingEnd="32dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Bottom Indicator Line -->
+    <View
+        android:layout_width="134dp"
+        android:layout_height="5dp"
+        android:background="@drawable/bottom_indicator"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

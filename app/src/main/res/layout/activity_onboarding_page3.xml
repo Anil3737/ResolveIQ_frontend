@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/onboarding_background">
+
+    <!-- Large Circle (Outermost) -->
+    <View
+        android:id="@+id/circleLarge"
+        android:layout_width="326dp"
+        android:layout_height="326dp"
+        android:background="@drawable/circle_outline_large"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.4" />
+
+    <!-- Medium Circle -->
+    <View
+        android:id="@+id/circleMedium"
+        android:layout_width="260dp"
+        android:layout_height="260dp"
+        android:background="@drawable/circle_outline_medium"
+        app:layout_constraintBottom_toBottomOf="@id/circleLarge"
+        app:layout_constraintEnd_toEndOf="@id/circleLarge"
+        app:layout_constraintStart_toStartOf="@id/circleLarge"
+        app:layout_constraintTop_toTopOf="@id/circleLarge" />
+
+    <!-- Small Circle -->
+    <View
+        android:id="@+id/circleSmall"
+        android:layout_width="194dp"
+        android:layout_height="194dp"
+        android:background="@drawable/circle_outline_small"
+        app:layout_constraintBottom_toBottomOf="@id/circleMedium"
+        app:layout_constraintEnd_toEndOf="@id/circleMedium"
+        app:layout_constraintStart_toStartOf="@id/circleMedium"
+        app:layout_constraintTop_toTopOf="@id/circleMedium" />
+
+    <!-- Central Icon Container -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/centralIconContainer"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        app:cardBackgroundColor="#2563EB"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="8dp"
+        app:layout_constraintBottom_toBottomOf="@id/circleSmall"
+        app:layout_constraintEnd_toEndOf="@id/circleSmall"
+        app:layout_constraintStart_toStartOf="@id/circleSmall"
+        app:layout_constraintTop_toTopOf="@id/circleSmall">
+
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_network_node"
+            android:contentDescription="@string/network_icon_desc" />
+    </androidx.cardview.widget.CardView>
+
+    <!-- Floating Card 1 - Top Right (Sales) -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/floatingCard1"
+        android:layout_width="58dp"
+        android:layout_height="66dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="50dp"
+        app:cardBackgroundColor="#B3FFFFFF"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_ticket"
+            android:contentDescription="@string/sales_icon_desc" />
+    </androidx.cardview.widget.CardView>
+
+    <!-- Card 1 Label -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="SALES"
+        android:textColor="#94A3B8"
+        android:textSize="12sp"
+        android:fontFamily="sans-serif-medium"
+        app:layout_constraintEnd_toEndOf="@id/floatingCard1"
+        app:layout_constraintStart_toStartOf="@id/floatingCard1"
+        app:layout_constraintTop_toBottomOf="@id/floatingCard1" />
+
+    <!-- Floating Card 2 - Bottom Right (Prev OS) -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/floatingCard2"
+        android:layout_width="58dp"
+        android:layout_height="66dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginBottom="200dp"
+        app:cardBackgroundColor="#B3FFFFFF"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_central_feature"
+            android:contentDescription="@string/prev_os_icon_desc" />
+    </androidx.cardview.widget.CardView>
+
+    <!-- Card 2 Label -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="PREV OS"
+        android:textColor="#94A3B8"
+        android:textSize="12sp"
+        android:fontFamily="sans-serif-medium"
+        app:layout_constraintEnd_toEndOf="@id/floatingCard2"
+        app:layout_constraintStart_toStartOf="@id/floatingCard2"
+        app:layout_constraintTop_toBottomOf="@id/floatingCard2" />
+
+    <!-- Floating Card 3 - Bottom Left (Billing) -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/floatingCard3"
+        android:layout_width="58dp"
+        android:layout_height="66dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginBottom="200dp"
+        app:cardBackgroundColor="#B3FFFFFF"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_notification"
+            android:contentDescription="@string/billing_icon_desc" />
+    </androidx.cardview.widget.CardView>
+
+    <!-- Card 3 Label -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="BILLING"
+        android:textColor="#94A3B8"
+        android:textSize="12sp"
+        android:fontFamily="sans-serif-medium"
+        app:layout_constraintEnd_toEndOf="@id/floatingCard3"
+        app:layout_constraintStart_toStartOf="@id/floatingCard3"
+        app:layout_constraintTop_toBottomOf="@id/floatingCard3" />
+
+    <!-- Decorative Dots -->
+    <View
+        android:layout_width="6dp"
+        android:layout_height="6dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="120dp"
+        android:background="@drawable/floating_dot"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:layout_width="4dp"
+        android:layout_height="4dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="180dp"
+        android:background="@drawable/floating_dot_small"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Title Text -->
+    <TextView
+        android:id="@+id/titleText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="80dp"
+        android:gravity="center"
+        android:text="@string/onboarding_title_3"
+        android:textColor="#0F172A"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:fontFamily="sans-serif-medium"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- Subtitle Text -->
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="48dp"
+        android:gravity="center"
+        android:text="@string/onboarding_subtitle_3"
+        android:textColor="#64748B"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/titleText" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

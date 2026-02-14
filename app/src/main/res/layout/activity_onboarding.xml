@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/onboarding_background"
+    tools:context=".OnboardingActivity">
+
+    <!-- Concentric Circles -->
+    <View
+        android:id="@+id/circle1"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:background="@drawable/circle_outline_large"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.3" />
+
+    <View
+        android:id="@+id/circle2"
+        android:layout_width="225dp"
+        android:layout_height="225dp"
+        android:background="@drawable/circle_outline_medium"
+        app:layout_constraintBottom_toBottomOf="@id/circle1"
+        app:layout_constraintEnd_toEndOf="@id/circle1"
+        app:layout_constraintStart_toStartOf="@id/circle1"
+        app:layout_constraintTop_toTopOf="@id/circle1" />
+
+    <View
+        android:id="@+id/circle3"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:background="@drawable/circle_outline_small"
+        app:layout_constraintBottom_toBottomOf="@id/circle2"
+        app:layout_constraintEnd_toEndOf="@id/circle2"
+        app:layout_constraintStart_toStartOf="@id/circle2"
+        app:layout_constraintTop_toTopOf="@id/circle2" />
+
+    <!-- Floating Decorative Elements -->
+    <View
+        android:id="@+id/floatingDot1"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:background="@drawable/floating_dot"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHorizontal_bias="0.7"
+        app:layout_constraintVertical_bias="0.15"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <View
+        android:id="@+id/floatingDot2"
+        android:layout_width="8dp"
+        android:layout_height="8dp"
+        android:background="@drawable/floating_dot_small"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHorizontal_bias="0.25"
+        app:layout_constraintVertical_bias="0.35"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <!-- Floating Card 1 (Top Left) -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/floatingCard1"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:rotation="12"
+        android:elevation="8dp"
+        app:cardBackgroundColor="#66FFFFFF"
+        app:cardCornerRadius="12dp"
+        app:layout_constraintEnd_toStartOf="@id/circle1"
+        app:layout_constraintTop_toTopOf="@id/circle1"
+        app:layout_constraintHorizontal_bias="0.3"
+        app:layout_constraintVertical_bias="0.2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:contentDescription="@string/decorative_icon"
+            android:src="@drawable/ic_ticket"
+            android:tint="#3B82F6" />
+    </androidx.cardview.widget.CardView>
+
+    <!-- Floating Card 2 (Bottom Right) -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/floatingCard2"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:rotation="-6"
+        android:elevation="8dp"
+        app:cardBackgroundColor="#66FFFFFF"
+        app:cardCornerRadius="16dp"
+        app:layout_constraintStart_toEndOf="@id/circle1"
+        app:layout_constraintBottom_toBottomOf="@id/circle1"
+        app:layout_constraintHorizontal_bias="0.7"
+        app:layout_constraintVertical_bias="0.8"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_gravity="center"
+            android:contentDescription="@string/decorative_icon"
+            android:src="@drawable/ic_notification"
+            android:tint="#2563EB" />
+    </androidx.cardview.widget.CardView>
+
+    <!-- Central Icon Container -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/centralIconContainer"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:elevation="16dp"
+        app:cardBackgroundColor="#66FFFFFF"
+        app:cardCornerRadius="40dp"
+        app:layout_constraintBottom_toBottomOf="@id/circle3"
+        app:layout_constraintEnd_toEndOf="@id/circle3"
+        app:layout_constraintStart_toStartOf="@id/circle3"
+        app:layout_constraintTop_toTopOf="@id/circle3">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center"
+            app:cardBackgroundColor="#0047AB"
+            app:cardCornerRadius="40dp"
+            app:cardElevation="8dp">
+
+            <ImageView
+                android:id="@+id/ivCentralIcon"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_gravity="center"
+                android:contentDescription="@string/central_icon"
+                android:src="@drawable/ic_central_feature" />
+        </androidx.cardview.widget.CardView>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Content Section -->
+    <LinearLayout
+        android:id="@+id/contentSection"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginTop="40dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/circle1">
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center"
+            android:lineSpacingExtra="4dp"
+            android:text="@string/onboarding_title_1"
+            android:textColor="#0F172A"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvSubtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:alpha="0.7"
+            android:fontFamily="sans-serif"
+            android:gravity="center"
+            android:lineSpacingExtra="4dp"
+            android:text="@string/onboarding_subtitle_1"
+            android:textColor="#475569"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <!-- Page Indicators -->
+    <LinearLayout
+        android:id="@+id/pageIndicators"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@id/btnNext"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <View
+            android:id="@+id/indicator1"
+            android:layout_width="24dp"
+            android:layout_height="6dp"
+            android:layout_marginEnd="6dp"
+            android:background="@drawable/indicator_active" />
+
+        <View
+            android:id="@+id/indicator2"
+            android:layout_width="6dp"
+            android:layout_height="6dp"
+            android:layout_marginEnd="6dp"
+            android:background="@drawable/indicator_inactive" />
+
+        <View
+            android:id="@+id/indicator3"
+            android:layout_width="6dp"
+            android:layout_height="6dp"
+            android:background="@drawable/indicator_inactive" />
+    </LinearLayout>
+
+    <!-- Skip Button -->
+    <TextView
+        android:id="@+id/tvSkip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginBottom="32dp"
+        android:fontFamily="sans-serif"
+        android:text="@string/skip"
+        android:textColor="#64748B"
+        android:textSize="14sp"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- Next Button -->
+    <Button
+        android:id="@+id/btnNext"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginBottom="32dp"
+        android:backgroundTint="#0047AB"
+        android:fontFamily="sans-serif-medium"
+        android:text="@string/next"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        app:cornerRadius="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- Divider Line at Bottom -->
+    <View
+        android:layout_width="128dp"
+        android:layout_height="4dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/bottom_indicator"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
