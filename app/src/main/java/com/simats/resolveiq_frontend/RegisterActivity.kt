@@ -71,7 +71,10 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun handleRegistration() {
         val fullName = binding.etFullName.text.toString().trim()
-        val email = binding.etCompanyEmail.text.toString().trim()
+        val email = binding.etCompanyEmail.text
+            .toString()
+            .trim()
+            .replace(" ", "")   // removes accidental spaces
         val phone = binding.etEmployeeId.text.toString().trim()
         val password = binding.etPassword.text.toString().trim()
         val confirmPassword = binding.etConfirmPassword.text.toString().trim()
