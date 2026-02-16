@@ -40,4 +40,84 @@
     <string name="get_started">Get Started</string>
     <string name="decorative_icon">Decorative Icon</string>
     <string name="central_icon">Central Feature Icon</string>
+    
+    <!-- Page 2 Redesign -->
+    <string name="ai_you_can_trust">AI You Can Trust</string>
+    <string name="ai_subtitle">Every priority score comes with a clear explanation, so you always know the "Why" behind the "What".</string>
+    <string name="sentiment">SENTIMENT</string>
+    <string name="frustrated">Frustrated</string>
+    <string name="urgency">URGENCY</string>
+    <string name="critical_issue">Critical Issue</string>
+    <string name="history">HISTORY</string>
+    <string name="third_occurrence">3rd Occurrence</string>
+    <string name="priority">PRIORITY</string>
+    <string name="out_of_100">Out of 100</string>
+    
+    <!-- Registration Screen -->
+    <string name="create_employee_account">Create Employee Account</string>
+    <string name="register_to_access">Register to access IT support services</string>
+    <string name="employee_registration_only">Employee Registration Only</string>
+    <string name="registration_info">Team Leads and Agents are created by Admin. If you need agent or team lead access, please contact your system administrator.</string>
+    <string name="full_name">Full Name *</string>
+    <string name="full_name_hint">John Doe</string>
+    <string name="employee_id">Employee ID *</string>
+    <string name="employee_id_hint">EMP12345</string>
+    <string name="company_email">Company Email *</string>
+    <string name="company_email_hint">john.doe@company.com</string>
+    <string name="password">Password *</string>
+    <string name="password_requirement">Min. 8 characters</string>
+    <string name="confirm_password">Confirm Password *</string>
+    <string name="confirm_password_hint">Re-enter password</string>
+    <string name="office_location">Office Location *</string>
+    <string name="terms_agreement">I agree to the Terms of Service and Privacy Policy</string>
+    <string name="create_account">Create Account</string>
+    <string name="already_have_account">Already have an account?</string>
+    <string name="sign_in_link">Sign in</string>
+    <string name="new_employee">New employee?</string>
+    <string name="team_leads_admin_note">Team Leads and Agents are created by Admin</string>
+    
+    <!-- Login Screen Additions -->
+    <string name="remember_me">Remember me</string>
+    <string name="demo_credentials">Demo Credentials:</string>
+    <string name="admin_cred">Admin: admin@company.com / password</string>
+    <string name="team_lead_cred">Team Lead: lead@company.com / password</string>
+    <string name="agent_cred">Agent: agent@company.com / password</string>
+    <string name="employee_cred">Employee: employee@company.com / password</string>
+    
+    <!-- Create Ticket Screen -->
+    <string name="it_service_ticket">IT Service Ticket</string>
+    <string name="enterprise_ai_support">ENTERPRISE AI SUPPORT</string>
+    <string name="select_issue">SELECT ISSUE</string>
+    <string name="choose_issue_type">Choose an issue type...</string>
+    <string name="location_label">LOCATION</string>
+    <string name="location_hint">Floor, Wing, or Room Number</string>
+    <string name="description_label">DESCRIPTION</string>
+    <string name="ai_analysis_active">AI ANALYSIS ACTIVE</string>
+    <string name="description_hint">Describe what happened...</string>
+    <string name="requested_resolution">REQUESTED RESOLUTION (HOURS)</string>
+    <string name="resolution_time_hint">Please specify your preferred time for resolution.</string>
+    <string name="submit_ticket">Submit Ticket</string>
+    
+    <!-- Success Screen -->
+    <string name="successfully_sent">Successfully Sent to IT Team</string>
+    <string name="ai_prioritizing">Our AI is prioritizing your request to\nresolve it immediately.</string>
+    <string name="check_status">You may check the status or progress in\nyour ticket list.</string>
+    <string name="check_progress">Check Progress</string>
+    
+    <!-- Employee Home Page -->
+    <string name="welcome_back_name">Welcome back, Jane!</string>
+    <string name="welcome_subtitle">Need help? Create a ticket or check your\nexisting requests below</string>
+    <string name="create_ticket">Create Ticket</string>
+    <string name="report_an_issue">Report an issue</string>
+    <string name="my_tickets">My Tickets</string>
+    <string name="view_all_requests">View all your requests</string>
+    <string name="open_status">OPEN</string>
+    <string name="pending_status">PENDING</string>
+    <string name="resolved_status">RESOLVED</string>
+    <string name="new_workflows">new workflows</string>
+    <string name="waiting_on_3rd">Waiting on 3rd</string>
+    <string name="this_month">This month</string>
+    <string name="my_recent_tickets">My Recent Tickets</string>
+    <string name="view_all">View All</string>
+    <string name="announcements">Announcements</string>
 </resources>

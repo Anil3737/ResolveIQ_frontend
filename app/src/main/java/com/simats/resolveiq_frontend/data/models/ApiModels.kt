@@ -4,6 +4,14 @@ package com.simats.resolveiq_frontend.data.models
 // API Request Models
 // ========================
 
+data class RegisterRequest(
+    val name: String,              // Changed from full_name to match backend
+    val email: String,
+    val password: String,
+    val role: String = "EMPLOYEE", // Added with default value
+    val department_id: Int? = null // Added to match backend schema
+)
+
 data class LoginRequest(
     val email: String,
     val password: String
@@ -34,18 +42,10 @@ data class ChangePasswordRequest(
 
 data class LoginResponse(
     val access_token: String,
-    val token_type: String,
-    val user: User
+    val user: User      // Backend returns full user object
 )
 
-data class UserResponse(
-    val user_id: Int,
-    val full_name: String,
-    val email: String,
-    val phone: String?,
-    val role: String,
-    val is_active: Boolean
-)
+// UserResponse deleted - use User domain model instead
 
 data class TicketListResponse(
     val total: Int,
@@ -64,6 +64,13 @@ data class CreateTicketResponse(
 
 data class MessageResponse(
     val message: String
+)
+
+// Generic API Response Wrapper (matches Flask backend format)
+data class ApiResponse<T>(
+    val success: Boolean,
+    val message: String,
+    val data: T? = null
 )
 
 data class ErrorResponse(

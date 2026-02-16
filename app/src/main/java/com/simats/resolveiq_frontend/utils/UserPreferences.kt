@@ -22,8 +22,7 @@ class UserPreferences(private val context: Context) {
         private val USER_NAME_KEY = stringPreferencesKey("user_name")
         private val USER_EMAIL_KEY = stringPreferencesKey("user_email")
         private val USER_ROLE_KEY = stringPreferencesKey("user_role")
-        private val USER_PHONE_KEY = stringPreferencesKey("user_phone")
-        private val USER_ACTIVE_KEY = stringPreferencesKey("user_is_active")
+        private val USER_DEPT_ID_KEY = intPreferencesKey("user_department_id")
         
         @Volatile
         private var instance: UserPreferences? = null
@@ -37,15 +36,15 @@ class UserPreferences(private val context: Context) {
     
     /**
      * Save user information to DataStore
+     * Backend fields: id, name, email, role, department_id
      */
     suspend fun saveUser(user: User) {
         context.userDataStore.edit { preferences ->
-            preferences[USER_ID_KEY] = user.user_id
-            preferences[USER_NAME_KEY] = user.full_name
+            preferences[USER_ID_KEY] = user.id
+            preferences[USER_NAME_KEY] = user.name
             preferences[USER_EMAIL_KEY] = user.email
             preferences[USER_ROLE_KEY] = user.role
-            user.phone?.let { preferences[USER_PHONE_KEY] = it }
-            preferences[USER_ACTIVE_KEY] = user.is_active.toString()
+            user.department_id?.let { preferences[USER_DEPT_ID_KEY] = it }
         }
     }
     
@@ -57,12 +56,11 @@ class UserPreferences(private val context: Context) {
         val userId = preferences[USER_ID_KEY] ?: return null
         
         return User(
-            user_id = userId,
-            full_name = preferences[USER_NAME_KEY] ?: "",
+            id = userId,
+            name = preferences[USER_NAME_KEY] ?: "",
             email = preferences[USER_EMAIL_KEY] ?: "",
-            phone = preferences[USER_PHONE_KEY],
             role = preferences[USER_ROLE_KEY] ?: "",
-            is_active = preferences[USER_ACTIVE_KEY]?.toBoolean() ?: true
+            department_id = preferences[USER_DEPT_ID_KEY]
         )
     }
     
@@ -73,14 +71,14 @@ class UserPreferences(private val context: Context) {
         return context.userDataStore.data.map { preferences ->
             val userId = preferences[USER_ID_KEY] ?: return@map null
             User(
-                user_id = userId,
-                full_name = preferences[USER_NAME_KEY] ?: "",
+                id = userId,
+                name = preferences[USER_NAME_KEY] ?: "",
                 email = preferences[USER_EMAIL_KEY] ?: "",
-                phone = preferences[USER_PHONE_KEY],
                 role = preferences[USER_ROLE_KEY] ?: "",
-                is_active = preferences[USER_ACTIVE_KEY]?.toBoolean() ?: true
+                department_id = preferences[USER_DEPT_ID_KEY]
             )
-        }    }
+        }
+    }
     
     /**
      * Get user role

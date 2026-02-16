@@ -1,6 +1,8 @@
 package com.simats.resolveiq_frontend.api
 
 import com.simats.resolveiq_frontend.utils.TokenManager
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.Response
 
@@ -10,18 +12,18 @@ import okhttp3.Response
 class AuthInterceptor(private val tokenManager: TokenManager) : Interceptor {
     
     override fun intercept(chain: Interceptor.Chain): Response {
-        val token = tokenManager.getToken()
-        
-        val request = if (token != null) {
-            // Add Authorization header with Bearer token
-            chain.request().newBuilder()
-                .header("Authorization", "Bearer $token")
-                .build()
-        } else {
-            // No token, proceed with original request
-            chain.request()
+        val token = runBlocking { 
+            try {
+                tokenManager.getToken().firstOrNull() 
+            } catch (e: Exception) {
+                null
+            }
         }
         
-        return chain.proceed(request)
+        val requestBuilder = chain.request().newBuilder()
+        if (!token.isNullOrEmpty()) {
+            requestBuilder.addHeader("Authorization", "Bearer $token")
+        }
+        return chain.proceed(requestBuilder.build())
     }
 }

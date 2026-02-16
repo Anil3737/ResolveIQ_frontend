@@ -1,96 +1,144 @@
 package com.simats.resolveiq_frontend.repository
 
-import com.simats.resolveiq_frontend.api.AuthApiService
-import com.simats.resolveiq_frontend.data.models.ChangePasswordRequest
-import com.simats.resolveiq_frontend.data.models.LoginRequest
-import com.simats.resolveiq_frontend.data.models.User
-import com.simats.resolveiq_frontend.data.models.UserResponse
-import com.simats.resolveiq_frontend.utils.TokenManager
-import com.simats.resolveiq_frontend.utils.UserPreferences
+import android.util.Log
+import com.simats.resolveiq_frontend.api.ResolveIQApi
+import com.simats.resolveiq_frontend.data.models.*
+import org.json.JSONObject
 
-/**
- * Repository for authentication operations
- * Handles API calls and local data persistence
- */
-class AuthRepository(
-    private val apiService: AuthApiService,
-    private val tokenManager: TokenManager,
-    private val userPreferences: UserPreferences
-) {
+class AuthRepository(private val api: ResolveIQApi) {
     
-    /**
-     * Login with email and password
-     * @return Result with User object or error
-     */
-    suspend fun login(email: String, password: String): Result<User> {
+    companion object {
+        private const val TAG = "AuthRepository"
+    }
+    
+    suspend fun login(email: String, password: String): Result<LoginResponse> {
         return try {
-            val response = apiService.login(LoginRequest(email, password))
+            val request = LoginRequest(email, password)
             
-            // Save token and user information
-            tokenManager.saveToken(response.access_token)
+            // 🔍 DEBUG: Log request (excluding password)
+            Log.d(TAG, "═══════════════════════════════════════")
+            Log.d(TAG, "LOGIN REQUEST")
+            Log.d(TAG, "Email: $email")
+            Log.d(TAG, "Password: [HIDDEN]")
+            Log.d(TAG, "═══════════════════════════════════════")
             
-            // Convert UserResponse to User model
-            val user = User(
-                user_id = response.user.user_id,
-                full_name = response.user.full_name,
-                email = response.user.email,
-                phone = response.user.phone,
-                role = response.user.role,
-                is_active = response.user.is_active
+            val response = api.login(request)
+            
+            // 🔍 DEBUG: Log response
+            Log.d(TAG, "LOGIN RESPONSE")
+            Log.d(TAG, "Status Code: ${response.code()}")
+            Log.d(TAG, "Is Successful: ${response.isSuccessful}")
+            
+            if (response.isSuccessful) {
+                val apiResponse = response.body()
+                if (apiResponse != null) {
+                    Log.d(TAG, "Success: ${apiResponse.success}")
+                    Log.d(TAG, "Message: ${apiResponse.message}")
+                    
+                    if (apiResponse.success && apiResponse.data != null) {
+                        Log.d(TAG, "✅ Login successful!")
+                        Log.d(TAG, "User: ${apiResponse.data.user.name} (${apiResponse.data.user.role})")
+                        Log.d(TAG, "═══════════════════════════════════════")
+                        Result.success(apiResponse.data)
+                    } else {
+                        val msg = apiResponse.message.ifEmpty { "Login failed with unknown error" }
+                        Log.e(TAG, "❌ Login failed: $msg")
+                        Log.d(TAG, "═══════════════════════════════════════")
+                        Result.failure(Exception(msg))
+                    }
+                } else {
+                    Log.e(TAG, "❌ Response body is null")
+                    Result.failure(Exception("Login failed: Empty response"))
+                }
+            } else {
+                val errorBody = response.errorBody()?.string()
+                Log.e(TAG, "❌ HTTP Error: ${response.code()}")
+                Log.e(TAG, "Error Body: $errorBody")
+                Log.d(TAG, "═══════════════════════════════════════")
+                Result.failure(Exception("Login failed: HTTP ${response.code()}"))
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ Exception during login", e)
+            Log.d(TAG, "═══════════════════════════════════════")
+            Result.failure(e)
+        }
+    }
+
+    suspend fun register(
+        name: String, 
+        email: String, 
+        password: String, 
+        role: String = "EMPLOYEE", 
+        departmentId: Int? = null
+    ): Result<User> {
+        return try {
+            val request = RegisterRequest(
+                name = name,
+                email = email,
+                password = password,
+                role = role,
+                department_id = departmentId
             )
             
-            userPreferences.saveUser(user)
+            // 🔍 DEBUG: Log request (excluding password)
+            Log.d(TAG, "═══════════════════════════════════════")
+            Log.d(TAG, "REGISTER REQUEST")
+            Log.d(TAG, "Name: $name")
+            Log.d(TAG, "Email: $email")
+            Log.d(TAG, "Password: [HIDDEN]")
+            Log.d(TAG, "Role: $role")
+            Log.d(TAG, "Department ID: $departmentId")
+            Log.d(TAG, "═══════════════════════════════════════")
             
-            Result.success(user)
+            val response = api.register(request)
+            
+            // 🔍 DEBUG: Log response
+            Log.d(TAG, "REGISTER RESPONSE")
+            Log.d(TAG, "Status Code: ${response.code()}")
+            Log.d(TAG, "Is Successful: ${response.isSuccessful}")
+            
+            if (response.isSuccessful) {
+                val apiResponse = response.body()
+                if (apiResponse != null) {
+                    Log.d(TAG, "Success: ${apiResponse.success}")
+                    Log.d(TAG, "Message: ${apiResponse.message}")
+                    
+                    if (apiResponse.success && apiResponse.data != null) {
+                        Log.d(TAG, "✅ Registration successful!")
+                        Log.d(TAG, "User ID: ${apiResponse.data.id}")
+                        Log.d(TAG, "User Name: ${apiResponse.data.name}")
+                        Log.d(TAG, "═══════════════════════════════════════")
+                        Result.success(apiResponse.data)
+                    } else {
+                        val msg = apiResponse.message.ifEmpty { "Registration failed with unknown error" }
+                        Log.e(TAG, "❌ Registration failed: $msg")
+                        Log.d(TAG, "═══════════════════════════════════════")
+                        Result.failure(Exception(msg))
+                    }
+                } else {
+                    Log.e(TAG, "❌ Response body is null")
+                    Result.failure(Exception("Registration failed: Empty response"))
+                }
+            } else {
+                val errorBody = response.errorBody()?.string()
+                Log.e(TAG, "❌ HTTP Error: ${response.code()}")
+                Log.e(TAG, "Error Body: $errorBody")
+                Log.d(TAG, "═══════════════════════════════════════")
+                Result.failure(Exception("Registration failed: HTTP ${response.code()}"))
+            }
         } catch (e: Exception) {
+            Log.e(TAG, "❌ Exception during registration", e)
+            Log.d(TAG, "═══════════════════════════════════════")
             Result.failure(e)
         }
     }
-    
-    /**
-     * Get current user information from API
-     */
-    suspend fun getCurrentUser(): Result<UserResponse> {
+
+    suspend fun getCurrentUser(): Result<User> {
         return try {
-            val user = apiService.getCurrentUser()
-            Result.success(user)
+            // TODO: Implement when backend /me endpoint is ready
+            Result.failure(Exception("Not implemented"))
         } catch (e: Exception) {
             Result.failure(e)
         }
-    }
-    
-    /**
-     * Change user password
-     */
-    suspend fun changePassword(oldPassword: String, newPassword: String): Result<String> {
-        return try {
-            val request = ChangePasswordRequest(oldPassword, newPassword)
-            val response = apiService.changePassword(request)
-            Result.success(response.message)
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
-    }
-    
-    /**
-     * Logout - clear token and user data
-     */
-    suspend fun logout() {
-        tokenManager.clearToken()
-        userPreferences.clearUser()
-    }
-    
-    /**
-     * Check if user is logged in
-     */
-    fun isLoggedIn(): Boolean {
-        return tokenManager.hasToken()
-    }
-    
-    /**
-     * Get cached user from local storage
-     */
-    suspend fun getCachedUser(): User? {
-        return userPreferences.getUser()
     }
 }

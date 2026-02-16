@@ -1,63 +1,39 @@
 package com.simats.resolveiq_frontend.api
 
+import android.content.Context
+import com.simats.resolveiq_frontend.api.ResolveIQApi
 import com.simats.resolveiq_frontend.utils.TokenManager
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.runBlocking
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-/**
- * Singleton object to configure and provide Retrofit instance
- */
+// AuthInterceptor moved to separate file
+
 object RetrofitClient {
-    
-    @Volatile
-    private var retrofit: Retrofit? = null
-    
-    /**
-     * Get configured Retrofit instance
-     * @param tokenManager Token manager for authentication
-     * @return Configured Retrofit instance
-     */
-    fun getInstance(tokenManager: TokenManager): Retrofit {
-        return retrofit ?: synchronized(this) {
-            retrofit ?: createRetrofit(tokenManager).also { retrofit = it }
-        }
-    }
-    
-    /**
-     * Create Retrofit instance with interceptors
-     */
-    private fun createRetrofit(tokenManager: TokenManager): Retrofit {
-        // Logging interceptor for debugging
-        val loggingInterceptor = HttpLoggingInterceptor().apply {
-            level = HttpLoggingInterceptor.Level.BODY  // Change to NONE in production
+    private const val BASE_URL = "http://10.64.87.108:5000/"
+
+    fun getApi(context: Context): ResolveIQApi {
+        val logging = HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
         }
         
-        // Auth interceptor to add JWT token
-        val authInterceptor = AuthInterceptor(tokenManager)
-        
-        // OkHttp client with interceptors and timeouts
         val client = OkHttpClient.Builder()
-            .addInterceptor(authInterceptor)
-            .addInterceptor(loggingInterceptor)
-            .connectTimeout(ApiConstants.TIMEOUT_SECONDS, TimeUnit.SECONDS)
-            .readTimeout(ApiConstants.TIMEOUT_SECONDS, TimeUnit.SECONDS)
-            .writeTimeout(ApiConstants.TIMEOUT_SECONDS, TimeUnit.SECONDS)
+            .addInterceptor(logging)
+            .addInterceptor(AuthInterceptor(TokenManager(context)))
+            .connectTimeout(30, TimeUnit.SECONDS)
+            .readTimeout(30, TimeUnit.SECONDS)
             .build()
-        
+
         return Retrofit.Builder()
-            .baseUrl(ApiConstants.BASE_URL)
-            .client(client)
+            .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
+            .client(client)
             .build()
-    }
-    
-    /**
-     * Clear the Retrofit instance (useful for testing or logout)
-     */
-    fun clearInstance() {
-        retrofit = null
+            .create(ResolveIQApi::class.java)
     }
 }

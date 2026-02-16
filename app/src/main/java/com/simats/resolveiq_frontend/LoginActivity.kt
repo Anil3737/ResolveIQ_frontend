@@ -8,14 +8,15 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.ProgressBar
+import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.simats.resolveiq_frontend.api.AuthApiService
+import androidx.lifecycle.lifecycleScope
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.simats.resolveiq_frontend.api.RetrofitClient
 import com.simats.resolveiq_frontend.repository.AuthRepository
 import com.simats.resolveiq_frontend.utils.TokenManager
-import com.simats.resolveiq_frontend.utils.UserPreferences
 import com.simats.resolveiq_frontend.viewmodel.LoginState
 import com.simats.resolveiq_frontend.viewmodel.LoginViewModel
 
@@ -52,12 +53,11 @@ class LoginActivity : AppCompatActivity() {
         emailSuccessText = findViewById(R.id.emailSuccessText)
         passwordSuccessText = findViewById(R.id.passwordSuccessText)
         
-        // Add progress bar programmatically if not in layout
-        progressBar = ProgressBar(this).apply {
-            visibility = View.GONE
-            isIndeterminate = true
+        // Create Account Button
+        val btnCreateAccount = findViewById<Button>(R.id.btnCreateAccount)
+        btnCreateAccount.setOnClickListener {
+            startActivity(Intent(this, RegisterActivity::class.java))
         }
-        // For simplicity, we'll use the button's enabled state to show loading
 
         // Set up password visibility toggle
         togglePasswordVisibility.setOnClickListener {
@@ -66,7 +66,6 @@ class LoginActivity : AppCompatActivity() {
 
         // Set up forgot password click
         forgotPasswordText.setOnClickListener {
-            // TODO: Implement forgot password flow
             Toast.makeText(this, "Forgot password feature coming soon", Toast.LENGTH_SHORT).show()
         }
 
@@ -90,69 +89,45 @@ class LoginActivity : AppCompatActivity() {
         
         // Observe login state
         observeLoginState()
-        
-        // Check if already logged in
-        if (authRepository.isLoggedIn()) {
-            navigateToMain()
-        }
     }
     
-    /**
-     * Initialize dependencies (Repository, ViewModel)
-     */
     private fun initializeDependencies() {
-        val tokenManager = TokenManager.getInstance(this)
-        val userPreferences = UserPreferences.getInstance(this)
-        val retrofit = RetrofitClient.getInstance(tokenManager)
-        val authApiService = retrofit.create(AuthApiService::class.java)
-        
-        authRepository = AuthRepository(authApiService, tokenManager, userPreferences)
+        val api = RetrofitClient.getApi(this)
+        authRepository = AuthRepository(api)
         loginViewModel = LoginViewModel(authRepository)
     }
     
-    /**
-     * Observe login state changes from ViewModel
-     */
     private fun observeLoginState() {
         loginViewModel.loginState.observe(this) { state ->
             when (state) {
                 is LoginState.Idle -> {
-                    // Reset UI
                     setLoading(false)
                 }
                 
                 is LoginState.Loading -> {
-                    // Show loading
                     setLoading(true)
                 }
                 
                 is LoginState.Success -> {
-                    // Login successful, navigate to MainActivity
+                    // ✅ Fixed: use state.user.name instead of state.user.full_name
                     setLoading(false)
                     Toast.makeText(
                         this,
-                        "Welcome, ${state.user.full_name}!",
+                        "Welcome, ${state.user.name}!",
                         Toast.LENGTH_SHORT
                     ).show()
                     navigateToMain()
                 }
                 
                 is LoginState.Error -> {
-                    // Show error message
                     setLoading(false)
-                    Toast.makeText(
-                        this,
-                        state.message,
-                        Toast.LENGTH_LONG
-                    ).show()
+                    Log.e("LoginActivity", "Login Error: ${state.message}")
+                    showErrorDialog("Login Failed", state.message)
                 }
             }
         }
     }
     
-    /**
-     * Set loading state UI
-     */
     private fun setLoading(loading: Boolean) {
         signInButton.isEnabled = !loading
         emailInput.isEnabled = !loading
@@ -167,17 +142,14 @@ class LoginActivity : AppCompatActivity() {
 
     private fun togglePasswordVisibility() {
         if (isPasswordVisible) {
-            // Hide password
             passwordInput.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
             togglePasswordVisibility.setImageResource(R.drawable.ic_visibility_off)
             isPasswordVisible = false
         } else {
-            // Show password
             passwordInput.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
             togglePasswordVisibility.setImageResource(R.drawable.ic_visibility)
             isPasswordVisible = true
         }
-        // Move cursor to end of text
         passwordInput.setSelection(passwordInput.text.length)
     }
 
@@ -185,7 +157,6 @@ class LoginActivity : AppCompatActivity() {
         val email = emailInput.text.toString().trim()
         val password = passwordInput.text.toString()
 
-        // Basic validation
         if (email.isEmpty()) {
             emailInput.error = "Email is required"
             emailInput.requestFocus()
@@ -204,20 +175,23 @@ class LoginActivity : AppCompatActivity() {
             return
         }
 
-        // Clear previous errors
         emailInput.error = null
         passwordInput.error = null
         
-        // Call ViewModel to perform login
         loginViewModel.login(email, password)
     }
     
-    /**
-     * Navigate to MainActivity
-     */
     private fun navigateToMain() {
-        val intent = Intent(this, MainActivity::class.java)
+        val intent = Intent(this, EmployeeHomeActivity::class.java)
         startActivity(intent)
         finish()
+    }
+
+    private fun showErrorDialog(title: String, message: String) {
+        MaterialAlertDialogBuilder(this)
+            .setTitle(title)
+            .setMessage(message)
+            .setPositiveButton("OK", null)
+            .show()
     }
 }

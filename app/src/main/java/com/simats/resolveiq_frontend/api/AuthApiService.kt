@@ -1,10 +1,11 @@
 package com.simats.resolveiq_frontend.api
 
 import com.simats.resolveiq_frontend.data.models.ChangePasswordRequest
+import com.simats.resolveiq_frontend.data.models.RegisterRequest
 import com.simats.resolveiq_frontend.data.models.LoginRequest
 import com.simats.resolveiq_frontend.data.models.LoginResponse
 import com.simats.resolveiq_frontend.data.models.MessageResponse
-import com.simats.resolveiq_frontend.data.models.UserResponse
+import com.simats.resolveiq_frontend.data.models.User
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -15,23 +16,29 @@ import retrofit2.http.POST
 interface AuthApiService {
     
     /**
+     * Register new employee
+     */
+    @POST(ApiConstants.ENDPOINT_REGISTER)
+    suspend fun register(@Body request: RegisterRequest): User
+
+    /**
      * Login with email and password
      * Returns access token and user information
      */
-    @POST("api/v1/auth/login")
+    @POST(ApiConstants.ENDPOINT_LOGIN)
     suspend fun login(@Body request: LoginRequest): LoginResponse
     
     /**
      * Get current user information
      * Requires authentication (JWT token)
      */
-    @GET("api/v1/auth/me")
-    suspend fun getCurrentUser(): UserResponse
+    @GET(ApiConstants.ENDPOINT_ME)
+    suspend fun getCurrentUser(): User
     
     /**
      * Change password
      * Requires authentication
      */
-    @POST("api/v1/auth/change-password")
+    @POST(ApiConstants.ENDPOINT_CHANGE_PASSWORD)
     suspend fun changePassword(@Body request: ChangePasswordRequest): MessageResponse
 }

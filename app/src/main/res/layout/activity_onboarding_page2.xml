@@ -5,176 +5,319 @@
     android:layout_height="match_parent"
     android:background="@drawable/onboarding_background">
 
-    <!-- Status Bar Area -->
-    <TextView
-        android:id="@+id/tvTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="36dp"
-        android:text="6:47"
-        android:textColor="#0F172A"
-        android:textSize="14sp"
-        android:fontFamily="sans-serif-medium"
+    <!-- Back Arrow -->
+    <ImageView
+        android:id="@+id/ivBack"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:padding="12dp"
+        android:src="@drawable/ic_arrow_back"
+        android:contentDescription="@string/skip"
+        android:clickable="true"
+        android:focusable="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Title Section -->
+    <!-- Skip Button -->
+    <TextView
+        android:id="@+id/tvSkip2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:text="@string/skip"
+        android:textColor="#94A3B8"
+        android:textSize="16sp"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Circular Progress Container -->
+    <View
+        android:id="@+id/circleBackground"
+        android:layout_width="280dp"
+        android:layout_height="280dp"
+        android:background="@drawable/circle_outline_xlarge"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.35" />
+
+    <!-- Arc Progress Indicator -->
+    <ImageView
+        android:id="@+id/arcProgress"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/bg_arc_progress"
+        android:contentDescription="@string/priority"
+        app:layout_constraintBottom_toBottomOf="@id/circleBackground"
+        app:layout_constraintEnd_toEndOf="@id/circleBackground"
+        app:layout_constraintStart_toStartOf="@id/circleBackground"
+        app:layout_constraintTop_toTopOf="@id/circleBackground" />
+
+    <!-- Central White Circle -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/centralCard"
+        android:layout_width="176dp"
+        android:layout_height="176dp"
+        app:cardCornerRadius="88dp"
+        app:cardElevation="8dp"
+        app:cardBackgroundColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="@id/circleBackground"
+        app:layout_constraintEnd_toEndOf="@id/circleBackground"
+        app:layout_constraintStart_toStartOf="@id/circleBackground"
+        app:layout_constraintTop_toTopOf="@id/circleBackground">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <!-- Priority Label with Arrow -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/priority"
+                    android:textColor="#137FEC"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:letterSpacing="0.05" />
+
+                <ImageView
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:layout_marginStart="4dp"
+                    android:src="@drawable/ic_arrow_down"
+                    android:contentDescription="@string/priority" />
+            </LinearLayout>
+
+            <!-- Priority Number -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="85"
+                android:textColor="#0F172A"
+                android:textSize="56sp"
+                android:textStyle="bold" />
+
+            <!-- Subtitle -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/out_of_100"
+                android:textColor="#94A3B8"
+                android:textSize="13sp" />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <!-- Sentiment Badge (Top Left) -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/sentimentBadge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginBottom="20dp"
+        app:cardBackgroundColor="#FFFFFF"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="4dp"
+        app:layout_constraintBottom_toTopOf="@id/circleBackground"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="12dp"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_sentiment"
+                android:contentDescription="@string/sentiment" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginStart="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/sentiment"
+                    android:textColor="#94A3B8"
+                    android:textSize="9sp"
+                    android:letterSpacing="0.05" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/frustrated"
+                    android:textColor="#0F172A"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <!-- Urgency Badge (Top Right) -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/urgencyBadge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:layout_marginTop="60dp"
+        app:cardBackgroundColor="#FFFFFF"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/circleBackground">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="12dp"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_lightning"
+                android:contentDescription="@string/urgency" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginStart="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/urgency"
+                    android:textColor="#94A3B8"
+                    android:textSize="9sp"
+                    android:letterSpacing="0.05" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/critical_issue"
+                    android:textColor="#0F172A"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <!-- History Badge (Bottom Center) -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/historyBadge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        app:cardBackgroundColor="#FFFFFF"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/circleBackground">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="12dp"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_history"
+                android:contentDescription="@string/history" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginStart="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/history"
+                    android:textColor="#94A3B8"
+                    android:textSize="9sp"
+                    android:letterSpacing="0.05" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/third_occurrence"
+                    android:textColor="#0F172A"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <!-- Title -->
     <TextView
         android:id="@+id/tvTitle2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginTop="100dp"
-        android:text="@string/onboarding_title_2"
+        android:layout_marginBottom="16dp"
+        android:text="@string/ai_you_can_trust"
         android:textColor="#0F172A"
         android:textSize="28sp"
         android:textStyle="bold"
         android:gravity="center"
+        app:layout_constraintBottom_toTopOf="@id/tvSubtitle2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintVertical_bias="1"
+        app:layout_constraintTop_toBottomOf="@id/historyBadge" />
 
+    <!-- Subtitle -->
     <TextView
         android:id="@+id/tvSubtitle2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="48dp"
         android:layout_marginEnd="48dp"
-        android:layout_marginTop="16dp"
-        android:text="@string/onboarding_subtitle_2"
+        android:layout_marginBottom="32dp"
+        android:text="@string/ai_subtitle"
         android:textColor="#64748B"
         android:textSize="14sp"
         android:gravity="center"
         android:lineSpacingExtra="4dp"
+        app:layout_constraintBottom_toTopOf="@id/pageIndicators2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvTitle2" />
-
-    <!-- Large Circle Container -->
-    <View
-        android:id="@+id/largeCircle"
-        android:layout_width="326dp"
-        android:layout_height="326dp"
-        android:background="@drawable/circle_outline_xlarge"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvSubtitle2"
-        app:layout_constraintVertical_bias="0.35" />
-
-    <!-- Triangle indicator (top left) -->
-    <View
-        android:id="@+id/triangleTop"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:background="@drawable/ic_triangle_indicator"
-        android:layout_marginStart="-20dp"
-        android:layout_marginTop="-10dp"
-        app:layout_constraintStart_toStartOf="@id/largeCircle"
-        app:layout_constraintTop_toTopOf="@id/largeCircle" />
-
-    <!-- Triangle indicator (bottom right) -->
-    <View
-        android:id="@+id/triangleBottom"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:background="@drawable/ic_triangle_indicator"
-        android:rotation="180"
-        android:layout_marginEnd="-30dp"
-        android:layout_marginBottom="20dp"
-        app:layout_constraintEnd_toEndOf="@id/largeCircle"
-        app:layout_constraintBottom_toBottomOf="@id/largeCircle" />
-
-    <!-- Central White Circle -->
-    <androidx.cardview.widget.CardView
-        android:id="@+id/centralCircleCard"
-        android:layout_width="176dp"
-        android:layout_height="176dp"
-        app:cardCornerRadius="88dp"
-        app:cardElevation="8dp"
-        app:cardBackgroundColor="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="@id/largeCircle"
-        app:layout_constraintEnd_toEndOf="@id/largeCircle"
-        app:layout_constraintStart_toStartOf="@id/largeCircle"
-        app:layout_constraintTop_toTopOf="@id/largeCircle">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <!-- Priority Label -->
-            <TextView
-                android:id="@+id/tvPriorityLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="#5 PRIORITY"
-                android:textColor="#137FEC"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:letterSpacing="0.05"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="40dp" />
-
-            <!-- Large Number -->
-            <TextView
-                android:id="@+id/tvPriorityNumber"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="1000"
-                android:textColor="#0F172A"
-                android:textSize="48sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvPriorityLabel"
-                app:layout_constraintVertical_bias="0.3" />
-
-            <!-- Subtitle under number -->
-            <TextView
-                android:id="@+id/tvPrioritySubtext"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="out of 1700"
-                android:textColor="#94A3B8"
-                android:textSize="12sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvPriorityNumber"
-                android:layout_marginTop="4dp" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.cardview.widget.CardView>
-
-    <!-- Partial Circle Arc Indicator -->
-    <View
-        android:id="@+id/arcIndicator"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@drawable/ic_arc_indicator"
-        app:layout_constraintBottom_toBottomOf="@id/largeCircle"
-        app:layout_constraintEnd_toEndOf="@id/largeCircle"
-        app:layout_constraintStart_toStartOf="@id/largeCircle"
-        app:layout_constraintTop_toTopOf="@id/largeCircle" />
-
-    <!-- Bottom Section -->
-    <TextView
-        android:id="@+id/tvWhatsNew"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="What's new??"
-        android:textColor="#0F172A"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="160dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <!-- Page Indicators -->
     <LinearLayout
@@ -183,66 +326,59 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
-        android:layout_marginBottom="80dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="32dp"
+        app:layout_constraintBottom_toTopOf="@id/btnNext2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
         <View
             android:id="@+id/indicator1_p2"
-            android:layout_width="8dp"
-            android:layout_height="8dp"
+            android:layout_width="6dp"
+            android:layout_height="6dp"
             android:layout_margin="4dp"
             android:background="@drawable/indicator_inactive" />
 
         <View
             android:id="@+id/indicator2_p2"
             android:layout_width="24dp"
-            android:layout_height="8dp"
+            android:layout_height="6dp"
             android:layout_margin="4dp"
             android:background="@drawable/indicator_active" />
 
         <View
             android:id="@+id/indicator3_p2"
-            android:layout_width="8dp"
-            android:layout_height="8dp"
+            android:layout_width="6dp"
+            android:layout_height="6dp"
             android:layout_margin="4dp"
             android:background="@drawable/indicator_inactive" />
 
     </LinearLayout>
 
-    <!-- Skip and Next buttons -->
-    <TextView
-        android:id="@+id/tvSkip2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/skip"
-        android:textColor="#64748B"
-        android:textSize="16sp"
-        android:padding="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="24dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
+    <!-- Next Button -->
     <Button
         android:id="@+id/btnNext2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/next"
-        android:textColor="#FFFFFF"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginBottom="32dp"
         android:backgroundTint="#0047AB"
-        android:paddingStart="32dp"
-        android:paddingEnd="32dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="24dp"
+        android:drawableEnd="@drawable/ic_arrow_forward"
+        android:fontFamily="sans-serif-medium"
+        android:paddingStart="24dp"
+        android:paddingEnd="20dp"
+        android:text="@string/next"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        app:cornerRadius="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <!-- Bottom Indicator Line -->
     <View
-        android:layout_width="134dp"
-        android:layout_height="5dp"
+        android:layout_width="128dp"
+        android:layout_height="4dp"
         android:background="@drawable/bottom_indicator"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"

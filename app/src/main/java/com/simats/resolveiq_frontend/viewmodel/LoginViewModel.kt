@@ -34,12 +34,17 @@ class LoginViewModel(private val authRepository: AuthRepository) : ViewModel() {
         viewModelScope.launch {
             val result = authRepository.login(email, password)
             
-            _loginState.value = if (result.isSuccess) {
-                LoginState.Success(result.getOrNull()!!)
+            if (result.isSuccess) {
+                val loginResponse = result.getOrNull()
+                if (loginResponse != null) {
+                    _loginState.value = LoginState.Success(loginResponse.user)
+                } else {
+                    _loginState.value = LoginState.Error("Login succeeded but data was missing")
+                }
             } else {
                 val error = result.exceptionOrNull()
                 val message = error?.message ?: "Login failed. Please try again."
-                LoginState.Error(message)
+                _loginState.value = LoginState.Error(message)
             }
         }
     }

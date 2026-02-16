@@ -67,17 +67,21 @@ class TicketListViewModel(private val ticketRepository: TicketRepository) : View
             _loading.value = false
             
             if (result.isSuccess) {
-                val response = result.getOrNull()!!
-                _totalCount.value = response.total
-                
-                // If refreshing, replace list; otherwise append
-                _tickets.value = if (refresh || currentOffset == 0) {
-                    response.tickets
+                val response = result.getOrNull()
+                if (response != null) {
+                    _totalCount.value = response.total
+                    
+                    // If refreshing, replace list; otherwise append
+                    _tickets.value = if (refresh || currentOffset == 0) {
+                        response.tickets
+                    } else {
+                        (_tickets.value ?: emptyList()) + response.tickets
+                    }
+                    
+                    _error.value = null
                 } else {
-                    (_tickets.value ?: emptyList()) + response.tickets
+                    _error.value = "Failed to load tickets: Empty data"
                 }
-                
-                _error.value = null
             } else {
                 _error.value = result.exceptionOrNull()?.message ?: "Failed to load tickets"
             }

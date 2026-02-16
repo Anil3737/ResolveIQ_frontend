@@ -193,18 +193,44 @@
 
     </androidx.cardview.widget.CardView>
 
-    <!-- Remember Password Link -->
-    <TextView
-        android:id="@+id/rememberPasswordText"
-        android:layout_width="wrap_content"
+    <!-- Remember Me and Forgot Password Row -->
+    <LinearLayout
+        android:id="@+id/rememberForgotRow"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/remember_password_link"
-        android:textColor="#4B5563"
-        android:textSize="12sp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toTopOf="@id/signInButton"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginTop="12dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        app:layout_constraintTop_toBottomOf="@id/passwordCard"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <CheckBox
+            android:id="@+id/cbRememberMe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/remember_me"
+            android:textColor="#4B5563"
+            android:textSize="13sp" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/forgotPasswordTextBottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/forgot_password"
+            android:textColor="#1E3A8A"
+            android:textSize="13sp"
+            android:clickable="true"
+            android:focusable="true" />
+
+    </LinearLayout>
 
     <!-- Sign In Button -->
     <Button
@@ -213,13 +239,150 @@
         android:layout_height="56dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
-        android:layout_marginBottom="100dp"
-        android:background="@drawable/button_primary"
+        android:layout_marginTop="32dp"
+        android:backgroundTint="#1E3A8A"
         android:text="@string/sign_in"
         android:textColor="@android:color/white"
         android:textSize="16sp"
         android:textStyle="bold"
-        android:elevation="0dp"
+        app:cornerRadius="12dp"
+        app:layout_constraintTop_toBottomOf="@id/rememberForgotRow"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Divider with New Employee Text -->
+    <LinearLayout
+        android:id="@+id/dividerLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginTop="24dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        app:layout_constraintTop_toBottomOf="@id/signInButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1"
+            android:background="#E5E7EB"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:text="@string/new_employee"
+            android:textColor="#9CA3AF"
+            android:textSize="13sp" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1"
+            android:background="#E5E7EB"/>
+
+    </LinearLayout>
+
+    <!-- Create Employee Account Button -->
+    <Button
+        android:id="@+id/btnCreateAccount"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/bg_button_outlined"
+        android:text="@string/create_employee_account"
+        android:textColor="#1E3A8A"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/dividerLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Demo Credentials Card -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/demoCard"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="16dp"
+        app:cardBackgroundColor="#F9FAFB"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="0dp"
+        app:layout_constraintTop_toBottomOf="@id/btnCreateAccount"
+        app:layout_constraintBottom_toTopOf="@id/adminNote"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/demo_credentials"
+                android:textColor="#374151"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/admin_cred"
+                android:textColor="#6B7280"
+                android:textSize="12sp"
+                android:layout_marginVertical="2dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/team_lead_cred"
+                android:textColor="#6B7280"
+                android:textSize="12sp"
+                android:layout_marginVertical="2dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/agent_cred"
+                android:textColor="#6B7280"
+                android:textSize="12sp"
+                android:layout_marginVertical="2dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/employee_cred"
+                android:textColor="#6B7280"
+                android:textSize="12sp"
+                android:layout_marginVertical="2dp" />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <!-- Admin Note -->
+    <TextView
+        android:id="@+id/adminNote"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="24dp"
+        android:text="@string/team_leads_admin_note"
+        android:textColor="#9CA3AF"
+        android:textSize="12sp"
+        android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
