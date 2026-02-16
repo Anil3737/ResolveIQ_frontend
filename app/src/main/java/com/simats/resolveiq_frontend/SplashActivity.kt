@@ -26,9 +26,15 @@ class SplashActivity : AppCompatActivity() {
         val progressBar = findViewById<ProgressBar>(R.id.progressBar)
         animateProgressBar(progressBar)
         
-        // Navigate to OnboardingActivity after delay
+        // Navigate based on token presence after delay
         Handler(Looper.getMainLooper()).postDelayed({
-            startActivity(Intent(this, OnboardingActivity::class.java))
+            val userPreferences = com.simats.resolveiq_frontend.utils.UserPreferences(this)
+            val intent = if (!userPreferences.getToken().isNullOrEmpty()) {
+                Intent(this, EmployeeHomeActivity::class.java)
+            } else {
+                Intent(this, OnboardingActivity::class.java)
+            }
+            startActivity(intent)
             finish()
         }, SPLASH_DURATION)
     }

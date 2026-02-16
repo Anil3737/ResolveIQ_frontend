@@ -97,9 +97,4 @@ class OnboardingActivity : AppCompatActivity() {
             }
         }
     }
-    
-    private fun navigateToMain() {
-        startActivity(Intent(this, MainActivity::class.java))
-        finish()
-    }
 }
