@@ -20,13 +20,14 @@ class TicketRepository(private val api: TicketApiService) {
         }
     }
 
-    suspend fun createTicket(request: CreateTicketRequest): Result<Ticket> {
+    suspend fun createTicket(request: CreateTicketRequest): Result<Unit> {
         return try {
             val response = api.createTicket(request)
-            if (response.success && response.data != null) {
-                Result.success(response.data)
+            if (response.isSuccessful) {
+                Result.success(Unit)
             } else {
-                Result.failure(Exception(response.message ?: "Failed to create ticket"))
+                val errorMsg = response.errorBody()?.string() ?: "Failed to create ticket"
+                Result.failure(Exception(errorMsg))
             }
         } catch (e: Exception) {
             Result.failure(e)

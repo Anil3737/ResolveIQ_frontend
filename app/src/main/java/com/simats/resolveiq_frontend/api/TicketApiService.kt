@@ -2,6 +2,7 @@ package com.simats.resolveiq_frontend.api
 import com.simats.resolveiq_frontend.data.model.CreateTicketRequest
 
 import com.simats.resolveiq_frontend.data.model.*
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -12,5 +13,5 @@ interface TicketApiService {
     suspend fun getTickets(): ApiResponse<List<Ticket>>
 
     @POST("api/tickets")
-    suspend fun createTicket(@Body request: CreateTicketRequest): ApiResponse<Ticket>
+    suspend fun createTicket(@Body request: CreateTicketRequest): Response<Any>
 }

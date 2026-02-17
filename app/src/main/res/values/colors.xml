@@ -12,4 +12,15 @@
     <color name="text_disabled">#80111827</color> <!-- 50% opacity -->
     <color name="border_light">#D1D5DB</color>
     <color name="hint_text">#9CA3AF</color>
+
+    <!-- UI Component Colors -->
+    <color name="blue_600">#2563EB</color>
+    <color name="gray_500">#6B7280</color>
+    <color name="green_600">#16A34A</color>
+    <color name="orange_500">#F97316</color>
+
+    <color name="blue_50">#EFF6FF</color>
+    <color name="green_50">#F0FDF4</color>
+    <color name="orange_50">#FFF7ED</color>
+    <color name="gray_50">#F9FAFB</color>
 </resources>

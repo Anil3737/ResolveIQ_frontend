@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.simats.resolveiq_frontend.adapter.TicketAdapter
+import com.simats.resolveiq_frontend.adapter.MyTicketAdapter
 import com.simats.resolveiq_frontend.api.RetrofitClient
 import com.simats.resolveiq_frontend.databinding.ActivityEmployeeHomeBinding
 import com.simats.resolveiq_frontend.repository.AuthRepository
@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 class EmployeeHomeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityEmployeeHomeBinding
-    private lateinit var adapter: TicketAdapter
+    private lateinit var adapter: MyTicketAdapter
     private lateinit var userPreferences: UserPreferences
     
     private lateinit var authRepository: AuthRepository
@@ -70,12 +70,12 @@ class EmployeeHomeActivity : AppCompatActivity() {
 
         binding.navView.menuMyTickets.setOnClickListener {
             binding.drawerLayout.closeDrawer(GravityCompat.START)
-            fetchDashboardData()
+            startActivity(Intent(this, MyTicketsActivity::class.java))
         }
         
         binding.navView.menuSettings.setOnClickListener {
             binding.drawerLayout.closeDrawer(GravityCompat.START)
-            Toast.makeText(this, "Settings coming soon", Toast.LENGTH_SHORT).show()
+            startActivity(Intent(this, SettingsActivity::class.java))
         }
         
         // Logout
@@ -91,8 +91,11 @@ class EmployeeHomeActivity : AppCompatActivity() {
 
         // RecyclerView
         binding.rvRecentTickets.layoutManager = LinearLayoutManager(this)
-        adapter = TicketAdapter(emptyList()) { ticket ->
-            Toast.makeText(this, "Clicked: ${ticket.title}", Toast.LENGTH_SHORT).show()
+        adapter = MyTicketAdapter(emptyList()) { ticket ->
+            val intent = Intent(this, TicketDetailsActivity::class.java).apply {
+                putExtra("ticket", ticket)
+            }
+            startActivity(intent)
         }
         binding.rvRecentTickets.adapter = adapter
         
@@ -102,7 +105,22 @@ class EmployeeHomeActivity : AppCompatActivity() {
         }
         
         binding.btnMyTickets.setOnClickListener {
-            Toast.makeText(this, "Showing My Tickets", Toast.LENGTH_SHORT).show()
+            startActivity(Intent(this, MyTicketsActivity::class.java))
+        }
+
+        // Bottom Navigation
+        binding.bottomNavigation.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_tickets -> {
+                    startActivity(Intent(this, MyTicketsActivity::class.java))
+                    true
+                }
+                R.id.nav_settings -> {
+                    startActivity(Intent(this, SettingsActivity::class.java))
+                    true
+                }
+                else -> false
+            }
         }
     }
 
@@ -124,8 +142,9 @@ class EmployeeHomeActivity : AppCompatActivity() {
             val ticketsResult = ticketRepository.getTickets()
             if (ticketsResult.isSuccess) {
                 val tickets = ticketsResult.getOrDefault(emptyList())
-                adapter.updateTickets(tickets)
-                binding.tvWelcomeSubtitle.text = "You have ${tickets.size} recent tickets"
+                // Limit to 3 most recent
+                adapter.updateTickets(tickets.take(3))
+                binding.tvWelcomeSubtitle.text = "You have ${tickets.size} total tickets"
                 
                 // Update Stats
                 binding.tvOpenCount.text = tickets.count { it.status.equals("open", true) }.toString()

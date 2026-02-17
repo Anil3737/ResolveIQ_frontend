@@ -101,8 +101,7 @@ class CreateTicketActivity : AppCompatActivity() {
             val result = ticketRepository.createTicket(request)
             
             if (result.isSuccess) {
-                // Navigate to Success Screen
-                startActivity(Intent(this@CreateTicketActivity, TicketSuccessActivity::class.java))
+                Toast.makeText(this@CreateTicketActivity, "Ticket Created Successfully", Toast.LENGTH_SHORT).show()
                 finish()
             } else {
                 binding.btnSubmit.isEnabled = true
