@@ -45,6 +45,10 @@ class EmployeeHomeActivity : AppCompatActivity() {
     }
     
     private fun setupUI() {
+        // Set initial welcome name from preferences
+        val storedName = userPreferences.getUserName() ?: "Employee"
+        binding.tvWelcomeUser.text = "Welcome back, $storedName!"
+
         // Navigation Drawer
         binding.ivMenu.setOnClickListener {
             binding.drawerLayout.openDrawer(GravityCompat.START)
@@ -80,6 +84,11 @@ class EmployeeHomeActivity : AppCompatActivity() {
             performLogout()
         }
 
+        // Profile Icon click
+        binding.ivProfile.setOnClickListener {
+            startActivity(Intent(this, ProfileActivity::class.java))
+        }
+
         // RecyclerView
         binding.rvRecentTickets.layoutManager = LinearLayoutManager(this)
         adapter = TicketAdapter(emptyList()) { ticket ->
@@ -103,8 +112,9 @@ class EmployeeHomeActivity : AppCompatActivity() {
             val userResult = authRepository.getCurrentUser()
             if (userResult.isSuccess) {
                 val user = userResult.getOrNull()
-                binding.tvWelcomeUser.text = "Welcome, ${user?.full_name ?: "Employee"}"
                 user?.let {
+                    binding.tvWelcomeUser.text = "Welcome back, ${it.full_name}!"
+                    userPreferences.saveUserName(it.full_name)
                     userPreferences.saveUserId(it.id)
                     userPreferences.saveUserRole(it.role)
                 }

@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:padding="24dp">
+
+    <ImageView
+        android:id="@+id/ivIcon"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/bg_arc_progress"
+        android:padding="16dp"
+        android:src="@drawable/ic_ai_analysis"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="#1E3A8A" />
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Review Agreements"
+        android:textColor="#111827"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ivIcon" />
+
+    <TextView
+        android:id="@+id/tvSubtitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:gravity="center"
+        android:text="Please review and accept our updated terms to\ncontinue using the AI support platform."
+        android:textColor="#6B7280"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollAgreements"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="24dp"
+        app:layout_constraintBottom_toTopOf="@id/btnAccept"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvSubtitle">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="#F9FAFB"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1. Data Processing"
+                    android:textColor="#111827"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="By using our AI-based support platform, you acknowledge that ticket data is processed securely. We utilize enterprise-grade encryption for all data at rest and in transit. Information provided in support tickets is used solely for the purpose of resolving user inquiries and improving response accuracy."
+                    android:textColor="#4B5563"
+                    android:textSize="13sp"
+                    android:lineSpacingExtra="4dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="2. AI Model Usage"
+                    android:textColor="#111827"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Our platform leverages advanced machine learning models to provide automated suggestions and categorize tickets. Inputs are processed through secure APIs. We do not use your proprietary business data to train foundational models without explicit, separate written consent."
+                    android:textColor="#4B5563"
+                    android:textSize="13sp"
+                    android:lineSpacingExtra="4dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="3. User Rights"
+                    android:textColor="#111827"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Users maintain full rights over their data in accordance with GDPR and CCPA regulations. You have the right to request data export, modification, or deletion at any time through your account settings or by contacting our compliance officer at legal@aisupport.com."
+                    android:textColor="#4B5563"
+                    android:textSize="13sp"
+                    android:lineSpacingExtra="4dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="4. Service Limitations"
+                    android:textColor="#111827"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="While our AI strives for 99.9% accuracy, automated responses should be verified for mission-critical operations. The platform is provided \&quot;as is\&quot; with the primary goal of augmenting human support workflows."
+                    android:textColor="#4B5563"
+                    android:textSize="13sp"
+                    android:lineSpacingExtra="4dp" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <Button
+        android:id="@+id/btnAccept"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:layout_marginBottom="12dp"
+        android:backgroundTint="#2563EB"
+        android:text="Accept &amp; Continue"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:cornerRadius="12dp"
+        app:layout_constraintBottom_toTopOf="@id/btnDecline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/btnDecline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:padding="8dp"
+        android:text="Decline &amp; Close"
+        android:textColor="#6B7280"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -11,6 +11,13 @@ import com.simats.resolveiq_frontend.databinding.ActivityRegisterBinding
 import com.simats.resolveiq_frontend.repository.AuthRepository
 import com.simats.resolveiq_frontend.data.model.RegisterRequest
 import android.util.Log
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
+import android.text.style.ForegroundColorSpan
+import android.graphics.Color
+import android.view.View
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.launch
 
@@ -31,6 +38,51 @@ class RegisterActivity : AppCompatActivity() {
         authRepository = AuthRepository(api)
 
         setupListeners()
+        setupTermsCheckbox()
+    }
+
+    private fun setupTermsCheckbox() {
+        val fullText = getString(R.string.terms_agreement)
+        val spannableString = SpannableString(fullText)
+
+        val termsText = "Terms of Service"
+        val privacyText = "Privacy Policy"
+
+        val termsStart = fullText.indexOf(termsText)
+        val termsEnd = termsStart + termsText.length
+
+        val privacyStart = fullText.indexOf(privacyText)
+        val privacyEnd = privacyStart + privacyText.length
+
+        // Color for links
+        val linkColor = Color.parseColor("#1E3A8A")
+
+        // Terms of Service ClickableSpan
+        val termsClickableSpan = object : ClickableSpan() {
+            override fun onClick(widget: View) {
+                startActivity(Intent(this@RegisterActivity, AgreementsActivity::class.java))
+            }
+        }
+
+        // Privacy Policy ClickableSpan
+        val privacyClickableSpan = object : ClickableSpan() {
+            override fun onClick(widget: View) {
+                startActivity(Intent(this@RegisterActivity, AgreementsActivity::class.java))
+            }
+        }
+
+        if (termsStart != -1) {
+            spannableString.setSpan(termsClickableSpan, termsStart, termsEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            spannableString.setSpan(ForegroundColorSpan(linkColor), termsStart, termsEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }
+
+        if (privacyStart != -1) {
+            spannableString.setSpan(privacyClickableSpan, privacyStart, privacyEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            spannableString.setSpan(ForegroundColorSpan(linkColor), privacyStart, privacyEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }
+
+        binding.cbTerms.text = spannableString
+        binding.cbTerms.movementMethod = LinkMovementMethod.getInstance()
     }
 
     private fun setupListeners() {

@@ -40,29 +40,6 @@
         app:layout_constraintTop_toTopOf="@id/circle2" />
 
     <!-- Floating Decorative Elements -->
-    <View
-        android:id="@+id/floatingDot1"
-        android:layout_width="12dp"
-        android:layout_height="12dp"
-        android:background="@drawable/floating_dot"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintHorizontal_bias="0.7"
-        app:layout_constraintVertical_bias="0.15"
-        app:layout_constraintBottom_toBottomOf="parent" />
-
-    <View
-        android:id="@+id/floatingDot2"
-        android:layout_width="8dp"
-        android:layout_height="8dp"
-        android:background="@drawable/floating_dot_small"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintHorizontal_bias="0.25"
-        app:layout_constraintVertical_bias="0.35"
-        app:layout_constraintBottom_toBottomOf="parent" />
 
     <!-- Floating Card 1 (Top Left) -->
     <androidx.cardview.widget.CardView
@@ -189,33 +166,11 @@
         android:id="@+id/pageIndicators"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
         android:gravity="center"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@id/btnNext"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <View
-            android:id="@+id/indicator1"
-            android:layout_width="24dp"
-            android:layout_height="6dp"
-            android:layout_marginEnd="6dp"
-            android:background="@drawable/indicator_active" />
-
-        <View
-            android:id="@+id/indicator2"
-            android:layout_width="6dp"
-            android:layout_height="6dp"
-            android:layout_marginEnd="6dp"
-            android:background="@drawable/indicator_inactive" />
-
-        <View
-            android:id="@+id/indicator3"
-            android:layout_width="6dp"
-            android:layout_height="6dp"
-            android:background="@drawable/indicator_inactive" />
-    </LinearLayout>
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="609dp"/>
 
     <!-- Skip Button -->
     <TextView
@@ -234,22 +189,6 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <!-- Next Button -->
-    <Button
-        android:id="@+id/btnNext"
-        android:layout_width="0dp"
-        android:layout_height="60dp"
-        android:layout_marginHorizontal="32dp"
-        android:layout_marginBottom="32dp"
-        android:backgroundTint="#0047AB"
-        android:fontFamily="sans-serif-medium"
-        android:text="@string/next"
-        android:textAllCaps="false"
-        android:textColor="@android:color/white"
-        android:textSize="16sp"
-        app:cornerRadius="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
     <!-- Divider Line at Bottom -->
     <View

@@ -18,7 +18,7 @@ class CreateTicketActivity : AppCompatActivity() {
     private lateinit var ticketRepository: TicketRepository
     
     // Hardcoded issue types for demo
-    private val issueTypes = listOf("Network Issue", "Hardware Failure", "Software Installation", "Access Request", "Other")
+    private val issueTypes = listOf("Network Issue", "Hardware Failure", "Software Installation", "Application Downtime / Application Issues", "Other")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -11,6 +11,7 @@ class UserPreferences(context: Context) {
         private const val KEY_TOKEN = "jwt_token"
         private const val KEY_USER_ROLE = "user_role"
         private const val KEY_USER_ID = "user_id"
+        private const val KEY_USER_NAME = "user_name"
     }
 
     fun saveToken(token: String) {
@@ -19,6 +20,14 @@ class UserPreferences(context: Context) {
 
     fun getToken(): String? {
         return prefs.getString(KEY_TOKEN, null)
+    }
+
+    fun saveUserName(name: String) {
+        prefs.edit().putString(KEY_USER_NAME, name).apply()
+    }
+
+    fun getUserName(): String? {
+        return prefs.getString(KEY_USER_NAME, null)
     }
 
     fun saveUserRole(role: String) {
