@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">resolveiq_frontend</string>
+    <string name="app_name">ResolveIQ</string>
     <string name="app_logo">Application Logo</string>
     <string name="security_icon">Security Icon</string>
     <string name="tagline_main">Prioritizing with Precision</string>

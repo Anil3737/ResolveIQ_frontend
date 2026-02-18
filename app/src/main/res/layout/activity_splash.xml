@@ -24,11 +24,11 @@
 
         <ImageView
             android:id="@+id/ivLogo"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
             android:contentDescription="@string/app_logo"
-            android:src="@drawable/ic_shield_logo" />
+            android:src="@drawable/app_logo" />
 
     </androidx.cardview.widget.CardView>
 
