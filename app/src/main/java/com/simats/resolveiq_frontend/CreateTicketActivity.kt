@@ -50,6 +50,10 @@ class CreateTicketActivity : AppCompatActivity() {
             submitTicket()
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+    }
     
     private fun showIssueTypeDialog() {
         val builder = androidx.appcompat.app.AlertDialog.Builder(this)

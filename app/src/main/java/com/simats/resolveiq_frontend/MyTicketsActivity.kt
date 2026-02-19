@@ -11,6 +11,7 @@ import com.simats.resolveiq_frontend.api.RetrofitClient
 import com.simats.resolveiq_frontend.databinding.ActivityMyTicketsBinding
 import com.simats.resolveiq_frontend.data.model.Ticket
 import com.simats.resolveiq_frontend.repository.TicketRepository
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class MyTicketsActivity : AppCompatActivity() {
@@ -20,6 +21,7 @@ class MyTicketsActivity : AppCompatActivity() {
     private lateinit var ticketRepository: TicketRepository
     private var allTickets: List<Ticket> = emptyList()
     private var isShowingActive = true
+    private var fetchJob: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,15 +52,45 @@ class MyTicketsActivity : AppCompatActivity() {
         }
         binding.rvMyTickets.adapter = adapter
 
-        binding.btnActiveTab.setOnClickListener {
-            updateTabs(isActive = true)
-            filterTickets(isActive = true)
-        }
-
         binding.btnResolvedTab.setOnClickListener {
             updateTabs(isActive = false)
             filterTickets(isActive = false)
         }
+
+        // Bottom Navigation
+        binding.bottomNavigation.selectedItemId = R.id.nav_tickets
+        binding.bottomNavigation.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_home -> {
+                    val intent = android.content.Intent(this, EmployeeHomeActivity::class.java)
+                    intent.flags = android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP or android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    startActivity(intent)
+                    true
+                }
+                R.id.nav_tickets -> {
+                    // Already on Tickets
+                    true
+                }
+                R.id.nav_activity -> {
+                    Toast.makeText(this, "Coming soon", Toast.LENGTH_SHORT).show()
+                    false
+                }
+                R.id.nav_settings -> {
+                    val intent = android.content.Intent(this, SettingsActivity::class.java)
+                    intent.flags = android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP or android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    startActivity(intent)
+                    finish()
+                    true
+                }
+                else -> false
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        binding.bottomNavigation.selectedItemId = R.id.nav_tickets
+        fetchTickets()
     }
 
     private fun updateTabs(isActive: Boolean) {
@@ -87,7 +119,8 @@ class MyTicketsActivity : AppCompatActivity() {
     }
 
     private fun fetchTickets() {
-        lifecycleScope.launch {
+        fetchJob?.cancel()
+        fetchJob = lifecycleScope.launch {
             binding.progressBar.visibility = View.VISIBLE
             val result = ticketRepository.getTickets()
             binding.progressBar.visibility = View.GONE

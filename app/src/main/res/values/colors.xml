@@ -23,4 +23,25 @@
     <color name="green_50">#F0FDF4</color>
     <color name="orange_50">#FFF7ED</color>
     <color name="gray_50">#F9FAFB</color>
+
+    <!-- Admin Dashboard Colors -->
+    <color name="admin_red">#EF4444</color>
+    <color name="admin_red_light">#FEF2F2</color>
+    <color name="admin_blue_accent">#3B82F6</color>
+    <color name="admin_green_accent">#22C55E</color>
+    <color name="admin_amber">#F59E0B</color>
+    <color name="risk_critical">#EF4444</color>
+    <color name="risk_high">#F97316</color>
+    <color name="risk_medium">#F59E0B</color>
+    <color name="risk_low">#3B82F6</color>
+
+    <!-- Teams Page Colors -->
+    <color name="purple_600">#9333EA</color>
+    <color name="purple_50">#F5F3FF</color>
+    <color name="amber_600">#D97706</color>
+    <color name="amber_50">#FFFBEB</color>
+    <color name="rose_600">#E11D48</color>
+    <color name="rose_50">#FFF1F2</color>
+    <color name="cyan_600">#0891B2</color>
+    <color name="cyan_50">#ECFEFF</color>
 </resources>

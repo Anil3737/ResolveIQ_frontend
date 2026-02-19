@@ -48,5 +48,38 @@ class SettingsActivity : AppCompatActivity() {
             val status = if (isChecked) "enabled" else "disabled"
             Toast.makeText(this, "Dark Mode $status", Toast.LENGTH_SHORT).show()
         }
+
+        // Bottom Navigation
+        binding.bottomNavigation.selectedItemId = R.id.nav_settings
+        binding.bottomNavigation.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_home -> {
+                    val intent = Intent(this, EmployeeHomeActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    startActivity(intent)
+                    true
+                }
+                R.id.nav_tickets -> {
+                    val intent = Intent(this, MyTicketsActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    startActivity(intent)
+                    true
+                }
+                R.id.nav_activity -> {
+                    Toast.makeText(this, "Coming soon", Toast.LENGTH_SHORT).show()
+                    false
+                }
+                R.id.nav_settings -> {
+                    // Already on Settings
+                    true
+                }
+                else -> false
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        binding.bottomNavigation.selectedItemId = R.id.nav_settings
     }
 }

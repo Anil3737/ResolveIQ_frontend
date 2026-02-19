@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Low (25%) - Blue - bottom layer, full circle -->
+    <item>
+        <shape android:shape="oval">
+            <stroke
+                android:width="12dp"
+                android:color="#3B82F6" />
+            <solid android:color="@android:color/transparent" />
+            <size
+                android:width="120dp"
+                android:height="120dp" />
+        </shape>
+    </item>
+    <!-- Medium (30%) - Amber - covers 75% -->
+    <item>
+        <rotate
+            android:fromDegrees="0"
+            android:pivotX="50%"
+            android:pivotY="50%">
+            <shape android:shape="oval">
+                <stroke
+                    android:width="12dp"
+                    android:color="#F59E0B" />
+                <solid android:color="@android:color/transparent" />
+                <size
+                    android:width="120dp"
+                    android:height="120dp" />
+            </shape>
+        </rotate>
+    </item>
+    <!-- Inner white circle to create donut effect -->
+    <item
+        android:bottom="12dp"
+        android:left="12dp"
+        android:right="12dp"
+        android:top="12dp">
+        <shape android:shape="oval">
+            <solid android:color="#FFFFFF" />
+        </shape>
+    </item>
+</layer-list>

@@ -30,8 +30,9 @@ class UserPreferences(context: Context) {
         return prefs.getString(KEY_USER_NAME, null)
     }
 
-    fun saveUserRole(role: String) {
-        prefs.edit().putString(KEY_USER_ROLE, role).apply()
+    fun saveUserRole(role: String?) {
+        val finalRole = role ?: "employee"
+        prefs.edit().putString(KEY_USER_ROLE, finalRole).apply()
     }
 
     fun getUserRole(): String? {

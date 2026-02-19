@@ -13,6 +13,7 @@ import com.simats.resolveiq_frontend.databinding.ActivityEmployeeHomeBinding
 import com.simats.resolveiq_frontend.repository.AuthRepository
 import com.simats.resolveiq_frontend.repository.TicketRepository
 import com.simats.resolveiq_frontend.utils.UserPreferences
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class EmployeeHomeActivity : AppCompatActivity() {
@@ -23,6 +24,7 @@ class EmployeeHomeActivity : AppCompatActivity() {
     
     private lateinit var authRepository: AuthRepository
     private lateinit var ticketRepository: TicketRepository
+    private var fetchJob: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -109,14 +111,27 @@ class EmployeeHomeActivity : AppCompatActivity() {
         }
 
         // Bottom Navigation
+        binding.bottomNavigation.selectedItemId = R.id.nav_home
         binding.bottomNavigation.setOnItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.nav_tickets -> {
-                    startActivity(Intent(this, MyTicketsActivity::class.java))
+                R.id.nav_home -> {
+                    // Already on Home
                     true
                 }
+                R.id.nav_tickets -> {
+                    val intent = Intent(this, MyTicketsActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    startActivity(intent)
+                    true
+                }
+                R.id.nav_activity -> {
+                    Toast.makeText(this, "Coming soon", Toast.LENGTH_SHORT).show()
+                    false
+                }
                 R.id.nav_settings -> {
-                    startActivity(Intent(this, SettingsActivity::class.java))
+                    val intent = Intent(this, SettingsActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    startActivity(intent)
                     true
                 }
                 else -> false
@@ -124,8 +139,15 @@ class EmployeeHomeActivity : AppCompatActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        binding.bottomNavigation.selectedItemId = R.id.nav_home
+        fetchDashboardData()
+    }
+
     private fun fetchDashboardData() {
-        lifecycleScope.launch {
+        fetchJob?.cancel()
+        fetchJob = lifecycleScope.launch {
             // Fetch User
             val userResult = authRepository.getCurrentUser()
             if (userResult.isSuccess) {
@@ -164,8 +186,6 @@ class EmployeeHomeActivity : AppCompatActivity() {
         finish()
     }
     
-    override fun onResume() {
-        super.onResume()
-        fetchDashboardData()
-    }
+    
+
 }

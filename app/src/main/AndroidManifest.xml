@@ -19,7 +19,7 @@
         <activity
             android:name=".SplashActivity"
             android:exported="true"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            android:theme="@style/Theme.Resolveiq_frontend">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -46,57 +46,77 @@
             
         <activity
             android:name=".EmployeeHomeActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:theme="@style/Theme.Resolveiq_frontend"
             android:exported="false" />
             
         <activity
             android:name=".CreateTicketActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:theme="@style/Theme.Resolveiq_frontend"
             android:exported="false" />
             
         <activity
             android:name=".TicketSuccessActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:theme="@style/Theme.Resolveiq_frontend"
             android:exported="false" />
 
         <activity
             android:name=".AgreementsActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:theme="@style/Theme.Resolveiq_frontend"
             android:exported="false" />
 
         <activity
             android:name=".ProfileActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:theme="@style/Theme.Resolveiq_frontend"
             android:exported="false" />
 
         <activity
             android:name=".WorkflowActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:theme="@style/Theme.Resolveiq_frontend"
             android:exported="false" />
 
         <activity
             android:name=".SettingsActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:theme="@style/Theme.Resolveiq_frontend"
             android:exported="false" />
 
         <activity
             android:name=".HelpSupportActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:theme="@style/Theme.Resolveiq_frontend"
             android:exported="false" />
 
         <activity
             android:name=".TicketProgressActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:theme="@style/Theme.Resolveiq_frontend"
             android:exported="false" />
 
         <activity
             android:name=".MyTicketsActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:theme="@style/Theme.Resolveiq_frontend"
+            android:exported="false" />
+
+        <activity
+            android:name=".AdminHomeActivity"
+            android:theme="@style/Theme.Resolveiq_frontend"
+            android:exported="false" />
+
+        <activity
+            android:name=".TeamsActivity"
+            android:theme="@style/Theme.Resolveiq_frontend"
             android:exported="false" />
 
         <activity
             android:name=".TicketDetailsActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:theme="@style/Theme.Resolveiq_frontend"
+            android:exported="false" />
+
+        <activity
+            android:name=".CreateTeamActivity"
+            android:theme="@style/Theme.Resolveiq_frontend"
+            android:exported="false" />
+
+        <activity
+            android:name=".CreateTeamLeadActivity"
+            android:theme="@style/Theme.Resolveiq_frontend"
             android:exported="false" />
     </application>
 

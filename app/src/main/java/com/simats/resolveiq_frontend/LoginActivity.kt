@@ -88,21 +88,31 @@ class LoginActivity : AppCompatActivity() {
             
             if (result.isSuccess) {
                 val response = result.getOrThrow()
-                val data = response.data!!
+                val data = response.data
                 
-                // Save to Preferences
-                userPreferences.saveToken(data.access_token)
-                userPreferences.saveUserId(data.user.id)
-                userPreferences.saveUserRole(data.user.role)
-                userPreferences.saveUserName(data.user.full_name)
-                
-                Toast.makeText(this@LoginActivity, "Login Successful: ${data.user.full_name}", Toast.LENGTH_SHORT).show()
-                
-                // Navigate to Main
-                val intent = Intent(this@LoginActivity, EmployeeHomeActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                startActivity(intent)
-                finish()
+                if (data != null) {
+                    // Save to Preferences
+                    userPreferences.saveToken(data.access_token)
+                    userPreferences.saveUserId(data.user.id)
+                    userPreferences.saveUserRole(data.user.role)
+                    userPreferences.saveUserName(data.user.full_name)
+                    
+                    Toast.makeText(this@LoginActivity, "Login Successful: ${data.user.full_name}", Toast.LENGTH_SHORT).show()
+                    
+                    // Navigate based on role
+                    val role = data.user.role ?: "employee"
+                    val targetActivity = if (role.equals("admin", ignoreCase = true)) {
+                        AdminHomeActivity::class.java
+                    } else {
+                        EmployeeHomeActivity::class.java
+                    }
+                    val intent = Intent(this@LoginActivity, targetActivity)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    startActivity(intent)
+                    finish()
+                } else {
+                    showErrorDialog("Login Error", "Invalid response from server")
+                }
             } else {
                 val message = result.exceptionOrNull()?.message ?: "Login failed"
                 showErrorDialog("Login Error", message)

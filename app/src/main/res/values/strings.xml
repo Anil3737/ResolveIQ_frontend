@@ -120,4 +120,18 @@
     <string name="my_recent_tickets">My Recent Tickets</string>
     <string name="view_all">View All</string>
     <string name="announcements">Announcements</string>
+
+    <!-- Admin Dashboard Page -->
+    <string name="admin_core">Admin Core</string>
+    <string name="total_tickets">TOTAL TICKETS</string>
+    <string name="high_risk">HIGH RISK</string>
+    <string name="sla_breached">SLA BREACHED</string>
+    <string name="escalated">ESCALATED</string>
+    <string name="risk_distribution">Risk Distribution</string>
+    <string name="real_time">Real-time</string>
+    <string name="top_risky_tickets">Top Risky Tickets</string>
+    <string name="sla_timer">SLA TIMER</string>
+    <string name="risk_score">RISK SCORE</string>
+    <string name="critical">Critical</string>
+    <string name="total_label">TOTAL</string>
 </resources>
