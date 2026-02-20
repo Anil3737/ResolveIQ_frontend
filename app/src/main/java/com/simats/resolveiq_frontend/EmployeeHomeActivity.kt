@@ -110,6 +110,10 @@ class EmployeeHomeActivity : AppCompatActivity() {
             startActivity(Intent(this, MyTicketsActivity::class.java))
         }
 
+        binding.tvViewAll.setOnClickListener {
+            startActivity(Intent(this, MyTicketsActivity::class.java))
+        }
+
         // Bottom Navigation
         binding.bottomNavigation.selectedItemId = R.id.nav_home
         binding.bottomNavigation.setOnItemSelectedListener { item ->
@@ -173,7 +177,10 @@ class EmployeeHomeActivity : AppCompatActivity() {
                 binding.tvPendingCount.text = tickets.count { it.status.equals("pending", true) }.toString()
                 binding.tvResolvedCount.text = tickets.count { it.status.equals("resolved", true) || it.status.equals("closed", true) }.toString()
             } else {
-                Toast.makeText(this@EmployeeHomeActivity, "Failed to load tickets", Toast.LENGTH_SHORT).show()
+                val error = ticketsResult.exceptionOrNull()
+                if (error !is kotlinx.coroutines.CancellationException) {
+                    Toast.makeText(this@EmployeeHomeActivity, "Failed to load tickets", Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }

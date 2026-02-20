@@ -3,5 +3,9 @@
     <style name="Base.Theme.Resolveiq_frontend" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        
+        <!-- Bottom Navigation Indicator Fix -->
+        <item name="colorSecondaryContainer">#dac2f0</item>
+        <item name="colorOnSecondaryContainer">@color/blue_600</item>
     </style>
 </resources>

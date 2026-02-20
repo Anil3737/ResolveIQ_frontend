@@ -10,8 +10,8 @@
     <!-- Shield Icon with Glow Effect -->
     <androidx.cardview.widget.CardView
         android:id="@+id/iconContainer"
-        android:layout_width="140dp"
-        android:layout_height="140dp"
+        android:layout_width="210dp"
+        android:layout_height="160dp"
         android:elevation="20dp"
         app:cardBackgroundColor="@android:color/white"
         app:cardCornerRadius="35dp"

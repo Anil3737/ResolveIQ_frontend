@@ -118,6 +118,15 @@
             android:name=".CreateTeamLeadActivity"
             android:theme="@style/Theme.Resolveiq_frontend"
             android:exported="false" />
+
+        <activity
+            android:name=".AboutActivity"
+            android:theme="@style/Theme.Resolveiq_frontend"
+            android:exported="false" />
+        <activity
+            android:name=".ProfileInformationActivity"
+            android:theme="@style/Theme.Resolveiq_frontend"
+            android:exported="false" />
     </application>
 
 </manifest>

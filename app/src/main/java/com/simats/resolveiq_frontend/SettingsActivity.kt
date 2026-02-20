@@ -24,7 +24,7 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         binding.btnProfileSettings.setOnClickListener {
-            Toast.makeText(this, "Profile Settings clicked", Toast.LENGTH_SHORT).show()
+            startActivity(Intent(this, ProfileInformationActivity::class.java))
         }
 
         binding.btnSecuritySettings.setOnClickListener {
@@ -35,9 +35,11 @@ class SettingsActivity : AppCompatActivity() {
             startActivity(Intent(this, HelpSupportActivity::class.java))
         }
 
-        binding.btnPrivacyPolicy.setOnClickListener {
-            startActivity(Intent(this, WorkflowActivity::class.java))
+        binding.btnAbout.setOnClickListener {
+            startActivity(Intent(this, AboutActivity::class.java))
         }
+
+
 
         binding.switchNotifications.setOnCheckedChangeListener { _, isChecked ->
             val status = if (isChecked) "enabled" else "disabled"

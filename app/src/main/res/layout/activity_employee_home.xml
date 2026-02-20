@@ -262,7 +262,7 @@
                 <LinearLayout
                     android:id="@+id/statusCardsRow"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="120dp"
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="20dp"
                     android:orientation="horizontal"
@@ -271,8 +271,8 @@
                     <!-- OPEN Card -->
                     <androidx.cardview.widget.CardView
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="6dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="4dp"
                         android:layout_weight="1"
                         app:cardBackgroundColor="@color/white"
                         app:cardCornerRadius="12dp"
@@ -280,7 +280,7 @@
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:orientation="vertical"
                             android:padding="16dp">
 
@@ -291,8 +291,8 @@
                                 android:orientation="horizontal">
 
                                 <View
-                                    android:layout_width="8dp"
-                                    android:layout_height="8dp"
+                                    android:layout_width="10dp"
+                                    android:layout_height="10dp"
                                     android:background="@drawable/dot_blue" />
 
                                 <TextView
@@ -331,8 +331,8 @@
                     <!-- PENDING Card -->
                     <androidx.cardview.widget.CardView
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="6dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="4dp"
                         android:layout_weight="1"
                         app:cardBackgroundColor="@color/white"
                         app:cardCornerRadius="12dp"
@@ -340,7 +340,7 @@
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:orientation="vertical"
                             android:padding="16dp">
 
@@ -351,8 +351,8 @@
                                 android:orientation="horizontal">
 
                                 <View
-                                    android:layout_width="8dp"
-                                    android:layout_height="8dp"
+                                    android:layout_width="10dp"
+                                    android:layout_height="10dp"
                                     android:background="@drawable/dot_orange" />
 
                                 <TextView
@@ -391,8 +391,8 @@
                     <!-- RESOLVED Card -->
                     <androidx.cardview.widget.CardView
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="6dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="4dp"
                         android:layout_weight="1"
                         app:cardBackgroundColor="@color/white"
                         app:cardCornerRadius="12dp"
@@ -400,7 +400,7 @@
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:orientation="vertical"
                             android:padding="16dp">
 
@@ -411,14 +411,14 @@
                                 android:orientation="horizontal">
 
                                 <ImageView
-                                    android:layout_width="12dp"
-                                    android:layout_height="12dp"
+                                    android:layout_width="10dp"
+                                    android:layout_height="10dp"
                                     android:src="@drawable/ic_check_green" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginStart="4dp"
+                                    android:layout_marginStart="6dp"
                                     android:text="RESOLVED"
                                     android:textColor="#10B981"
                                     android:textSize="10sp"

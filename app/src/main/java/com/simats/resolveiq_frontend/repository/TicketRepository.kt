@@ -15,6 +15,8 @@ class TicketRepository(private val api: TicketApiService) {
             } else {
                 Result.failure(Exception(response.message ?: "Failed to fetch tickets"))
             }
+        } catch (e: kotlinx.coroutines.CancellationException) {
+            throw e
         } catch (e: Exception) {
             Result.failure(e)
         }
@@ -29,6 +31,8 @@ class TicketRepository(private val api: TicketApiService) {
                 val errorMsg = response.errorBody()?.string() ?: "Failed to create ticket"
                 Result.failure(Exception(errorMsg))
             }
+        } catch (e: kotlinx.coroutines.CancellationException) {
+            throw e
         } catch (e: Exception) {
             Result.failure(e)
         }

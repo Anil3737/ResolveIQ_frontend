@@ -96,6 +96,9 @@ class LoginActivity : AppCompatActivity() {
                     userPreferences.saveUserId(data.user.id)
                     userPreferences.saveUserRole(data.user.role)
                     userPreferences.saveUserName(data.user.full_name)
+                    userPreferences.saveUserEmail(data.user.email)
+                    userPreferences.saveUserLocation(data.user.location)
+                    userPreferences.saveUserPhone(data.user.phone)
                     
                     Toast.makeText(this@LoginActivity, "Login Successful: ${data.user.full_name}", Toast.LENGTH_SHORT).show()
                     

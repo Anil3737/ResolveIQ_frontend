@@ -121,15 +121,20 @@ class MyTicketsActivity : AppCompatActivity() {
     private fun fetchTickets() {
         fetchJob?.cancel()
         fetchJob = lifecycleScope.launch {
-            binding.progressBar.visibility = View.VISIBLE
-            val result = ticketRepository.getTickets()
-            binding.progressBar.visibility = View.GONE
-
-            if (result.isSuccess) {
-                allTickets = result.getOrDefault(emptyList())
-                filterTickets(isShowingActive)
-            } else {
-                Toast.makeText(this@MyTicketsActivity, "Failed to load tickets: ${result.exceptionOrNull()?.message}", Toast.LENGTH_SHORT).show()
+            try {
+                binding.progressBar.visibility = View.VISIBLE
+                val result = ticketRepository.getTickets()
+                if (result.isSuccess) {
+                    allTickets = result.getOrDefault(emptyList())
+                    filterTickets(isShowingActive)
+                } else {
+                    val error = result.exceptionOrNull()
+                    if (error !is kotlinx.coroutines.CancellationException) {
+                        Toast.makeText(this@MyTicketsActivity, "Failed to load tickets: ${error?.message}", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            } finally {
+                binding.progressBar.visibility = View.GONE
             }
         }
     }

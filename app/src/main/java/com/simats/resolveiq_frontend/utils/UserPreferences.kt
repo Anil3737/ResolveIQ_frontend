@@ -12,6 +12,9 @@ class UserPreferences(context: Context) {
         private const val KEY_USER_ROLE = "user_role"
         private const val KEY_USER_ID = "user_id"
         private const val KEY_USER_NAME = "user_name"
+        private const val KEY_USER_EMAIL = "user_email"
+        private const val KEY_USER_LOCATION = "user_location"
+        private const val KEY_USER_PHONE = "user_phone"
     }
 
     fun saveToken(token: String) {
@@ -45,6 +48,30 @@ class UserPreferences(context: Context) {
     
     fun getUserId(): Int {
         return prefs.getInt(KEY_USER_ID, -1)
+    }
+
+    fun saveUserEmail(email: String) {
+        prefs.edit().putString(KEY_USER_EMAIL, email).apply()
+    }
+
+    fun getUserEmail(): String? {
+        return prefs.getString(KEY_USER_EMAIL, null)
+    }
+
+    fun saveUserLocation(location: String?) {
+        prefs.edit().putString(KEY_USER_LOCATION, location).apply()
+    }
+
+    fun getUserLocation(): String? {
+        return prefs.getString(KEY_USER_LOCATION, null)
+    }
+
+    fun saveUserPhone(phone: String?) {
+        prefs.edit().putString(KEY_USER_PHONE, phone).apply()
+    }
+
+    fun getUserPhone(): String? {
+        return prefs.getString(KEY_USER_PHONE, null)
     }
 
     fun clear() {

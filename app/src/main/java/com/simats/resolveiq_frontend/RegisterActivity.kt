@@ -131,6 +131,8 @@ class RegisterActivity : AppCompatActivity() {
         val password = binding.etPassword.text.toString().trim()
         val confirmPassword = binding.etConfirmPassword.text.toString().trim()
 
+        val location = binding.etOfficeLocation.text.toString().trim()
+
         if (fullName.isEmpty() || email.isEmpty() || password.isEmpty()) {
             Toast.makeText(this, "Please fill in all required fields", Toast.LENGTH_SHORT).show()
             return
@@ -155,7 +157,8 @@ class RegisterActivity : AppCompatActivity() {
                 email = email,
                 phone = phone,
                 password = password,
-                department_id = 1 // Default to 1
+                department_id = 1, // Default to 1
+                location = if (location.isNotEmpty()) location else null
             )
             
             val result = authRepository.register(request)

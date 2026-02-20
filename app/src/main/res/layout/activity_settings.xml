@@ -312,9 +312,9 @@
                         android:background="#F3F4F6"
                         android:layout_marginHorizontal="16dp"/>
 
-                    <!-- Privacy Policy -->
+                    <!-- About -->
                     <LinearLayout
-                        android:id="@+id/btnPrivacyPolicy"
+                        android:id="@+id/btnAbout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"

@@ -40,11 +40,11 @@ class ProfileActivity : AppCompatActivity() {
 
         // Placeholders for other menu items
         binding.btnViewTickets.setOnClickListener {
-            // Feature coming soon or navigate to tickets list
+            startActivity(Intent(this, MyTicketsActivity::class.java))
         }
         
         binding.btnTicketProgress.setOnClickListener {
-            // Feature coming soon
+            startActivity(Intent(this, MyTicketsActivity::class.java))
         }
         
         binding.btnWorkflow.setOnClickListener {
