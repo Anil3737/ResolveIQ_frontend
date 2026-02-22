@@ -44,4 +44,8 @@ object RetrofitClient {
     fun getTicketApi(context: Context): TicketApiService {
         return getClient(context).create(TicketApiService::class.java)
     }
+
+    fun getAdminApi(context: Context): AdminApiService {
+        return getClient(context).create(AdminApiService::class.java)
+    }
 }

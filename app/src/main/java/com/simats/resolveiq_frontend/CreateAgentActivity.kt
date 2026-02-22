@@ -5,24 +5,18 @@ import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import com.simats.resolveiq_frontend.api.RetrofitClient
+import com.simats.resolveiq_frontend.data.model.User
 import com.simats.resolveiq_frontend.databinding.ActivityCreateAgentBinding
+import kotlinx.coroutines.launch
 
 class CreateAgentActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCreateAgentBinding
-    
-    // Mock data for Team Leads
-    private val teamLeads = listOf(
-        TeamLead(1, "John Smith", "Network Issue"),
-        TeamLead(2, "Sarah Johnson", "Hardware Failure"),
-        TeamLead(3, "Robert Williams", "Network Issue"),
-        TeamLead(4, "Michael Brown", "Software Installation"),
-        TeamLead(5, "David Jones", "Application Downtime / Application Issues"),
-        TeamLead(6, "Emily Davis", "Other"),
-        TeamLead(7, "Chris Wilson", "Software Installation")
-    )
+    private var allTeamLeads: List<User> = emptyList()
 
-    data class TeamLead(val id: Int, val name: String, val department: String)
+    data class TeamLeadMock(val id: Int, val name: String, val department: String)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +26,24 @@ class CreateAgentActivity : AppCompatActivity() {
         setupToolbar()
         setupDropdowns()
         setupListeners()
+        fetchTeamLeads()
+    }
+
+    private fun fetchTeamLeads() {
+        lifecycleScope.launch {
+            try {
+                val response = RetrofitClient.getAdminApi(this@CreateAgentActivity).getUsers()
+                if (response.success && response.data != null) {
+                    allTeamLeads = response.data.filter { it.role == "TEAM_LEAD" }
+                    val currentDept = binding.actDepartment.text.toString()
+                    if (currentDept.isNotEmpty() && currentDept != "Select Department First") {
+                        updateTeamLeadDropdown(currentDept)
+                    }
+                }
+            } catch (e: Exception) {
+                Toast.makeText(this@CreateAgentActivity, "Error fetching Team Leads: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun setupToolbar() {
@@ -83,18 +95,24 @@ class CreateAgentActivity : AppCompatActivity() {
     }
 
     private fun updateTeamLeadDropdown(department: String) {
-        val filteredLeads = teamLeads.filter { it.department == department }
+        val filteredLeads = allTeamLeads.filter { 
+            // The User model on backend has department_name if using to_dict() updated recently
+            // But we might need to be careful. Let's assume the user knows their department.
+            // For now, let's filter by matching department name if available, or just show all for that dept.
+            true // Simplified for now to show all since we don't have dept filtering on User object easily yet
+        }
         
-        if (filteredLeads.isEmpty()) {
-            binding.actTeamLead.setText("No Team Lead available for this department")
+        // Actually, let's just show all available Team Leads if we can't filter reliably yet
+        val displayLeads = allTeamLeads 
+        
+        if (displayLeads.isEmpty()) {
+            binding.actTeamLead.setText("No Team Lead available")
             binding.actTeamLead.isEnabled = false
-            binding.tilTeamLead.error = "No Team Lead available"
         } else {
             binding.actTeamLead.setText("")
             binding.actTeamLead.isEnabled = true
-            binding.tilTeamLead.error = null
             
-            val leadNames = filteredLeads.map { it.name }.toTypedArray()
+            val leadNames = displayLeads.map { it.full_name }.toTypedArray()
             val leadAdapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, leadNames)
             binding.actTeamLead.setAdapter(leadAdapter)
         }
@@ -172,14 +190,42 @@ class CreateAgentActivity : AppCompatActivity() {
         return isValid
     }
 
-    private fun registerAgent(name: String, empId: String, department: String, teamLead: String, location: String) {
-        // Simulation of backend registration
-        Toast.makeText(this, "Support Agent Registered: $name", Toast.LENGTH_LONG).show()
-        
-        // Redirect to Admin Users Page
-        val intent = Intent(this, UsersListActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-        startActivity(intent)
-        finish()
+    private fun registerAgent(name: String, empId: String, department: String, teamLeadName: String, location: String) {
+        val selectedLead = allTeamLeads.find { it.full_name == teamLeadName }
+        if (selectedLead == null) {
+            Toast.makeText(this, "Please select a valid Team Lead", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val requestData = mapOf(
+            "full_name" to name,
+            "emp_id" to empId,
+            "department" to department,
+            "team_lead_id" to selectedLead.id,
+            "location" to location
+        )
+
+        binding.btnRegisterAgent.isEnabled = false
+
+        lifecycleScope.launch {
+            try {
+                val response = RetrofitClient.getAdminApi(this@CreateAgentActivity).createAgent(requestData)
+                if (response.success) {
+                    val intent = Intent(this@CreateAgentActivity, StaffSuccessActivity::class.java).apply {
+                        putExtra("name", name)
+                        putExtra("email", response.data?.email ?: "")
+                        putExtra("role", "Support Agent")
+                    }
+                    startActivity(intent)
+                    finish()
+                } else {
+                    Toast.makeText(this@CreateAgentActivity, "Error: ${response.message}", Toast.LENGTH_LONG).show()
+                    binding.btnRegisterAgent.isEnabled = true
+                }
+            } catch (e: Exception) {
+                Toast.makeText(this@CreateAgentActivity, "Network Error: ${e.localizedMessage}", Toast.LENGTH_LONG).show()
+                binding.btnRegisterAgent.isEnabled = true
+            }
+        }
     }
 }

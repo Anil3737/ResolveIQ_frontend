@@ -3,7 +3,11 @@ package com.simats.resolveiq_frontend
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import com.simats.resolveiq_frontend.api.RetrofitClient
+import com.simats.resolveiq_frontend.data.model.User
 import com.simats.resolveiq_frontend.databinding.ActivityCreateTeamBinding
+import kotlinx.coroutines.launch
 
 data class TeamLead(val id: Int, val name: String)
 
@@ -11,6 +15,7 @@ class CreateTeamActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCreateTeamBinding
     private var selectedTeamLeadId: Int? = null
+    private var teamLeads: List<User> = emptyList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,6 +23,22 @@ class CreateTeamActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setupListeners()
+        fetchTeamLeads()
+    }
+
+    private fun fetchTeamLeads() {
+        lifecycleScope.launch {
+            try {
+                val response = RetrofitClient.getAdminApi(this@CreateTeamActivity).getUsers("TEAM_LEAD")
+                if (response.success && response.data != null) {
+                    teamLeads = response.data
+                } else {
+                    Toast.makeText(this@CreateTeamActivity, "Could not load Team Leads", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                Toast.makeText(this@CreateTeamActivity, "Error loading Team Leads: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun setupListeners() {
@@ -111,22 +132,18 @@ class CreateTeamActivity : AppCompatActivity() {
     }
 
     private fun showTeamLeadPicker() {
-        // Sample data - in real app, fetch from API where role == TEAM_LEAD
-        val teamLeads = listOf(
-            TeamLead(101, "Alex Johnson"),
-            TeamLead(102, "Sarah Williams"),
-            TeamLead(103, "Michael Chen"),
-            TeamLead(104, "Priya Sharma"),
-            TeamLead(105, "Robert Brown")
-        )
-        
-        val names = teamLeads.map { it.name }.toTypedArray()
-        
+        if (teamLeads.isEmpty()) {
+            Toast.makeText(this, "No Team Leads found. Please create a Team Lead first.", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val names = teamLeads.map { it.full_name }.toTypedArray()
+
         val builder = androidx.appcompat.app.AlertDialog.Builder(this)
         builder.setTitle("Select Team Lead")
         builder.setItems(names) { _, which ->
             val selectedLead = teamLeads[which]
-            binding.tvSelectTeamLead.text = selectedLead.name
+            binding.tvSelectTeamLead.text = selectedLead.full_name
             selectedTeamLeadId = selectedLead.id
         }
         builder.show()

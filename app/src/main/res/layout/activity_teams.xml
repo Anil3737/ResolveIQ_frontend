@@ -49,8 +49,7 @@
             android:textColor="@color/white"
             style="@style/Widget.Material3.Button"
             app:backgroundTint="@color/blue_600"
-            app:cornerRadius="12dp"
-            android:elevation="2dp" />
+            app:cornerRadius="12dp" />
 
     </RelativeLayout>
 

@@ -92,6 +92,7 @@
                     app:tint="#9CA3AF" />
 
                 <EditText
+                    android:id="@+id/etSearchHelp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"

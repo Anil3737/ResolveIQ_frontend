@@ -94,9 +94,9 @@ class LoginActivity : AppCompatActivity() {
                     // Save to Preferences
                     userPreferences.saveToken(data.access_token)
                     userPreferences.saveUserId(data.user.id)
-                    userPreferences.saveUserRole(data.user.role)
-                    userPreferences.saveUserName(data.user.full_name)
-                    userPreferences.saveUserEmail(data.user.email)
+                    userPreferences.saveUserRole(data.user.role ?: "employee")
+                    userPreferences.saveUserName(data.user.full_name ?: "User")
+                    userPreferences.saveUserEmail(data.user.email ?: "")
                     userPreferences.saveUserLocation(data.user.location)
                     userPreferences.saveUserPhone(data.user.phone)
                     

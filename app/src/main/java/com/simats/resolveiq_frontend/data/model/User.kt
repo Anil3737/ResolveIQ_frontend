@@ -6,5 +6,6 @@ data class User(
     val email: String,
     val role: String,
     val location: String? = null,
-    val phone: String? = null
+    val phone: String? = null,
+    val department_name: String? = null
 )

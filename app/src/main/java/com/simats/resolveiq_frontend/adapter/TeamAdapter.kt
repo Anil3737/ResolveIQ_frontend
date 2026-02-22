@@ -7,7 +7,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.simats.resolveiq_frontend.R
+import com.simats.resolveiq_frontend.data.model.TeamData
 
+// Keep for backward compatibility
 data class Team(
     val id: Int,
     val name: String,
@@ -21,7 +23,7 @@ data class Team(
     val slaBgColor: Int
 )
 
-class TeamAdapter(private val teams: List<Team>) : RecyclerView.Adapter<TeamAdapter.TeamViewHolder>() {
+class TeamAdapter(private val teams: List<TeamData>) : RecyclerView.Adapter<TeamAdapter.TeamViewHolder>() {
 
     class TeamViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val ivTeamIcon: ImageView = view.findViewById(R.id.ivTeamIcon)
@@ -40,17 +42,21 @@ class TeamAdapter(private val teams: List<Team>) : RecyclerView.Adapter<TeamAdap
     override fun onBindViewHolder(holder: TeamViewHolder, position: Int) {
         val team = teams[position]
         holder.tvTeamName.text = team.name
-        holder.tvTeamCategory.text = team.category
-        holder.tvSlaPercentage.text = team.slaPercentage
-        holder.tvSlaStatus.text = team.slaStatus
-        holder.tvLeadInfo.text = "Lead: ${team.leadName}"
-        
-        holder.ivTeamIcon.setImageResource(team.iconRes)
+        holder.tvTeamCategory.text = team.department.uppercase()
+        holder.tvSlaPercentage.text = team.department
+        holder.tvSlaStatus.text = team.created_at.take(10) // Show date only
+        holder.tvLeadInfo.text = "Lead: ${team.team_lead}"
+
+        // Use a generic team icon for all teams
+        holder.ivTeamIcon.setImageResource(R.drawable.ic_team_group)
         holder.ivTeamIcon.setBackgroundResource(R.drawable.bg_rounded_icon)
-        holder.ivTeamIcon.backgroundTintList = android.content.res.ColorStateList.valueOf(team.iconBgColor)
-        
-        holder.tvSlaPercentage.setTextColor(team.slaColor)
-        holder.tvSlaPercentage.setBackgroundResource(team.slaBgColor)
+        val defaultColor = holder.itemView.context.getColor(R.color.blue_50)
+        holder.ivTeamIcon.backgroundTintList = android.content.res.ColorStateList.valueOf(defaultColor)
+
+        // Style the "department badge"
+        val textDefaultColor = holder.itemView.context.getColor(R.color.primary_blue)
+        holder.tvSlaPercentage.setTextColor(textDefaultColor)
+        holder.tvSlaPercentage.setBackgroundResource(R.drawable.bg_status_open)
     }
 
     override fun getItemCount() = teams.size

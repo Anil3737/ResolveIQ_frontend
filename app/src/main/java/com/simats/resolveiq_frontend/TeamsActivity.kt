@@ -1,15 +1,19 @@
 package com.simats.resolveiq_frontend
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.simats.resolveiq_frontend.adapter.Team
 import com.simats.resolveiq_frontend.adapter.TeamAdapter
+import com.simats.resolveiq_frontend.api.RetrofitClient
 import com.simats.resolveiq_frontend.databinding.ActivityTeamsBinding
+import kotlinx.coroutines.launch
 
 class TeamsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityTeamsBinding
+    private lateinit var teamAdapter: TeamAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -17,30 +21,42 @@ class TeamsActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setupRecyclerView()
-        
+        loadTeamsFromApi()
+
         binding.btnCreateTeam.setOnClickListener {
             val intent = android.content.Intent(this, CreateTeamActivity::class.java)
             startActivity(intent)
         }
     }
 
-    private fun setupRecyclerView() {
-        val dummyTeams = listOf(
-            Team(1, "Network Team", "CONNECTIVITY", "98% SLA", "On Track", "Sarah Chen", 
-                R.drawable.ic_network_node, getColor(R.color.blue_50), getColor(R.color.green_600), R.drawable.bg_status_new),
-            Team(2, "Hardware Team", "INFRASTRUCTURE", "84% SLA", "Average", "Marcus Vane", 
-                R.drawable.ic_wrench, getColor(R.color.purple_50), getColor(R.color.blue_600), R.drawable.bg_admin_menu_selected),
-            Team(3, "Security Team", "COMPLIANCE", "79% SLA", "Action Required", "David Wu", 
-                R.drawable.ic_shield_small, getColor(R.color.orange_50), getColor(R.color.orange_500), R.drawable.bg_status_medium),
-            Team(4, "Software Team", "DEPLOYMENT", "92% SLA", "Excellent", "Elena Rodriguez", 
-                R.drawable.ic_grid, getColor(R.color.green_50), getColor(R.color.green_600), R.drawable.bg_status_new),
-            Team(5, "Support Team", "INCIDENT MGMT", "88% SLA", "Stable", "James Smith", 
-                R.drawable.ic_chat, getColor(R.color.cyan_50), getColor(R.color.blue_600), R.drawable.bg_admin_menu_selected),
-            Team(6, "Database Team", "PERFORMANCE", "95% SLA", "Optimized", "Anna Lee", 
-                R.drawable.ic_bar_chart, getColor(R.color.rose_50), getColor(R.color.green_600), R.drawable.bg_status_new)
-        )
+    override fun onResume() {
+        super.onResume()
+        // Reload teams whenever we return to this screen (e.g., after creating a team)
+        loadTeamsFromApi()
+    }
 
+    private fun setupRecyclerView() {
+        teamAdapter = TeamAdapter(emptyList())
         binding.rvTeams.layoutManager = LinearLayoutManager(this)
-        binding.rvTeams.adapter = TeamAdapter(dummyTeams)
+        binding.rvTeams.adapter = teamAdapter
+    }
+
+    private fun loadTeamsFromApi() {
+        lifecycleScope.launch {
+            try {
+                val response = RetrofitClient.getAdminApi(this@TeamsActivity).getTeams()
+                if (response.success && response.data != null) {
+                    // Replace adapter's data by creating a new adapter
+                    binding.rvTeams.adapter = TeamAdapter(response.data)
+                    if (response.data.isEmpty()) {
+                        Toast.makeText(this@TeamsActivity, "No teams created yet", Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    Toast.makeText(this@TeamsActivity, "Failed to load teams: ${response.message}", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                Toast.makeText(this@TeamsActivity, "Error: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 }

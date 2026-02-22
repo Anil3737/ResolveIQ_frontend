@@ -1,10 +1,16 @@
 package com.simats.resolveiq_frontend
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import com.simats.resolveiq_frontend.api.RetrofitClient
+import com.simats.resolveiq_frontend.data.model.CreateStaffRequest
 import com.simats.resolveiq_frontend.databinding.ActivityCreateTeamLeadBinding
+import kotlinx.coroutines.launch
 
 class CreateTeamLeadActivity : AppCompatActivity() {
 
@@ -122,12 +128,36 @@ class CreateTeamLeadActivity : AppCompatActivity() {
     }
 
     private fun registerTeamLead(name: String, empId: String, department: String, location: String) {
-        // Backend mapping: role = TEAM_LEAD, department_id, full_name, etc.
-        // For now, we show success and redirect
-        
-        Toast.makeText(this, "Team Lead Registered Successfully!", Toast.LENGTH_LONG).show()
-        
-        // Redirect to Admin Users Page (Simulated with finish() and message)
-        finish()
+        val request = CreateStaffRequest(
+            full_name = name,
+            emp_id = empId,
+            department = department,
+            location = location,
+            role = "TEAM_LEAD"
+        )
+
+        // Show loading state if needed
+        binding.btnRegisterTeamLead.isEnabled = false
+
+        lifecycleScope.launch {
+            try {
+                val response = RetrofitClient.getAdminApi(this@CreateTeamLeadActivity).createStaff(request)
+                if (response.success) {
+                    val intent = Intent(this@CreateTeamLeadActivity, StaffSuccessActivity::class.java).apply {
+                        putExtra("name", name)
+                        putExtra("email", response.data?.email ?: "")
+                        putExtra("role", "Team Lead")
+                    }
+                    startActivity(intent)
+                    finish()
+                } else {
+                    Toast.makeText(this@CreateTeamLeadActivity, "Error: ${response.message}", Toast.LENGTH_LONG).show()
+                    binding.btnRegisterTeamLead.isEnabled = true
+                }
+            } catch (e: Exception) {
+                Toast.makeText(this@CreateTeamLeadActivity, "Network Error: ${e.localizedMessage}", Toast.LENGTH_LONG).show()
+                binding.btnRegisterTeamLead.isEnabled = true
+            }
+        }
     }
 }

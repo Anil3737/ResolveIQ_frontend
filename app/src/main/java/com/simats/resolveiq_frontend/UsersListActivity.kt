@@ -4,11 +4,16 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.simats.resolveiq_frontend.adapter.EmployeeAdapter
+import com.simats.resolveiq_frontend.api.RetrofitClient
 import com.simats.resolveiq_frontend.data.model.Employee
 import com.simats.resolveiq_frontend.databinding.ActivityUsersListBinding
+import kotlinx.coroutines.launch
 
 class UsersListActivity : AppCompatActivity() {
 
@@ -23,7 +28,7 @@ class UsersListActivity : AppCompatActivity() {
 
         setupListeners()
         setupRecyclerView()
-        loadDummyData()
+        loadUsersFromApi()
     }
 
     private fun setupListeners() {
@@ -43,8 +48,6 @@ class UsersListActivity : AppCompatActivity() {
     private fun setupRecyclerView() {
         employeeAdapter = EmployeeAdapter(employeeList) { employee ->
             val intent = Intent(this, ProfileInfoActivity::class.java)
-            // Use numeric ID part if possible, or just pass as String
-            // The user asked to pass "employee ID as extra"
             intent.putExtra("employeeId", employee.employeeId)
             startActivity(intent)
         }
@@ -54,17 +57,29 @@ class UsersListActivity : AppCompatActivity() {
         }
     }
 
-    private fun loadDummyData() {
-        employeeList.clear()
-        employeeList.add(Employee("EMP0001", "Alex Johnson", "Senior Developer", "Engineering"))
-        employeeList.add(Employee("EMP0002", "Sarah Smith", "Product Manager", "Products"))
-        employeeList.add(Employee("EMP0003", "Michael Chen", "UI Designer", "Design"))
-        employeeList.add(Employee("EMP0004", "Jessica Brown", "HR Manager", "People"))
-        employeeList.add(Employee("EMP0005", "Daniel Lee", "QA Engineer", "Engineering"))
-        employeeList.add(Employee("EMP0006", "Emily Davis", "Marketing Lead", "Growth"))
-        employeeList.add(Employee("EMP0007", "Robert Wilson", "Security Analyst", "Operations"))
-        employeeList.add(Employee("EMP0008", "Sophia Martinez", "Project Coordinator", "Products"))
-        
-        employeeAdapter.notifyDataSetChanged()
+    private fun loadUsersFromApi() {
+        lifecycleScope.launch {
+            try {
+                val response = RetrofitClient.getAdminApi(this@UsersListActivity).getUsers()
+                if (response.success && response.data != null) {
+                    employeeList.clear()
+                    response.data.forEach { user ->
+                        employeeList.add(
+                            Employee(
+                                employeeId = user.phone ?: "N/A",
+                                fullName = user.full_name,
+                                role = user.role,
+                                department = user.department_name
+                            )
+                        )
+                    }
+                    employeeAdapter.notifyDataSetChanged()
+                } else {
+                    Toast.makeText(this@UsersListActivity, "Failed to load users", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                Toast.makeText(this@UsersListActivity, "Error: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 }
