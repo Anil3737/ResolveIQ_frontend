@@ -8,6 +8,7 @@ import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
+import com.simats.resolveiq_frontend.utils.UserPreferences
 
 class SplashActivity : AppCompatActivity() {
     
@@ -28,9 +29,14 @@ class SplashActivity : AppCompatActivity() {
         
         // Navigate based on token presence after delay
         Handler(Looper.getMainLooper()).postDelayed({
-            val userPreferences = com.simats.resolveiq_frontend.utils.UserPreferences(this)
+            val userPreferences = UserPreferences(this)
             val intent = if (!userPreferences.getToken().isNullOrEmpty()) {
-                Intent(this, EmployeeHomeActivity::class.java)
+                val role = userPreferences.getUserRole() ?: "employee"
+                if (role.equals("admin", ignoreCase = true)) {
+                    Intent(this, AdminHomeActivity::class.java)
+                } else {
+                    Intent(this, EmployeeHomeActivity::class.java)
+                }
             } else {
                 Intent(this, OnboardingActivity::class.java)
             }

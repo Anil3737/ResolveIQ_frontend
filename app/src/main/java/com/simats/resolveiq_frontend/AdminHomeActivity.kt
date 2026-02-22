@@ -54,7 +54,7 @@ class AdminHomeActivity : AppCompatActivity() {
                     true
                 }
                 R.id.nav_admin_users -> {
-                    Toast.makeText(this, "Users", Toast.LENGTH_SHORT).show()
+                    startActivity(Intent(this, UsersListActivity::class.java))
                     true
                 }
                 R.id.nav_admin_settings -> {
@@ -86,6 +86,18 @@ class AdminHomeActivity : AppCompatActivity() {
             startActivity(Intent(this, TeamsActivity::class.java))
         }
 
+        // Employees
+        navView.adminMenuEmployees.setOnClickListener {
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
+            startActivity(Intent(this, UsersListActivity::class.java))
+        }
+
+        // System Activity
+        navView.adminMenuActivity.setOnClickListener {
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
+            startActivity(Intent(this, AdminActivityLogActivity::class.java))
+        }
+
         // Create Staff Dropdown Toggle
         navView.adminMenuCreateStaff.setOnClickListener {
             val isVisible = navView.llSubMenuStaff.visibility == android.view.View.VISIBLE
@@ -106,7 +118,7 @@ class AdminHomeActivity : AppCompatActivity() {
 
         navView.adminMenuCreateAgent.setOnClickListener {
             binding.drawerLayout.closeDrawer(GravityCompat.START)
-            Toast.makeText(this, "Create Agent", Toast.LENGTH_SHORT).show()
+            startActivity(Intent(this, CreateAgentActivity::class.java))
         }
 
         // SLA Policies

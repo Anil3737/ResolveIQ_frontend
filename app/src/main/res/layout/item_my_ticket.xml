@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="16dp"
-    app:cardBackgroundColor="#FFFFFF"
+    app:cardBackgroundColor="?attr/colorSurface"
     app:cardCornerRadius="16dp"
     app:cardElevation="2dp">
 
@@ -27,7 +27,7 @@
                 android:layout_weight="1"
                 android:letterSpacing="0.05"
                 android:text="AG-IT-2024-001245"
-                android:textColor="#94A3B8"
+                android:textColor="?attr/colorOnSurfaceVariant"
                 android:textSize="12sp"
                 android:textStyle="bold" />
 
@@ -52,7 +52,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:text="VPN Connection Issue"
-            android:textColor="#111827"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -68,11 +68,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_button_blue"
-                android:backgroundTint="#F3F4F6"
+                android:backgroundTint="?attr/colorSurfaceVariant"
                 android:paddingHorizontal="16dp"
                 android:paddingVertical="6dp"
                 android:text="Status"
-                android:textColor="#374151"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="12sp"
                 android:textStyle="bold" />
 

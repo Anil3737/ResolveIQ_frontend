@@ -134,4 +134,6 @@
     <string name="risk_score">RISK SCORE</string>
     <string name="critical">Critical</string>
     <string name="total_label">TOTAL</string>
+    <string name="employees">Employees</string>
+    <string name="search_employees_hint">Search employees...</string>
 </resources>

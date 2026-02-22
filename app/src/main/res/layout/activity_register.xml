@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F9FAFB"
+    android:background="?android:colorBackground"
     android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="60dp"
             android:text="@string/create_employee_account"
-            android:textColor="#111827"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="22sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="@string/register_to_access"
-            android:textColor="#6B7280"
+            android:textColor="?attr/colorOnSurfaceVariant"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -47,7 +47,7 @@
             android:layout_marginStart="24dp"
             android:layout_marginTop="32dp"
             android:layout_marginEnd="24dp"
-            app:cardBackgroundColor="#EFF6FF"
+            app:cardBackgroundColor="?attr/colorSecondaryContainer"
             app:cardCornerRadius="8dp"
             app:cardElevation="0dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -70,7 +70,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/employee_registration_only"
-                        android:textColor="#1E40AF"
+                        android:textColor="?attr/colorOnSecondaryContainer"
                         android:textSize="13sp"
                         android:textStyle="bold" />
 
@@ -79,7 +79,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:text="@string/registration_info"
-                        android:textColor="#3B82F6"
+                        android:textColor="?attr/colorOnSecondaryContainer"
                         android:textSize="12sp"
                         android:lineSpacingExtra="2dp" />
 
@@ -97,7 +97,7 @@
             android:layout_marginStart="24dp"
             android:layout_marginTop="24dp"
             android:layout_marginEnd="24dp"
-            app:cardBackgroundColor="#FFFFFF"
+            app:cardBackgroundColor="?attr/colorSurface"
             app:cardCornerRadius="12dp"
             app:cardElevation="2dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -115,7 +115,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/full_name"
-                    android:textColor="#374151"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
@@ -132,7 +132,7 @@
                     android:importantForAutofill="no"
                     android:inputType="textPersonName"
                     android:padding="14dp"
-                    android:textColor="#111827"
+                    android:textColor="?attr/colorOnSurface"
                     android:textColorHint="#9CA3AF"
                     android:textSize="14sp" />
 
@@ -141,7 +141,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/employee_id"
-                    android:textColor="#374151"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
@@ -157,7 +157,7 @@
                     android:hint="@string/employee_id_hint"
                     android:inputType="text"
                     android:padding="14dp"
-                    android:textColor="#111827"
+                    android:textColor="?attr/colorOnSurface"
                     android:textColorHint="#9CA3AF"
                     android:textSize="14sp"
                     android:importantForAutofill="no" />
@@ -167,7 +167,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/company_email"
-                    android:textColor="#374151"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
@@ -183,7 +183,7 @@
                     android:hint="@string/company_email_hint"
                     android:inputType="textEmailAddress"
                     android:padding="14dp"
-                    android:textColor="#111827"
+                    android:textColor="?attr/colorOnSurface"
                     android:textColorHint="#9CA3AF"
                     android:textSize="14sp"
                     android:importantForAutofill="no" />
@@ -193,7 +193,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/password"
-                    android:textColor="#374151"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
@@ -216,7 +216,7 @@
                         android:paddingTop="14dp"
                         android:paddingEnd="44dp"
                         android:paddingBottom="14dp"
-                        android:textColor="#111827"
+                        android:textColor="?attr/colorOnSurface"
                         android:textColorHint="#9CA3AF"
                         android:textSize="14sp"
                         android:importantForAutofill="no" />
@@ -240,7 +240,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     android:text="@string/confirm_password"
-                    android:textColor="#374151"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
@@ -263,7 +263,7 @@
                         android:paddingTop="14dp"
                         android:paddingEnd="44dp"
                         android:paddingBottom="14dp"
-                        android:textColor="#111827"
+                        android:textColor="?attr/colorOnSurface"
                         android:textColorHint="#9CA3AF"
                         android:textSize="14sp"
                         android:importantForAutofill="no" />
@@ -287,7 +287,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     android:text="@string/office_location"
-                    android:textColor="#374151"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
@@ -302,7 +302,7 @@
                     android:hint=""
                     android:inputType="text"
                     android:padding="14dp"
-                    android:textColor="#111827"
+                    android:textColor="?attr/colorOnSurface"
                     android:textColorHint="#9CA3AF"
                     android:textSize="14sp"
                     android:importantForAutofill="no" />
@@ -320,8 +320,9 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="24dp"
             android:text="@string/terms_agreement"
-            android:textColor="#6B7280"
+            android:textColor="?attr/colorOnSurfaceVariant"
             android:textSize="13sp"
+            android:drawablePadding="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/formCard" />
@@ -374,7 +375,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/already_have_account"
-                android:textColor="#6B7280"
+                android:textColor="?attr/colorOnSurfaceVariant"
                 android:textSize="14sp" />
 
             <TextView

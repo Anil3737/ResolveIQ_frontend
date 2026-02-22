@@ -11,6 +11,7 @@ import com.simats.resolveiq_frontend.api.RetrofitClient
 import com.simats.resolveiq_frontend.databinding.ActivityMyTicketsBinding
 import com.simats.resolveiq_frontend.data.model.Ticket
 import com.simats.resolveiq_frontend.repository.TicketRepository
+import com.simats.resolveiq_frontend.utils.UserPreferences
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
@@ -19,6 +20,7 @@ class MyTicketsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMyTicketsBinding
     private lateinit var adapter: MyTicketAdapter
     private lateinit var ticketRepository: TicketRepository
+    private lateinit var userPreferences: UserPreferences
     private var allTickets: List<Ticket> = emptyList()
     private var isShowingActive = true
     private var fetchJob: Job? = null
@@ -36,6 +38,7 @@ class MyTicketsActivity : AppCompatActivity() {
     private fun setupDependencies() {
         val api = RetrofitClient.getTicketApi(this)
         ticketRepository = TicketRepository(api)
+        userPreferences = UserPreferences(this)
     }
 
     private fun setupUI() {
@@ -52,6 +55,11 @@ class MyTicketsActivity : AppCompatActivity() {
         }
         binding.rvMyTickets.adapter = adapter
 
+        binding.btnActiveTab.setOnClickListener {
+            updateTabs(isActive = true)
+            filterTickets(isActive = true)
+        }
+
         binding.btnResolvedTab.setOnClickListener {
             updateTabs(isActive = false)
             filterTickets(isActive = false)
@@ -62,7 +70,13 @@ class MyTicketsActivity : AppCompatActivity() {
         binding.bottomNavigation.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_home -> {
-                    val intent = android.content.Intent(this, EmployeeHomeActivity::class.java)
+                    val role = userPreferences.getUserRole() ?: "employee"
+                    val targetActivity = if (role.equals("admin", ignoreCase = true)) {
+                        AdminHomeActivity::class.java
+                    } else {
+                        EmployeeHomeActivity::class.java
+                    }
+                    val intent = android.content.Intent(this, targetActivity)
                     intent.flags = android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP or android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP
                     startActivity(intent)
                     true

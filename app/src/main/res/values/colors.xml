@@ -44,4 +44,11 @@
     <color name="rose_50">#FFF1F2</color>
     <color name="cyan_600">#0891B2</color>
     <color name="cyan_50">#ECFEFF</color>
+
+    <!-- Dark Mode Colors -->
+    <color name="dark_background">#121212</color>
+    <color name="dark_surface">#1E1E1E</color>
+    <color name="dark_surface_variant">#2C2C2C</color>
+    <color name="on_surface_dark">#E3E3E3</color>
+    <color name="on_background_dark">#F2F2F2</color>
 </resources>

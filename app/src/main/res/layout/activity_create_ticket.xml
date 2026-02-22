@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF">
+    android:background="?android:attr/colorBackground">
 
     <!-- Top Header -->
     <LinearLayout
@@ -30,13 +30,14 @@
             android:contentDescription="Back"
             android:focusable="true"
             android:padding="8dp"
-            android:src="@drawable/ic_arrow_back" />
+            android:src="@drawable/ic_arrow_back"
+            app:tint="?attr/colorOnSurface" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="IT Service Ticket"
-            android:textColor="#111827"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -75,7 +76,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="SELECT ISSUE"
-                android:textColor="#6B7280"
+                android:textColor="?attr/colorOnSurfaceVariant"
                 android:textSize="11sp"
                 android:textStyle="bold"
                 android:letterSpacing="0.05" />
@@ -86,6 +87,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/bg_input_field"
+                android:backgroundTint="?attr/colorSurfaceVariant"
                 android:padding="16dp">
 
                 <TextView
@@ -95,7 +97,7 @@
                     android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
                     android:text="Choose an issue type..."
-                    android:textColor="#9CA3AF"
+                    android:textColor="?attr/colorOnSurfaceVariant"
                     android:textSize="15sp" />
 
                 <ImageView
@@ -103,7 +105,8 @@
                     android:layout_height="20dp"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/ic_dropdown" />
+                    android:src="@drawable/ic_dropdown"
+                    app:tint="?attr/colorOnSurfaceVariant" />
 
             </RelativeLayout>
 
@@ -113,7 +116,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:text="LOCATION"
-                android:textColor="#6B7280"
+                android:textColor="?attr/colorOnSurfaceVariant"
                 android:textSize="11sp"
                 android:textStyle="bold"
                 android:letterSpacing="0.05" />
@@ -123,6 +126,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/bg_input_field"
+                android:backgroundTint="?attr/colorSurfaceVariant"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:paddingHorizontal="16dp"
@@ -140,8 +144,8 @@
                     android:layout_marginStart="12dp"
                     android:background="@android:color/transparent"
                     android:hint="Floor, Wing, or Room Number"
-                    android:textColor="#111827"
-                    android:textColorHint="#9CA3AF"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textColorHint="?attr/colorOnSurfaceVariant"
                     android:textSize="15sp" />
 
             </LinearLayout>
@@ -159,7 +163,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="DESCRIPTION"
-                    android:textColor="#6B7280"
+                    android:textColor="?attr/colorOnSurfaceVariant"
                     android:textSize="11sp"
                     android:textStyle="bold"
                     android:letterSpacing="0.05" />
@@ -186,11 +190,12 @@
                 android:layout_height="160dp"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/bg_input_field"
+                android:backgroundTint="?attr/colorSurfaceVariant"
                 android:gravity="top|start"
                 android:hint="Describe what happened..."
                 android:padding="16dp"
-                android:textColor="#111827"
-                android:textColorHint="#C7CDD9"
+                android:textColor="?attr/colorOnSurface"
+                android:textColorHint="?attr/colorOnSurfaceVariant"
                 android:textSize="15sp" />
 
             <!-- REQUESTED RESOLUTION (HOURS) -->
@@ -199,7 +204,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:text="REQUESTED RESOLUTION (HOURS)"
-                android:textColor="#6B7280"
+                android:textColor="?attr/colorOnSurfaceVariant"
                 android:textSize="11sp"
                 android:textStyle="bold"
                 android:letterSpacing="0.05" />
@@ -209,6 +214,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/bg_input_field"
+                android:backgroundTint="?attr/colorSurfaceVariant"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:paddingHorizontal="16dp"
@@ -226,7 +232,8 @@
                     android:layout_marginStart="12dp"
                     android:background="@android:color/transparent"
                     android:hint="5 hrs"
-                    android:textColor="#111827"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textColorHint="?attr/colorOnSurfaceVariant"
                     android:textSize="15sp" />
 
             </LinearLayout>
@@ -236,7 +243,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="Please specify your preferred time for resolution."
-                android:textColor="#9CA3AF"
+                android:textColor="?attr/colorOnSurfaceVariant"
                 android:textSize="12sp" />
 
             <!-- Submit Button -->

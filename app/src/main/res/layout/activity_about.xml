@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F9FAFB">
+    android:background="?android:attr/colorBackground">
 
     <!-- Header Section -->
     <LinearLayout
@@ -13,7 +13,7 @@
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:padding="16dp"
-        android:background="#FFFFFF"
+        android:background="?attr/colorSurface"
         android:elevation="2dp"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -27,14 +27,14 @@
             android:focusable="true"
             android:padding="8dp"
             android:src="@drawable/ic_arrow_back"
-            app:tint="#111827" />
+            app:tint="?attr/colorOnSurface" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:text="About ResolveIQ"
-            android:textColor="#111827"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -76,7 +76,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="ResolveIQ"
-                android:textColor="#111827"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
@@ -85,7 +85,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="Version 1.0"
-                android:textColor="#6B7280"
+                android:textColor="?attr/colorOnSurfaceVariant"
                 android:textSize="14sp"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="24dp" />
@@ -95,7 +95,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
-                app:cardBackgroundColor="@color/white"
+                app:cardBackgroundColor="?attr/colorSurface"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="1dp">
 
@@ -109,7 +109,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="ResolveIQ is an AI-powered Support Operations Planner designed to improve internal IT helpdesk efficiency through intelligent ticket prioritization and SLA breach risk prediction.\n\nThe platform automates ticket classification, dynamic priority assignment, workload-aware routing, and escalation management to ensure faster response times and improved service reliability."
-                        android:textColor="#374151"
+                        android:textColor="?attr/colorOnSurface"
                         android:textSize="15sp"
                         android:lineSpacingExtra="4dp" />
 
@@ -120,7 +120,7 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardBackgroundColor="@color/white"
+                app:cardBackgroundColor="?attr/colorSurface"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="1dp">
 
@@ -141,13 +141,13 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="App Name"
-                            android:textColor="#6B7280"
+                            android:textColor="?attr/colorOnSurfaceVariant"
                             android:textSize="15sp"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="ResolveIQ"
-                            android:textColor="#111827"
+                            android:textColor="?attr/colorOnSurface"
                             android:textSize="15sp"
                             android:textStyle="bold"/>
                     </LinearLayout>
@@ -155,7 +155,7 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="#F3F4F6"
+                        android:background="?attr/colorSurfaceVariant"
                         android:layout_marginHorizontal="16dp"/>
 
                     <!-- Developer Detail -->
@@ -169,13 +169,13 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Developed by"
-                            android:textColor="#6B7280"
+                            android:textColor="?attr/colorOnSurfaceVariant"
                             android:textSize="15sp"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Jada Chiranjevi Anil"
-                            android:textColor="#111827"
+                            android:textColor="?attr/colorOnSurface"
                             android:textSize="15sp"
                             android:textStyle="bold"/>
                     </LinearLayout>
@@ -183,7 +183,7 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="#F3F4F6"
+                        android:background="?attr/colorSurfaceVariant"
                         android:layout_marginHorizontal="16dp"/>
 
                     <!-- Institution Detail -->
@@ -197,13 +197,13 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Institution"
-                            android:textColor="#6B7280"
+                            android:textColor="?attr/colorOnSurfaceVariant"
                             android:textSize="15sp"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="SIMATS"
-                            android:textColor="#111827"
+                            android:textColor="?attr/colorOnSurface"
                             android:textSize="15sp"
                             android:textStyle="bold"/>
                     </LinearLayout>
@@ -217,7 +217,7 @@
                 android:layout_marginTop="48dp"
                 android:gravity="center"
                 android:text="© 2026 ResolveIQ. All rights reserved."
-                android:textColor="#9CA3AF"
+                android:textColor="?attr/colorOnSurfaceVariant"
                 android:textSize="12sp" />
 
         </LinearLayout>

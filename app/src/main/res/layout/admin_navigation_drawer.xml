@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="?attr/colorSurface"
     android:orientation="vertical">
 
     <!-- Scrollable content area -->
@@ -48,7 +48,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Alex Rivera"
-                        android:textColor="#111827"
+                        android:textColor="?attr/colorOnSurface"
                         android:textSize="20sp"
                         android:textStyle="bold" />
 
@@ -70,7 +70,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#F3F4F6"
+                android:background="?attr/colorOutlineVariant"
                 android:layout_marginBottom="16dp" />
 
             <!-- ═══════════ MENU ITEMS ═══════════ -->
@@ -167,6 +167,66 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:text="Teams"
+                        android:textColor="#4B5563"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+                <!-- Employees -->
+                <LinearLayout
+                    android:id="@+id/adminMenuEmployees"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="14dp">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:contentDescription="Employees"
+                        android:src="@drawable/ic_user"
+                        app:tint="#4B5563" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:text="Employees"
+                        android:textColor="#4B5563"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+                <!-- System Activity -->
+                <LinearLayout
+                    android:id="@+id/adminMenuActivity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="14dp">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:contentDescription="System Activity"
+                        android:src="@drawable/ic_history"
+                        app:tint="#4B5563" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:text="System Activity"
                         android:textColor="#4B5563"
                         android:textSize="16sp" />
 
@@ -298,7 +358,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:text="SLA Policies"
-                        android:textColor="#4B5563"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:textSize="16sp" />
 
                 </LinearLayout>
@@ -413,7 +473,7 @@
                     android:layout_height="wrap_content"
                     app:cardCornerRadius="16dp"
                     app:cardElevation="0dp"
-                    app:cardBackgroundColor="#FFFFFF"
+                    app:cardBackgroundColor="?attr/colorSurface"
                     app:cardMaxElevation="0dp"
                     android:clickable="true"
                     android:focusable="true">
@@ -445,7 +505,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Logout"
-                                android:textColor="#111827"
+                                android:textColor="?attr/colorOnSurface"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
 

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF">
+    android:background="?android:attr/colorBackground">
 
     <!-- Header Section -->
     <LinearLayout
@@ -34,7 +34,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="Help &amp; Support"
-            android:textColor="#111827"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -61,7 +61,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="How can we help?"
-                android:textColor="#111827"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="32sp"
                 android:textStyle="bold" />
 
@@ -70,7 +70,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="Search for help or browse the sections below."
-                android:textColor="#6B7280"
+                android:textColor="?attr/colorOnSurfaceVariant"
                 android:textSize="16sp" />
 
             <!-- Search Bar -->
@@ -79,7 +79,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:background="@drawable/bg_input_field"
-                android:backgroundTint="#F3F4F6"
+                android:backgroundTint="?attr/colorSurfaceVariant"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:paddingHorizontal="16dp"
@@ -97,8 +97,8 @@
                     android:layout_marginStart="12dp"
                     android:background="@android:color/transparent"
                     android:hint="Search topics..."
-                    android:textColor="#111827"
-                    android:textColorHint="#9CA3AF"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textColorHint="?attr/colorOnSurfaceVariant"
                     android:textSize="15sp" />
 
             </LinearLayout>
@@ -109,7 +109,7 @@
                 android:layout_marginTop="32dp"
                 android:letterSpacing="0.05"
                 android:text="FREQUENTLY ASKED QUESTIONS"
-                android:textColor="#6B7280"
+                android:textColor="?attr/colorOnSurfaceVariant"
                 android:textSize="12sp"
                 android:textStyle="bold" />
 
@@ -126,7 +126,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="12dp"
-                    app:cardBackgroundColor="@color/white"
+                    app:cardBackgroundColor="?attr/colorSurface"
                     app:cardCornerRadius="12dp"
                     app:cardElevation="0dp"
                     app:cardMaxElevation="0dp">
@@ -152,7 +152,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:text="How do I reset my account?"
-                                android:textColor="#111827"
+                                android:textColor="?attr/colorOnSurface"
                                 android:textSize="15sp"
                                 android:textStyle="bold" />
 
@@ -172,7 +172,7 @@
                             android:paddingHorizontal="16dp"
                             android:paddingBottom="16dp"
                             android:text="You can reset your account by navigating to Settings > Profile > Reset Account. Please note that this action is irreversible and will delete all your local data."
-                            android:textColor="#6B7280"
+                            android:textColor="?attr/colorOnSurfaceVariant"
                             android:textSize="14sp"
                             android:visibility="gone" />
 
@@ -211,7 +211,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:text="Is my data encrypted?"
-                                android:textColor="#111827"
+                                android:textColor="?attr/colorOnSurface"
                                 android:textSize="15sp"
                                 android:textStyle="bold" />
 
@@ -231,7 +231,7 @@
                             android:paddingHorizontal="16dp"
                             android:paddingBottom="16dp"
                             android:text="Yes, all data handled by ResolveIQ is encrypted using industry-standard AES-256 encryption both in transit and at rest."
-                            android:textColor="#6B7280"
+                            android:textColor="?attr/colorOnSurfaceVariant"
                             android:textSize="14sp"
                             android:visibility="gone" />
 
@@ -270,7 +270,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:text="Where can I find my invoices?"
-                                android:textColor="#111827"
+                                android:textColor="?attr/colorOnSurface"
                                 android:textSize="15sp"
                                 android:textStyle="bold" />
 
@@ -290,7 +290,7 @@
                             android:paddingHorizontal="16dp"
                             android:paddingBottom="16dp"
                             android:text="Invoices are automatically sent to your registered email address every month. You can also view them in the billing section of your account on the web portal."
-                            android:textColor="#6B7280"
+                            android:textColor="?attr/colorOnSurfaceVariant"
                             android:textSize="14sp"
                             android:visibility="gone" />
 
@@ -306,7 +306,7 @@
                 android:layout_marginTop="24dp"
                 android:letterSpacing="0.05"
                 android:text="CONTACT IT SUPPORT"
-                android:textColor="#6B7280"
+                android:textColor="?attr/colorOnSurfaceVariant"
                 android:textSize="12sp"
                 android:textStyle="bold" />
 
@@ -315,7 +315,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                app:cardBackgroundColor="#F0F7FF"
+                app:cardBackgroundColor="?attr/colorSecondaryContainer"
                 app:cardCornerRadius="24dp"
                 app:cardElevation="0dp"
                 app:cardMaxElevation="0dp">
@@ -330,7 +330,7 @@
                     <androidx.cardview.widget.CardView
                         android:layout_width="64dp"
                         android:layout_height="64dp"
-                        app:cardBackgroundColor="#BFDBFE"
+                        app:cardBackgroundColor="?attr/colorTertiaryContainer"
                         app:cardCornerRadius="32dp"
                         app:cardElevation="0dp">
 
@@ -348,7 +348,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="24dp"
                         android:text="Need direct assistance?"
-                        android:textColor="#111827"
+                        android:textColor="?attr/colorOnSecondaryContainer"
                         android:textSize="20sp"
                         android:textStyle="bold" />
 
@@ -358,7 +358,7 @@
                         android:layout_marginTop="8dp"
                         android:gravity="center"
                         android:text="Our support team is available 24/7 to help you with any technical issues or account inquiries."
-                        android:textColor="#6B7280"
+                        android:textColor="?attr/colorOnSecondaryContainer"
                         android:textSize="14sp" />
 
                     <androidx.appcompat.widget.AppCompatButton
@@ -385,7 +385,7 @@
                 android:layout_marginTop="32dp"
                 android:letterSpacing="0.05"
                 android:text="APP INFORMATION"
-                android:textColor="#6B7280"
+                android:textColor="?attr/colorOnSurfaceVariant"
                 android:textSize="12sp"
                 android:textStyle="bold" />
 
@@ -395,7 +395,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="32dp"
-                app:cardBackgroundColor="@color/white"
+                app:cardBackgroundColor="?attr/colorSurface"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="0dp">
 
@@ -417,14 +417,14 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Version"
-                            android:textColor="#6B7280"
+                            android:textColor="?attr/colorOnSurfaceVariant"
                             android:textSize="15sp" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="2.4.1 (Stable)"
-                            android:textColor="#94A3B8"
+                            android:textColor="?attr/colorOnSurfaceVariant"
                             android:textSize="15sp" />
 
                     </LinearLayout>
@@ -432,7 +432,7 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="#E2E8F0"
+                        android:background="?attr/colorSurfaceVariant"
                         android:layout_marginHorizontal="16dp" />
 
                     <LinearLayout
@@ -447,14 +447,14 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Build Number"
-                            android:textColor="#6B7280"
+                            android:textColor="?attr/colorOnSurfaceVariant"
                             android:textSize="15sp" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="9022-AF-01"
-                            android:textColor="#94A3B8"
+                            android:textColor="?attr/colorOnSurfaceVariant"
                             android:textSize="15sp" />
 
                     </LinearLayout>
@@ -462,7 +462,7 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="#E2E8F0"
+                        android:background="?attr/colorSurfaceVariant"
                         android:layout_marginHorizontal="16dp" />
 
                     <LinearLayout
@@ -477,14 +477,14 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="Last Updated"
-                            android:textColor="#6B7280"
+                            android:textColor="?attr/colorOnSurfaceVariant"
                             android:textSize="15sp" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Oct 12, 2023"
-                            android:textColor="#94A3B8"
+                            android:textColor="?attr/colorOnSurfaceVariant"
                             android:textSize="15sp" />
 
                     </LinearLayout>
@@ -514,7 +514,7 @@
                     android:layout_width="1dp"
                     android:layout_height="16dp"
                     android:layout_marginHorizontal="16dp"
-                    android:background="#94A3B8" />
+                    android:background="?attr/colorSurfaceVariant" />
 
                 <TextView
                     android:id="@+id/tvTermsOfService"

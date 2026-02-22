@@ -15,6 +15,7 @@ class UserPreferences(context: Context) {
         private const val KEY_USER_EMAIL = "user_email"
         private const val KEY_USER_LOCATION = "user_location"
         private const val KEY_USER_PHONE = "user_phone"
+        private const val KEY_DARK_MODE = "dark_mode"
     }
 
     fun saveToken(token: String) {
@@ -72,6 +73,14 @@ class UserPreferences(context: Context) {
 
     fun getUserPhone(): String? {
         return prefs.getString(KEY_USER_PHONE, null)
+    }
+
+    fun saveDarkMode(isDark: Boolean) {
+        prefs.edit().putBoolean(KEY_DARK_MODE, isDark).apply()
+    }
+
+    fun isDarkMode(): Boolean {
+        return prefs.getBoolean(KEY_DARK_MODE, false)
     }
 
     fun clear() {

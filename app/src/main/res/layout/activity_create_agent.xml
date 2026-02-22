@@ -18,7 +18,7 @@
             android:layout_height="?attr/actionBarSize"
             app:navigationIcon="@drawable/ic_arrow_back"
             app:navigationIconTint="?attr/colorOnSurface"
-            app:title="Register Team Lead"
+            app:title="Register Support Agent"
             app:titleCentered="true"
             app:titleTextAppearance="@style/TextAppearance.Material3.TitleLarge" />
 
@@ -38,7 +38,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Team Lead Details"
+                android:text="Agent Details"
                 android:textColor="?attr/colorOnSurface"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -47,7 +47,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Fill in the information below to create a new Team Lead account."
+                android:text="Assign a new Support Agent to a department and team lead."
                 android:textColor="?attr/colorOnSurfaceVariant"
                 android:textSize="14sp"
                 android:layout_marginBottom="24dp"/>
@@ -87,7 +87,7 @@
                 app:boxCornerRadiusBottomStart="12dp"
                 app:boxCornerRadiusTopEnd="12dp"
                 app:boxCornerRadiusTopStart="12dp"
-                app:helperText="Format: EMPXXXX (Range: 2000-3000)"
+                app:helperText="Format: EMPXXXX (Range: 1000-2000)"
                 app:startIconDrawable="@drawable/ic_id_card"
                 app:startIconTint="?attr/colorPrimary">
 
@@ -122,6 +122,29 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <!-- Team Lead (Dependent) -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilTeamLead"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:hint="Select Team Lead"
+                app:boxCornerRadiusBottomEnd="12dp"
+                app:boxCornerRadiusBottomStart="12dp"
+                app:boxCornerRadiusTopEnd="12dp"
+                app:boxCornerRadiusTopStart="12dp"
+                app:startIconDrawable="@drawable/ic_profile"
+                app:startIconTint="?attr/colorPrimary">
+
+                <AutoCompleteTextView
+                    android:id="@+id/actTeamLead"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
             <!-- Location -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilLocation"
@@ -146,10 +169,10 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnRegisterTeamLead"
+                android:id="@+id/btnRegisterAgent"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:text="Register Team Lead"
+                android:text="Register Agent"
                 android:textAllCaps="false"
                 android:textSize="16sp"
                 android:textStyle="bold"

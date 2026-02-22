@@ -4,6 +4,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name=".ResolveIQApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -120,11 +121,42 @@
             android:exported="false" />
 
         <activity
+            android:name=".ProfileInformationActivity"
+            android:theme="@style/Theme.Resolveiq_frontend"
+            android:exported="false" />
+            
+        <activity
+            android:name=".UsersListActivity"
+            android:theme="@style/Theme.Resolveiq_frontend"
+            android:exported="false" />
+
+        <activity
+            android:name=".ProfileInfoActivity"
+            android:theme="@style/Theme.Resolveiq_frontend"
+            android:exported="false" />
+
+        <activity
+            android:name=".AdminActivityLogActivity"
+            android:theme="@style/Theme.Resolveiq_frontend"
+            android:exported="false" />
+
+        <activity
+            android:name=".TeamLeadHomeActivity"
+            android:theme="@style/Theme.Resolveiq_frontend"
+            android:exported="false" />
+
+        <activity
             android:name=".AboutActivity"
             android:theme="@style/Theme.Resolveiq_frontend"
             android:exported="false" />
+
         <activity
-            android:name=".ProfileInformationActivity"
+            android:name=".CreateAgentActivity"
+            android:theme="@style/Theme.Resolveiq_frontend"
+            android:exported="false" />
+
+        <activity
+            android:name=".SupportAgentHomeActivity"
             android:theme="@style/Theme.Resolveiq_frontend"
             android:exported="false" />
     </application>

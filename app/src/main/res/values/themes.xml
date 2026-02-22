@@ -9,7 +9,7 @@
         <item name="android:colorBackground">@color/background_light</item>
         
         <!-- Bottom Navigation Indicator Fix -->
-        <item name="colorSecondaryContainer">#FFB6C1</item>
+        <item name="colorSecondaryContainer">#FFFFFF</item>
         <item name="colorOnSecondaryContainer">@color/blue_600</item>
     </style>
 

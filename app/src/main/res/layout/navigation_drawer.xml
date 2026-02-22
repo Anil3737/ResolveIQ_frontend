@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F9FAFB"
+    android:background="?attr/colorSurface"
     android:orientation="vertical"
     android:paddingTop="60dp"
     android:paddingStart="16dp"
@@ -21,6 +22,7 @@
         android:focusable="true"
         android:padding="4dp"
         android:src="@drawable/ic_arrow_back"
+        app:tint="?attr/colorOnSurface"
         android:rotation="180" />
 
     <!-- Menu Items -->
@@ -83,7 +85,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:text="Create Ticket"
-                android:textColor="#4B5563"
+                android:textColor="?attr/colorOnSurfaceVariant"
                 android:textSize="16sp" />
 
         </LinearLayout>
@@ -112,7 +114,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:text="My Tickets"
-                android:textColor="#4B5563"
+                android:textColor="?attr/colorOnSurfaceVariant"
                 android:textSize="16sp" />
 
         </LinearLayout>
@@ -141,7 +143,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:text="Settings"
-                android:textColor="#4B5563"
+                android:textColor="?attr/colorOnSurfaceVariant"
                 android:textSize="16sp" />
 
         </LinearLayout>
@@ -165,8 +167,7 @@
                 android:contentDescription="Logout"
                 android:src="@drawable/ic_arrow_back" 
                 android:rotation="180"
-                app:tint="#EF4444" 
-                xmlns:app="http://schemas.android.com/apk/res-auto"/> 
+                app:tint="#EF4444" /> 
             <!-- Using existing icon with tint for now, or could use a distinct logout icon if available. 
                  Since I don't know if ic_logout exists, I'll reuse ic_arrow_back rotated or just a generic one.
                  Actually, reusing ic_settings or similar might be safer if I can't use tint properly without vector.

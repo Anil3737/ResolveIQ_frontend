@@ -5,9 +5,12 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.simats.resolveiq_frontend.databinding.ActivityCreateTeamBinding
 
+data class TeamLead(val id: Int, val name: String)
+
 class CreateTeamActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCreateTeamBinding
+    private var selectedTeamLeadId: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,9 +29,14 @@ class CreateTeamActivity : AppCompatActivity() {
             showIssueTypePicker()
         }
 
+        binding.rlSelectTeamLead.setOnClickListener {
+            showTeamLeadPicker()
+        }
+
         binding.btnSubmitCreateTeam.setOnClickListener {
             val teamName = binding.etTeamName.text.toString().trim()
             val specialty = binding.tvSelectSpecialty.text.toString()
+            val description = binding.etTeamDescription.text.toString().trim()
             
             if (teamName.isEmpty()) {
                 Toast.makeText(this, "Please enter team name", Toast.LENGTH_SHORT).show()
@@ -39,19 +47,87 @@ class CreateTeamActivity : AppCompatActivity() {
                 Toast.makeText(this, "Please select an issue type", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
+
+            if (selectedTeamLeadId == null) {
+                Toast.makeText(this, "Please select a team lead", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val departmentId = getDepartmentId(specialty)
             
-            // Backend part will be done later as per request
-            Toast.makeText(this, "Team '$teamName' Created Successfully!", Toast.LENGTH_LONG).show()
+            val message = """
+                Team Created!
+                Name: $teamName
+                Specialty: $specialty (Dept ID: $departmentId)
+                Description: $description
+                Lead ID: $selectedTeamLeadId
+            """.trimIndent()
+
+            // Backend part will be done later
+            Toast.makeText(this, message, Toast.LENGTH_LONG).show()
             finish()
         }
     }
 
+    private fun getDepartmentId(specialty: String): Int {
+        return when (specialty) {
+            "Network Issue" -> 1
+            "Hardware Failure" -> 2
+            "Software Installation" -> 3
+            "Application Downtime / Application Issues" -> 4
+            else -> 5 // Other
+        }
+    }
+
     private fun showIssueTypePicker() {
-        val specialties = arrayOf("Network Support", "Infrastructure", "Security", "Hardware", "Database Management")
+        val specialties = arrayOf(
+            "Network Issue",
+            "Hardware Failure",
+            "Software Installation",
+            "Application Downtime / Application Issues",
+            "Other"
+        )
+        
+        val descriptions = mapOf(
+            "Network Issue" to "Handles LAN/WiFi outages, VPN connectivity problems, internet downtime, firewall access, and internal network disruptions. Ensures stable, secure, and high-availability network infrastructure across all office locations.",
+            "Hardware Failure" to "Manages laptop/desktop malfunctions, printer issues, peripheral failures, hardware diagnostics, and device replacements. Responsible for asset tracking, warranty coordination, and preventive hardware maintenance.",
+            "Software Installation" to "Processes software installation requests, license activation, version upgrades, patch deployment, and tool configuration. Ensures compliance with organizational security policies and software standards.",
+            "Application Downtime / Application Issues" to "Handles production outages, portal errors (500/503), performance degradation, access issues, and application-level bugs. Coordinates with server/database teams to restore services within SLA timelines.",
+            "Other" to "Handles miscellaneous and cross-functional IT issues not classified under primary categories. Includes email configuration issues, account access requests, minor configuration problems, general system assistance, and user guidance."
+        )
+
         val builder = androidx.appcompat.app.AlertDialog.Builder(this)
         builder.setTitle("Select Specialty")
         builder.setItems(specialties) { _, which ->
-            binding.tvSelectSpecialty.text = specialties[which]
+            val selected = specialties[which]
+            binding.tvSelectSpecialty.text = selected
+            
+            // Auto-populate description and move cursor to end
+            val defaultDesc = descriptions[selected] ?: ""
+            binding.etTeamDescription.setText(defaultDesc)
+            binding.etTeamDescription.setSelection(defaultDesc.length)
+        }
+        builder.show()
+    }
+
+    private fun showTeamLeadPicker() {
+        // Sample data - in real app, fetch from API where role == TEAM_LEAD
+        val teamLeads = listOf(
+            TeamLead(101, "Alex Johnson"),
+            TeamLead(102, "Sarah Williams"),
+            TeamLead(103, "Michael Chen"),
+            TeamLead(104, "Priya Sharma"),
+            TeamLead(105, "Robert Brown")
+        )
+        
+        val names = teamLeads.map { it.name }.toTypedArray()
+        
+        val builder = androidx.appcompat.app.AlertDialog.Builder(this)
+        builder.setTitle("Select Team Lead")
+        builder.setItems(names) { _, which ->
+            val selectedLead = teamLeads[which]
+            binding.tvSelectTeamLead.text = selectedLead.name
+            selectedTeamLeadId = selectedLead.id
         }
         builder.show()
     }

@@ -11,14 +11,14 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#F9FAFB">
+        android:background="?android:attr/colorBackground">
 
         <!-- ═══════════════════════════════════ TOP BAR ═══════════════════════════════════ -->
         <RelativeLayout
             android:id="@+id/topBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#FFFFFF"
+            android:background="?attr/colorSurface"
             android:elevation="2dp"
             android:paddingHorizontal="16dp"
             android:paddingVertical="14dp"
@@ -43,7 +43,7 @@
                 android:layout_marginStart="14dp"
                 android:layout_toEndOf="@id/ivAdminMenu"
                 android:text="@string/admin_core"
-                android:textColor="#111827"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -117,7 +117,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/total_tickets"
-                            android:textColor="#6B7280"
+                            android:textColor="?attr/colorOnSurfaceVariant"
                             android:textSize="11sp"
                             android:textStyle="bold" />
 
@@ -133,7 +133,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="1,284"
-                                android:textColor="#111827"
+                                android:textColor="?attr/colorOnSurface"
                                 android:textSize="32sp"
                                 android:textStyle="bold" />
 
@@ -179,7 +179,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentStart="true"
                                 android:text="42"
-                                android:textColor="#111827"
+                                android:textColor="?attr/colorOnSurface"
                                 android:textSize="32sp"
                                 android:textStyle="bold" />
 
@@ -219,7 +219,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/sla_breached"
-                            android:textColor="#6B7280"
+                            android:textColor="?attr/colorOnSurfaceVariant"
                             android:textSize="11sp"
                             android:textStyle="bold" />
 
@@ -281,7 +281,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentStart="true"
                                 android:text="08"
-                                android:textColor="#111827"
+                                android:textColor="?attr/colorOnSurface"
                                 android:textSize="32sp"
                                 android:textStyle="bold" />
 
@@ -319,7 +319,7 @@
                             android:layout_alignParentStart="true"
                             android:layout_centerVertical="true"
                             android:text="@string/risk_distribution"
-                            android:textColor="#111827"
+                            android:textColor="?attr/colorOnSurface"
                             android:textSize="16sp"
                             android:textStyle="bold" />
 
@@ -332,7 +332,7 @@
                             android:paddingHorizontal="12dp"
                             android:paddingVertical="4dp"
                             android:text="@string/real_time"
-                            android:textColor="#6B7280"
+                            android:textColor="?attr/colorOnSurfaceVariant"
                             android:textSize="11sp" />
 
                     </RelativeLayout>
@@ -368,7 +368,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="1.2k"
-                                    android:textColor="#111827"
+                                    android:textColor="?attr/colorOnSurface"
                                     android:textSize="22sp"
                                     android:textStyle="bold" />
 
@@ -409,7 +409,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="10dp"
                                     android:text="Critical (15%)"
-                                    android:textColor="#374151"
+                                    android:textColor="?attr/colorOnSurface"
                                     android:textSize="13sp" />
 
                             </LinearLayout>
@@ -433,7 +433,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="10dp"
                                     android:text="High (30%)"
-                                    android:textColor="#374151"
+                                    android:textColor="?attr/colorOnSurface"
                                     android:textSize="13sp" />
 
                             </LinearLayout>
@@ -457,7 +457,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="10dp"
                                     android:text="Medium (30%)"
-                                    android:textColor="#374151"
+                                    android:textColor="?attr/colorOnSurface"
                                     android:textSize="13sp" />
 
                             </LinearLayout>
@@ -481,7 +481,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="10dp"
                                     android:text="Low (25%)"
-                                    android:textColor="#374151"
+                                    android:textColor="?attr/colorOnSurface"
                                     android:textSize="13sp" />
 
                             </LinearLayout>
@@ -506,7 +506,7 @@
                         android:layout_alignParentStart="true"
                         android:layout_centerVertical="true"
                         android:text="@string/top_risky_tickets"
-                        android:textColor="#111827"
+                        android:textColor="?attr/colorOnSurface"
                         android:textSize="17sp"
                         android:textStyle="bold" />
 
@@ -550,7 +550,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="#AG-9901"
-                                android:textColor="#111827"
+                                android:textColor="?attr/colorOnSurface"
                                 android:textSize="15sp"
                                 android:textStyle="bold" />
 
@@ -559,7 +559,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
                                 android:text="Network Interface Failure"
-                                android:textColor="#6B7280"
+                                android:textColor="?attr/colorOnSurfaceVariant"
                                 android:textSize="13sp" />
 
                         </LinearLayout>
@@ -584,7 +584,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_marginTop="14dp"
-                        android:background="#F3F4F6" />
+                        android:background="?attr/colorOutlineVariant" />
 
                     <!-- Bottom row: SLA Timer | Priority | Risk Score -->
                     <LinearLayout
@@ -605,16 +605,17 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/sla_timer"
-                                android:textColor="#9CA3AF"
+                                android:textColor="?attr/colorOnSurfaceVariant"
                                 android:textSize="10sp"
                                 android:textStyle="bold" />
 
                             <TextView
+                                android:id="@+id/tvSlaTimer"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
                                 android:text="14m 20s"
-                                android:textColor="#111827"
+                                android:textColor="?attr/colorOnSurface"
                                 android:textSize="15sp"
                                 android:textStyle="bold" />
 
@@ -631,16 +632,17 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/priority"
-                                android:textColor="#9CA3AF"
+                                android:textColor="?attr/colorOnSurfaceVariant"
                                 android:textSize="10sp"
                                 android:textStyle="bold" />
 
                             <TextView
+                                android:id="@+id/tvPriority"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
                                 android:text="P1"
-                                android:textColor="#111827"
+                                android:textColor="?attr/colorOnSurface"
                                 android:textSize="15sp"
                                 android:textStyle="bold" />
 
@@ -658,7 +660,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/risk_score"
-                                android:textColor="#9CA3AF"
+                                android:textColor="?attr/colorOnSurfaceVariant"
                                 android:textSize="10sp"
                                 android:textStyle="bold" />
 
@@ -686,8 +688,8 @@
             android:id="@+id/adminBottomNavigation"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="#FFFFFF"
-            app:backgroundTint="#FFFFFF"
+            android:background="?attr/colorSurface"
+            app:backgroundTint="?attr/colorSurface"
             android:elevation="8dp"
             app:itemRippleColor="@android:color/transparent"
             app:itemIconTint="@color/bottom_nav_color"
