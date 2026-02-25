@@ -106,6 +106,11 @@
             android:exported="false" />
 
         <activity
+            android:name=".AdminTicketDetailActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Resolveiq_frontend" />
+
+        <activity
             android:name=".TicketDetailsActivity"
             android:theme="@style/Theme.Resolveiq_frontend"
             android:exported="false" />
@@ -161,7 +166,27 @@
             android:exported="false" />
 
         <activity
+            android:name=".AgentProfileInfoActivity"
+            android:theme="@style/Theme.Resolveiq_frontend"
+            android:exported="false" />
+
+        <activity
+            android:name=".TeamLeadProfileInfoActivity"
+            android:theme="@style/Theme.Resolveiq_frontend"
+            android:exported="false" />
+
+        <activity
+            android:name=".TeamDetailsActivity"
+            android:theme="@style/Theme.Resolveiq_frontend"
+            android:exported="false" />
+
+        <activity
             android:name=".StaffSuccessActivity"
+            android:theme="@style/Theme.Resolveiq_frontend"
+            android:exported="false" />
+
+        <activity
+            android:name=".TeamMembersActivity"
             android:theme="@style/Theme.Resolveiq_frontend"
             android:exported="false" />
     </application>

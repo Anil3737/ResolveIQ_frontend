@@ -22,7 +22,7 @@ class MyTicketAdapter(
     override fun onBindViewHolder(holder: TicketViewHolder, position: Int) {
         val ticket = tickets[position]
         holder.binding.tvTicketTitle.text = ticket.title
-        holder.binding.tvTicketId.text = "AG-IT-2024-${String.format("%06d", ticket.id)}"
+        holder.binding.tvTicketId.text = ticket.ticket_number ?: "IQ-IT-2026-${String.format("%06d", ticket.id)}"
         
         holder.binding.tvStatusBadge.text = ticket.status.uppercase()
         
@@ -40,15 +40,24 @@ class MyTicketAdapter(
                 holder.binding.tvStatusBadge.setBackgroundResource(R.drawable.bg_status_medium)
                 holder.binding.tvStatusBadge.setTextColor(holder.itemView.context.getColor(R.color.orange_500))
             }
-            "resolved", "closed" -> {
+            "resolved", "closed", "escalated" -> {
                 holder.binding.tvStatusBadge.setBackgroundResource(R.drawable.bg_status_new)
                 holder.binding.tvStatusBadge.setTextColor(holder.itemView.context.getColor(R.color.gray_500))
             }
         }
 
+        // Show risk score if available (only for admin/agent views)
+        if (ticket.breach_risk != null) {
+            holder.binding.tvRiskScore.visibility = android.view.View.VISIBLE
+            holder.binding.tvRiskScore.text = "Risk: ${ticket.breach_risk}%"
+        } else {
+            holder.binding.tvRiskScore.visibility = android.view.View.GONE
+        }
+
         holder.binding.btnStatus.setOnClickListener {
             val intent = android.content.Intent(holder.itemView.context, com.simats.resolveiq_frontend.TicketProgressActivity::class.java).apply {
                 putExtra("ticket_id", ticket.id)
+                putExtra("ticket_number", ticket.ticket_number)
                 putExtra("ticket_title", ticket.title)
                 putExtra("ticket_description", ticket.description)
                 putExtra("ticket_status", ticket.status)

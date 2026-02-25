@@ -29,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="TICKET DETAILS"
+            android:text="TICKET PROGRESS"
             android:textColor="#111827"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -91,6 +91,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
+                            android:ellipsize="end"
+                            android:maxLines="2"
                             android:text="Description"
                             android:textColor="#4B5563"
                             android:textSize="14sp" />
@@ -115,40 +117,12 @@
 
             </androidx.cardview.widget.CardView>
 
-            <!-- AI Section -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:background="@drawable/bg_input_field"
-                android:backgroundTint="#EEF2FF"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="12dp">
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/ic_check_green"
-                    app:tint="#4F46E5" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:text="AI PROCESSED &amp; VERIFIED"
-                    android:textColor="#4338CA"
-                    android:textSize="12sp"
-                    android:textStyle="bold" />
-
-            </LinearLayout>
-
             <!-- Timeline Section -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:text="Ticket Progress"
+                android:layout_marginTop="32dp"
+                android:text="Milestones"
                 android:textColor="#111827"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -156,131 +130,72 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="24dp"
                 android:orientation="vertical">
 
-                <!-- Step 1 -->
+                <!-- Step 1: Created -->
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
-
-                    <View
-                        android:id="@+id/dot1"
-                        android:layout_width="12dp"
-                        android:layout_height="12dp"
-                        android:layout_marginTop="4dp"
-                        android:background="@drawable/circle_filled"
-                        android:backgroundTint="#10B981" />
-
-                    <View
-                        android:layout_width="2dp"
-                        android:layout_height="40dp"
-                        android:layout_below="@id/dot1"
-                        android:layout_centerHorizontal="false"
-                        android:layout_marginStart="5dp"
-                        android:background="#10B981" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="24dp"
-                        android:text="Ticket Created"
-                        android:textColor="#111827"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-
+                    <View android:id="@+id/dot1" android:layout_width="12dp" android:layout_height="12dp" android:layout_marginTop="4dp" android:background="@drawable/circle_filled" android:backgroundTint="#10B981" />
+                    <View android:id="@+id/line1" android:layout_width="2dp" android:layout_height="40dp" android:layout_below="@id/dot1" android:layout_marginStart="5dp" android:background="#E5E7EB" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="32dp" android:text="Ticket Created" android:textColor="#111827" android:textSize="14sp" android:textStyle="bold" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="32dp" android:layout_marginTop="18dp" android:text="Initial submission by employee" android:textColor="#6B7280" android:textSize="12sp" />
                 </RelativeLayout>
 
-                <!-- Step 2 -->
+                <!-- Step 2: Approved -->
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="40dp">
-
-                    <View
-                        android:id="@+id/dot2"
-                        android:layout_width="12dp"
-                        android:layout_height="12dp"
-                        android:layout_marginTop="4dp"
-                        android:background="@drawable/circle_filled"
-                        android:backgroundTint="#10B981" />
-
-                    <View
-                        android:layout_width="2dp"
-                        android:layout_height="40dp"
-                        android:layout_below="@id/dot2"
-                        android:layout_centerHorizontal="false"
-                        android:layout_marginStart="5dp"
-                        android:background="#10B981" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="24dp"
-                        android:text="Approved By Admin"
-                        android:textColor="#111827"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-
+                    android:layout_marginTop="32dp">
+                    <View android:id="@+id/dot2" android:layout_width="12dp" android:layout_height="12dp" android:layout_marginTop="4dp" android:background="@drawable/circle_filled" android:backgroundTint="#D1D5DB" />
+                    <View android:id="@+id/line2" android:layout_width="2dp" android:layout_height="40dp" android:layout_below="@id/dot2" android:layout_marginStart="5dp" android:background="#E5E7EB" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="32dp" android:text="Approved" android:textColor="#111827" android:textSize="14sp" android:textStyle="bold" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="32dp" android:layout_marginTop="18dp" android:text="Validated by Team Lead" android:textColor="#6B7280" android:textSize="12sp" />
                 </RelativeLayout>
 
-                <!-- Step 3 -->
+                <!-- Step 3: Assigned -->
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="40dp">
-
-                    <View
-                        android:id="@+id/dot3"
-                        android:layout_width="12dp"
-                        android:layout_height="12dp"
-                        android:layout_marginTop="4dp"
-                        android:background="@drawable/circle_filled"
-                        android:backgroundTint="#10B981" />
-
-                    <View
-                        android:layout_width="2dp"
-                        android:layout_height="40dp"
-                        android:layout_below="@id/dot3"
-                        android:layout_centerHorizontal="false"
-                        android:layout_marginStart="5dp"
-                        android:background="#E5E7EB" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="24dp"
-                        android:text="Assigned To Team"
-                        android:textColor="#111827"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-
+                    android:layout_marginTop="32dp">
+                    <View android:id="@+id/dot3" android:layout_width="12dp" android:layout_height="12dp" android:layout_marginTop="4dp" android:background="@drawable/circle_filled" android:backgroundTint="#D1D5DB" />
+                    <View android:id="@+id/line3" android:layout_width="2dp" android:layout_height="40dp" android:layout_below="@id/dot3" android:layout_marginStart="5dp" android:background="#E5E7EB" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="32dp" android:text="Agent Assigned" android:textColor="#111827" android:textSize="14sp" android:textStyle="bold" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="32dp" android:layout_marginTop="18dp" android:text="Assigned to Support Agent" android:textColor="#6B7280" android:textSize="12sp" />
                 </RelativeLayout>
 
-                <!-- Step 4 -->
+                <!-- Step 4: Accepted -->
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="40dp"
-                    android:paddingBottom="20dp">
+                    android:layout_marginTop="32dp">
+                    <View android:id="@+id/dot4" android:layout_width="12dp" android:layout_height="12dp" android:layout_marginTop="4dp" android:background="@drawable/circle_filled" android:backgroundTint="#D1D5DB" />
+                    <View android:id="@+id/line4" android:layout_width="2dp" android:layout_height="40dp" android:layout_below="@id/dot4" android:layout_marginStart="5dp" android:background="#E5E7EB" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="32dp" android:text="Accepted" android:textColor="#111827" android:textSize="14sp" android:textStyle="bold" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="32dp" android:layout_marginTop="18dp" android:text="Agent started working" android:textColor="#6B7280" android:textSize="12sp" />
+                </RelativeLayout>
 
-                    <View
-                        android:id="@+id/dot4"
-                        android:layout_width="12dp"
-                        android:layout_height="12dp"
-                        android:layout_marginTop="4dp"
-                        android:background="@drawable/circle_filled"
-                        android:backgroundTint="#D1D5DB" />
+                <!-- Step 5: Resolved -->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp">
+                    <View android:id="@+id/dot5" android:layout_width="12dp" android:layout_height="12dp" android:layout_marginTop="4dp" android:background="@drawable/circle_filled" android:backgroundTint="#D1D5DB" />
+                    <View android:id="@+id/line5" android:layout_width="2dp" android:layout_height="40dp" android:layout_below="@id/dot5" android:layout_marginStart="5dp" android:background="#E5E7EB" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="32dp" android:text="Resolved" android:textColor="#111827" android:textSize="14sp" android:textStyle="bold" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="32dp" android:layout_marginTop="18dp" android:text="Issue fixed by Agent" android:textColor="#6B7280" android:textSize="12sp" />
+                </RelativeLayout>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="24dp"
-                        android:text="Resolved Issue"
-                        android:textColor="#9CA3AF"
-                        android:textSize="14sp"
-                        android:textStyle="normal" />
-
+                <!-- Step 6: Closed -->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:paddingBottom="40dp">
+                    <View android:id="@+id/dot6" android:layout_width="12dp" android:layout_height="12dp" android:layout_marginTop="4dp" android:background="@drawable/circle_filled" android:backgroundTint="#D1D5DB" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="32dp" android:text="Closed" android:textColor="#111827" android:textSize="14sp" android:textStyle="bold" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="32dp" android:layout_marginTop="18dp" android:text="Final completion" android:textColor="#6B7280" android:textSize="12sp" />
                 </RelativeLayout>
 
             </LinearLayout>

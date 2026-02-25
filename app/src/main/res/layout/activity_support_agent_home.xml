@@ -122,9 +122,10 @@
                     </LinearLayout>
 
                     <TextView
+                        android:id="@+id/tvGreetingAgent"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Good morning, Jane"
+                        android:text="Good morning, Agent"
                         android:textColor="@color/white"
                         android:textSize="24sp"
                         android:textStyle="bold"
@@ -769,11 +770,11 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- Navigation Drawer -->
-    <com.google.android.material.navigation.NavigationView
+    <include
         android:id="@+id/navView"
-        android:layout_width="wrap_content"
+        layout="@layout/agent_navigation_drawer"
+        android:layout_width="300dp"
         android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:fitsSystemWindows="true" />
+        android:layout_gravity="start" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

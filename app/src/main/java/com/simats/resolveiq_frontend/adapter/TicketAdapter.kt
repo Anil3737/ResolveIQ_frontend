@@ -16,7 +16,7 @@ class TicketAdapter(
         fun bind(ticket: Ticket) {
             binding.tvTicketTitle.text = ticket.title
             binding.tvTicketDescription.text = ticket.description
-            binding.tvTicketId.text = "TKT-${ticket.id}"
+            binding.tvTicketId.text = ticket.ticket_number ?: "IQ-IT-2026-${String.format("%06d", ticket.id)}"
             
             // Status styling
             binding.tvTicketStatus.text = ticket.status.replace("_", " ")

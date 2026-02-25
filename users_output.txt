@@ -1,0 +1,11 @@
+--- USER LIST ---
+ID: 1 | Email: admin@resolveiq.com | Role: ADMIN | Name: Admin User
+ID: 2 | Email: anil@resolveiq.com | Role: TEAM_LEAD | Name: Anil
+ID: 3 | Email: sandeep@resolveiq.com | Role: EMPLOYEE | Name: sandeep
+ID: 4 | Email: chiru@resolveiq.com | Role: EMPLOYEE | Name: Chiru
+ID: 8 | Email: test_tl_m2f08@example.com | Role: TEAM_LEAD | Name: Test Team Lead
+ID: 9 | Email: test_tl_7a3t5@example.com | Role: TEAM_LEAD | Name: Test Team Lead
+ID: 10 | Email: ram@resolveiq.com | Role: TEAM_LEAD | Name: Ram
+ID: 11 | Email: mahindra@resolveiq.com | Role: TEAM_LEAD | Name: mahindra
+ID: 12 | Email: rohini@resolveiq.com | Role: EMPLOYEE | Name: Rohini
+--- END ---

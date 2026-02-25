@@ -31,12 +31,14 @@ class SplashActivity : AppCompatActivity() {
         Handler(Looper.getMainLooper()).postDelayed({
             val userPreferences = UserPreferences(this)
             val intent = if (!userPreferences.getToken().isNullOrEmpty()) {
-                val role = userPreferences.getUserRole() ?: "employee"
-                if (role.equals("admin", ignoreCase = true)) {
-                    Intent(this, AdminHomeActivity::class.java)
-                } else {
-                    Intent(this, EmployeeHomeActivity::class.java)
+                val role = userPreferences.getUserRole()?.uppercase() ?: "EMPLOYEE"
+                val targetActivity = when (role) {
+                    "ADMIN" -> AdminHomeActivity::class.java
+                    "TEAM_LEAD" -> TeamLeadHomeActivity::class.java
+                    "AGENT" -> SupportAgentHomeActivity::class.java
+                    else -> EmployeeHomeActivity::class.java
                 }
+                Intent(this, targetActivity)
             } else {
                 Intent(this, OnboardingActivity::class.java)
             }

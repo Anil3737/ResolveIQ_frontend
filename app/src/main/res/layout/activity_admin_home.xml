@@ -78,15 +78,20 @@
         </RelativeLayout>
 
         <!-- ═══════════════════════════════════ SCROLLABLE CONTENT ═══════════════════════════════════ -->
-        <ScrollView
-            android:id="@+id/scrollContent"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefreshLayout"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:fillViewport="true"
             app:layout_constraintBottom_toTopOf="@id/adminBottomNavigation"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/topBar">
+
+            <ScrollView
+                android:id="@+id/scrollContent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fillViewport="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -95,6 +100,17 @@
                 android:paddingHorizontal="20dp"
                 android:paddingTop="20dp"
                 android:paddingBottom="24dp">
+
+                <!-- Welcome Message -->
+                <TextView
+                    android:id="@+id/tvWelcomeAdmin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Welcome back, Admin!"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="16dp"/>
 
                 <!-- ════════ STATS ROW 1: Total Tickets | High Risk ════════ -->
                 <LinearLayout
@@ -105,13 +121,16 @@
 
                     <!-- Total Tickets Card -->
                     <LinearLayout
+                        android:id="@+id/llTotalTicketsCard"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
                         android:layout_weight="1"
                         android:background="@drawable/bg_card_rounded"
                         android:orientation="vertical"
-                        android:padding="16dp">
+                        android:padding="16dp"
+                        android:clickable="true"
+                        android:focusable="true">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -152,13 +171,16 @@
 
                     <!-- High Risk Card (red border) -->
                     <LinearLayout
+                        android:id="@+id/llHighRiskCard"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:layout_weight="1"
                         android:background="@drawable/bg_card_high_risk"
                         android:orientation="vertical"
-                        android:padding="16dp">
+                        android:padding="16dp"
+                        android:clickable="true"
+                        android:focusable="true">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -207,13 +229,16 @@
 
                     <!-- SLA Breached Card -->
                     <LinearLayout
+                        android:id="@+id/llSlaBreachedCard"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
                         android:layout_weight="1"
                         android:background="@drawable/bg_card_rounded"
                         android:orientation="vertical"
-                        android:padding="16dp">
+                        android:padding="16dp"
+                        android:clickable="true"
+                        android:focusable="true">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -254,13 +279,16 @@
 
                     <!-- Escalated Card -->
                     <LinearLayout
+                        android:id="@+id/llEscalatedCard"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:layout_weight="1"
                         android:background="@drawable/bg_card_rounded"
                         android:orientation="vertical"
-                        android:padding="16dp">
+                        android:padding="16dp"
+                        android:clickable="true"
+                        android:focusable="true">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -365,6 +393,7 @@
                                 android:orientation="vertical">
 
                                 <TextView
+                                    android:id="@+id/tvDonutTotal"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="1.2k"
@@ -405,6 +434,7 @@
                                     android:backgroundTint="#EF4444" />
 
                                 <TextView
+                                    android:id="@+id/tvCriticalLegend"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="10dp"
@@ -429,6 +459,7 @@
                                     android:backgroundTint="#F97316" />
 
                                 <TextView
+                                    android:id="@+id/tvHighLegend"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="10dp"
@@ -453,6 +484,7 @@
                                     android:backgroundTint="#F59E0B" />
 
                                 <TextView
+                                    android:id="@+id/tvMediumLegend"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="10dp"
@@ -477,6 +509,7 @@
                                     android:backgroundTint="#3B82F6" />
 
                                 <TextView
+                                    android:id="@+id/tvLowLegend"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="10dp"
@@ -525,163 +558,20 @@
 
                 </RelativeLayout>
 
-                <!-- Risky Ticket Card #1 -->
-                <LinearLayout
+                <!-- Dynamic Risky Tickets List -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvRiskyTickets"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="14dp"
-                    android:background="@drawable/bg_ticket_card"
-                    android:orientation="vertical"
-                    android:padding="16dp">
+                    android:nestedScrollingEnabled="false"
+                    tools:listitem="@layout/item_my_ticket" />
 
-                    <!-- Top row: Ticket ID + Status -->
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentStart="true"
-                            android:layout_centerVertical="true"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="#AG-9901"
-                                android:textColor="?attr/colorOnSurface"
-                                android:textSize="15sp"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="2dp"
-                                android:text="Network Interface Failure"
-                                android:textColor="?attr/colorOnSurfaceVariant"
-                                android:textSize="13sp" />
-
-                        </LinearLayout>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:layout_centerVertical="true"
-                            android:background="@drawable/bg_status_open"
-                            android:paddingHorizontal="12dp"
-                            android:paddingVertical="4dp"
-                            android:text="OPEN"
-                            android:textColor="#3B82F6"
-                            android:textSize="11sp"
-                            android:textStyle="bold" />
-
-                    </RelativeLayout>
-
-                    <!-- Divider -->
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginTop="14dp"
-                        android:background="?attr/colorOutlineVariant" />
-
-                    <!-- Bottom row: SLA Timer | Priority | Risk Score -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="14dp"
-                        android:orientation="horizontal"
-                        android:weightSum="3">
-
-                        <!-- SLA Timer -->
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/sla_timer"
-                                android:textColor="?attr/colorOnSurfaceVariant"
-                                android:textSize="10sp"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:id="@+id/tvSlaTimer"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="4dp"
-                                android:text="14m 20s"
-                                android:textColor="?attr/colorOnSurface"
-                                android:textSize="15sp"
-                                android:textStyle="bold" />
-
-                        </LinearLayout>
-
-                        <!-- Priority -->
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/priority"
-                                android:textColor="?attr/colorOnSurfaceVariant"
-                                android:textSize="10sp"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:id="@+id/tvPriority"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="4dp"
-                                android:text="P1"
-                                android:textColor="?attr/colorOnSurface"
-                                android:textSize="15sp"
-                                android:textStyle="bold" />
-
-                        </LinearLayout>
-
-                        <!-- Risk Score -->
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="end"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/risk_score"
-                                android:textColor="?attr/colorOnSurfaceVariant"
-                                android:textSize="10sp"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="4dp"
-                                android:text="88"
-                                android:textColor="#EF4444"
-                                android:textSize="22sp"
-                                android:textStyle="bold" />
-
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                </LinearLayout>
 
             </LinearLayout>
 
         </ScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <!-- ═══════════════════════════════════ BOTTOM NAVIGATION ═══════════════════════════════════ -->
         <com.google.android.material.bottomnavigation.BottomNavigationView

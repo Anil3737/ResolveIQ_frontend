@@ -38,7 +38,7 @@ class TeamLeadHomeActivity : AppCompatActivity() {
 
         // Profile Click
         binding.ivProfile.setOnClickListener {
-            startActivity(Intent(this, ProfileActivity::class.java))
+            startActivity(Intent(this, TeamLeadProfileInfoActivity::class.java))
         }
 
         // Quick Action Cards
@@ -56,7 +56,7 @@ class TeamLeadHomeActivity : AppCompatActivity() {
         }
 
         binding.btnTeamMembers.setOnClickListener {
-            Toast.makeText(this, "Viewing Team Distribution", Toast.LENGTH_SHORT).show()
+            startActivity(Intent(this, TeamMembersActivity::class.java))
         }
 
         // Bottom Navigation

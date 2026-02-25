@@ -153,6 +153,49 @@
 
             </RelativeLayout>
 
+            <!-- Support Agents -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Support Agents"
+                android:textColor="#334155"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp" />
+
+            <RelativeLayout
+                android:id="@+id/rlSelectAgents"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="56dp"
+                android:background="@drawable/bg_input_field"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="12dp"
+                android:layout_marginBottom="24dp"
+                android:clickable="true"
+                android:focusable="true">
+
+                <TextView
+                    android:id="@+id/tvSelectedAgents"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toStartOf="@id/ivAgentDropdown"
+                    android:text="Select support agents"
+                    android:textColor="#1E293B"
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:id="@+id/ivAgentDropdown"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_chevron_down"
+                    app:tint="#64748B" />
+
+            </RelativeLayout>
+
             <!-- Team Description -->
             <TextView
                 android:layout_width="wrap_content"

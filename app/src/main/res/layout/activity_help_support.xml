@@ -484,7 +484,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Oct 12, 2023"
+                            android:text="Feb 10, 2026"
                             android:textColor="?attr/colorOnSurfaceVariant"
                             android:textSize="15sp" />
 

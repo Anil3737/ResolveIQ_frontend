@@ -7,5 +7,7 @@ data class User(
     val role: String,
     val location: String? = null,
     val phone: String? = null,
-    val department_name: String? = null
+    val department_name: String? = null,
+    val team_lead_name: String? = null,
+    val joining_date: String? = null
 )

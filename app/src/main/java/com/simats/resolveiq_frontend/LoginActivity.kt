@@ -103,11 +103,12 @@ class LoginActivity : AppCompatActivity() {
                     Toast.makeText(this@LoginActivity, "Login Successful: ${data.user.full_name}", Toast.LENGTH_SHORT).show()
                     
                     // Navigate based on role
-                    val role = data.user.role ?: "employee"
-                    val targetActivity = if (role.equals("admin", ignoreCase = true)) {
-                        AdminHomeActivity::class.java
-                    } else {
-                        EmployeeHomeActivity::class.java
+                    val role = data.user.role?.uppercase() ?: "EMPLOYEE"
+                    val targetActivity = when (role) {
+                        "ADMIN" -> AdminHomeActivity::class.java
+                        "TEAM_LEAD" -> TeamLeadHomeActivity::class.java
+                        "AGENT" -> SupportAgentHomeActivity::class.java
+                        else -> EmployeeHomeActivity::class.java
                     }
                     val intent = Intent(this@LoginActivity, targetActivity)
                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK

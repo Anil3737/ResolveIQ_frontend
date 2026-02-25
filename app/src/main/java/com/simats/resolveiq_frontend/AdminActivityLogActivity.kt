@@ -4,26 +4,36 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.simats.resolveiq_frontend.adapter.AdminActivityAdapter
-import com.simats.resolveiq_frontend.data.model.ActivitySeverity
+import com.simats.resolveiq_frontend.R
 import com.simats.resolveiq_frontend.data.model.ActivityType
 import com.simats.resolveiq_frontend.data.model.AdminActivityLog
 import com.simats.resolveiq_frontend.databinding.ActivityAdminActivityLogBinding
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
+import com.simats.resolveiq_frontend.data.model.ActivityLogResponse
 
 class AdminActivityLogActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAdminActivityLogBinding
     private lateinit var activityAdapter: AdminActivityAdapter
+    private lateinit var adminApiService: com.simats.resolveiq_frontend.api.AdminApiService
     private val fullLogList = mutableListOf<AdminActivityLog>()
+    private var currentPage = 1
+    private val limit = 10
+    private var isLastPage = false
+    private var isLoading = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAdminActivityLogBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        adminApiService = com.simats.resolveiq_frontend.api.RetrofitClient.getAdminApi(this)
+
         setupListeners()
         setupRecyclerView()
-        loadSampleData()
         setupFilters()
+        fetchActivityLogs(true)
     }
 
     private fun setupListeners() {
@@ -32,88 +42,86 @@ class AdminActivityLogActivity : AppCompatActivity() {
         }
 
         binding.ivRefresh.setOnClickListener {
-            loadSampleData()
+            fetchActivityLogs(true)
         }
     }
 
     private fun setupRecyclerView() {
         activityAdapter = AdminActivityAdapter(fullLogList) { activity ->
-            // Open details (read-only) - placeholder for now
+            // Details placeholder
         }
         binding.rvActivityLog.apply {
             layoutManager = LinearLayoutManager(this@AdminActivityLogActivity)
             adapter = activityAdapter
+            
+            addOnScrollListener(object : androidx.recyclerview.widget.RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: androidx.recyclerview.widget.RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                    val visibleItemCount = layoutManager.childCount
+                    val totalItemCount = layoutManager.itemCount
+                    val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
+
+                    if (!isLoading && !isLastPage) {
+                        if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
+                            && firstVisibleItemPosition >= 0) {
+                            fetchActivityLogs(false)
+                        }
+                    }
+                }
+            })
         }
     }
 
     private fun setupFilters() {
         binding.cgFilters.setOnCheckedStateChangeListener { group, checkedIds ->
-            val filterType = when (checkedIds.firstOrNull()) {
-                R.id.chipAll -> ActivityType.ALL
-                R.id.chipUserActions -> ActivityType.USER_ACTION
-                R.id.chipEscalations -> ActivityType.ESCALATION
-                R.id.chipSlaBreaches -> ActivityType.SLA_BREACH
-                R.id.chipAiEvents -> ActivityType.AI_EVENT
-                R.id.chipMajorIncidents -> ActivityType.MAJOR_INCIDENT
-                else -> ActivityType.ALL
+            fetchActivityLogs(true)
+        }
+    }
+
+    private fun getSelectedActionType(): String? {
+        return when (binding.cgFilters.checkedChipId) {
+            R.id.chipUserActions -> "USER_CREATED" // Simplified for now, or multiple
+            R.id.chipEscalations -> "AUTO_ESCALATED"
+            R.id.chipSlaBreaches -> "SLA_BREACHED"
+            else -> null
+        }
+    }
+
+    private fun fetchActivityLogs(refresh: Boolean) {
+        if (refresh) {
+            currentPage = 1
+            isLastPage = false
+        }
+        
+        isLoading = true
+        val actionType = getSelectedActionType()
+
+        lifecycleScope.launchWhenStarted {
+            try {
+                val response = adminApiService.getSystemActivity(
+                    page = currentPage,
+                    limit = limit,
+                    actionType = actionType
+                )
+                
+                if (response.success) {
+                    if (refresh) fullLogList.clear()
+                    
+                    val newLogs = response.logs
+                    fullLogList.addAll(newLogs)
+                    activityAdapter.updateData(fullLogList.toList())
+                    
+                    isLastPage = newLogs.size < limit
+                    if (!isLastPage) currentPage++
+                } else {
+                    android.widget.Toast.makeText(this@AdminActivityLogActivity, response.message ?: "Failed to fetch logs", android.widget.Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                android.widget.Toast.makeText(this@AdminActivityLogActivity, "Error: ${e.message}", android.widget.Toast.LENGTH_SHORT).show()
+            } finally {
+                isLoading = false
             }
-            filterList(filterType)
         }
-    }
-
-    private fun filterList(type: ActivityType) {
-        val filtered = if (type == ActivityType.ALL) {
-            fullLogList
-        } else {
-            fullLogList.filter { it.type == type }
-        }
-        activityAdapter.updateData(filtered)
-    }
-
-    private fun loadSampleData() {
-        fullLogList.clear()
-        
-        fullLogList.add(AdminActivityLog(
-            "1", ActivityType.SLA_BREACH, "SLA Breach Risk exceeded 90%",
-            "Network & VPN Team - Ticket #RIQ-0122", "2 mins ago", ActivitySeverity.CRITICAL
-        ))
-        
-        fullLogList.add(AdminActivityLog(
-            "2", ActivityType.USER_ACTION, "Admin created Team Lead Ravi Kumar",
-            "Assigned to Infrastructure Department", "10 mins ago", ActivitySeverity.SUCCESS
-        ))
-        
-        fullLogList.add(AdminActivityLog(
-            "3", ActivityType.ESCALATION, "Ticket #EMP0023 escalated to Team Lead",
-            "Triggered by high predicted delay", "1 hour ago", ActivitySeverity.WARNING
-        ))
-        
-        fullLogList.add(AdminActivityLog(
-            "4", ActivityType.AI_EVENT, "AI auto-reassigned ticket due to overload",
-            "Rebalanced from Agent Sarah to Agent Mike", "Today, 10:45 AM", ActivitySeverity.INFO
-        ))
-        
-        fullLogList.add(AdminActivityLog(
-            "5", ActivityType.MAJOR_INCIDENT, "Major Incident: Primary DNS down",
-            "System wide alert - DevOps team notified", "Today, 9:15 AM", ActivitySeverity.CRITICAL
-        ))
-        
-        fullLogList.add(AdminActivityLog(
-            "6", ActivityType.AI_EVENT, "AI Priority Score updated: #RIQ-5502",
-            "Sentiment analyzed as 'Frustrated' - Score: 92", "Yesterday, 4:20 PM", ActivitySeverity.INFO
-        ))
-        
-        fullLogList.add(AdminActivityLog(
-            "7", ActivityType.USER_ACTION, "Updated escalation policy",
-            "Global threshold changed from 85% to 80%", "Yesterday, 2:00 PM", ActivitySeverity.SUCCESS
-        ))
-        
-        fullLogList.add(AdminActivityLog(
-            "8", ActivityType.SLA_BREACH, "SLA Breached: #RIQ-9901",
-            "Security Team - Response time exceeded", "12 Feb 2026", ActivitySeverity.CRITICAL
-        ))
-
-        activityAdapter.updateData(fullLogList)
-        binding.chipAll.isChecked = true
     }
 }

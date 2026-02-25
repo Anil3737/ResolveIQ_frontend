@@ -5,15 +5,18 @@ enum class ActivitySeverity {
 }
 
 enum class ActivityType {
-    USER_ACTION, ESCALATION, SLA_BREACH, AI_EVENT, MAJOR_INCIDENT, ALL
+    USER_CREATED, USER_LOGIN, TICKET_CREATED, TICKET_ASSIGNED, 
+    STATUS_UPDATED, AUTO_ESCALATED, SLA_BREACHED, 
+    AUTO_CLOSED, MANUAL_CLOSED, ALL
 }
 
 data class AdminActivityLog(
-    val id: String,
-    val type: ActivityType,
-    val title: String,
+    val id: Int,
+    val user: String,
+    val role: String,
+    val action_type: String,
+    val entity_type: String,
+    val entity_id: Int?,
     val description: String,
-    val timestamp: String,
-    val severity: ActivitySeverity,
-    val teamName: String? = null
+    val created_at: String
 )

@@ -192,7 +192,91 @@
                 android:textColor="#4B5563"
                 android:textSize="16sp" />
 
+            <Button
+                android:id="@+id/btnViewProgress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:backgroundTint="#F1F5F9"
+                android:text="View Ticket Progress"
+                android:textColor="#334155"
+                android:textStyle="bold"
+                app:cornerRadius="8dp"
+                android:drawableStart="@drawable/ic_rocket"
+                android:paddingStart="16dp"
+                android:drawablePadding="8dp" />
+
         </LinearLayout>
     </ScrollView>
+
+    <!-- Bottom Actions Container -->
+    <LinearLayout
+        android:id="@+id/actionLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:elevation="16dp"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:visibility="visible">
+
+        <Button
+            android:id="@+id/btnApprove"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:backgroundTint="#10B981"
+            android:text="Approve Ticket"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:cornerRadius="12dp" />
+
+        <Button
+            android:id="@+id/btnAccept"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:backgroundTint="#4F46E5"
+            android:text="Accept Ticket"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:cornerRadius="12dp" />
+
+        <LinearLayout
+            android:id="@+id/agentActiveActions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <Button
+                android:id="@+id/btnDecline"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:backgroundTint="#FEE2E2"
+                android:text="Decline"
+                android:textColor="#EF4444"
+                android:textStyle="bold"
+                app:cornerRadius="12dp" />
+
+            <Button
+                android:id="@+id/btnResolve"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_marginStart="8dp"
+                android:layout_weight="2"
+                android:backgroundTint="#10B981"
+                android:text="Mark Resolved"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                app:cornerRadius="12dp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

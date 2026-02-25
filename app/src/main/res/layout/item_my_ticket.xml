@@ -31,18 +31,32 @@
                 android:textSize="12sp"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/tvStatusBadge"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_status_in_progress"
-                android:backgroundTint="#ECFDF5"
-                android:paddingHorizontal="12dp"
-                android:paddingVertical="6dp"
-                android:text="IN PROGRESS"
-                android:textColor="#059669"
-                android:textSize="10sp"
-                android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/tvStatusBadge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_status_in_progress"
+                    android:backgroundTint="#ECFDF5"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="6dp"
+                    android:text="IN PROGRESS"
+                    android:textColor="#059669"
+                    android:textSize="10sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvRiskScore"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/bg_badge_realtime"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="4dp"
+                    android:text="Risk: 0"
+                    android:textColor="#EF4444"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
 
         </LinearLayout>
 

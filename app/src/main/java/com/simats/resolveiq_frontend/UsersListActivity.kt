@@ -47,8 +47,24 @@ class UsersListActivity : AppCompatActivity() {
 
     private fun setupRecyclerView() {
         employeeAdapter = EmployeeAdapter(employeeList) { employee ->
-            val intent = Intent(this, ProfileInfoActivity::class.java)
+            val targetActivity = if (employee.role?.uppercase() == "AGENT") {
+                AgentProfileInfoActivity::class.java
+            } else if (employee.role?.uppercase() == "TEAM_LEAD") {
+                TeamLeadProfileInfoActivity::class.java
+            } else {
+                ProfileInfoActivity::class.java
+            }
+            val intent = Intent(this, targetActivity)
             intent.putExtra("employeeId", employee.employeeId)
+            intent.putExtra("fullName", employee.fullName)
+            intent.putExtra("role", employee.role)
+            intent.putExtra("department", employee.department)
+            intent.putExtra("team", employee.department) // For AgentProfileInfoActivity
+            intent.putExtra("email", employee.email)
+            intent.putExtra("location", employee.location)
+            intent.putExtra("teamLead", employee.teamLead)
+            intent.putExtra("joinDate", employee.joiningDate)
+            intent.putExtra("isViewOnly", true)
             startActivity(intent)
         }
         binding.rvEmployees.apply {
@@ -66,10 +82,14 @@ class UsersListActivity : AppCompatActivity() {
                     response.data.forEach { user ->
                         employeeList.add(
                             Employee(
-                                employeeId = user.phone ?: "N/A",
+                                employeeId = if (user.phone != null && user.phone.startsWith("EMP")) user.phone else "RIQ-${user.id.toString().padStart(4, '0')}",
                                 fullName = user.full_name,
                                 role = user.role,
-                                department = user.department_name
+                                department = user.department_name,
+                                email = user.email,
+                                location = user.location,
+                                teamLead = user.team_lead_name,
+                                joiningDate = user.joining_date
                             )
                         )
                     }

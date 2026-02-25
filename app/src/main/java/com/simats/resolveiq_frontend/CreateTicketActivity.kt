@@ -90,8 +90,19 @@ class CreateTicketActivity : AppCompatActivity() {
         val fullTitle = "[$issueType] at $location"
         val fullDescription = "Location: $location\n\n$description"
         
-        // Hardcoded Department ID = 1 (IT)
-        val departmentId = 1
+        // Map issue type → department_id (must match DEPARTMENT_RANGES in ticket_id_generator.py)
+        val departmentId = when (issueType) {
+            "Network Issue"                              -> 1
+            "Hardware Failure"                           -> 2
+            "Software Installation"                      -> 3
+            "Application Downtime / Application Issues"  -> 4
+            "Other"                                      -> 5
+            else -> {
+                Toast.makeText(this, "Invalid department selected. Please try again.", Toast.LENGTH_SHORT).show()
+                binding.btnSubmit.isEnabled = true
+                return
+            }
+        }
         
         lifecycleScope.launch {
             binding.btnSubmit.isEnabled = false
@@ -105,7 +116,12 @@ class CreateTicketActivity : AppCompatActivity() {
             val result = ticketRepository.createTicket(request)
             
             if (result.isSuccess) {
+                val ticketId = result.getOrNull() ?: -1
                 Toast.makeText(this@CreateTicketActivity, "Ticket Created Successfully", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this@CreateTicketActivity, TicketSuccessActivity::class.java).apply {
+                    putExtra("ticket_id", ticketId)
+                }
+                startActivity(intent)
                 finish()
             } else {
                 binding.btnSubmit.isEnabled = true

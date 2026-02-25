@@ -24,8 +24,8 @@ object RetrofitClient {
             val client = OkHttpClient.Builder()
                 .addInterceptor(logging)
                 .addInterceptor(AuthInterceptor(UserPreferences(context)))
-                .connectTimeout(30, TimeUnit.SECONDS)
-                .readTimeout(30, TimeUnit.SECONDS)
+                .connectTimeout(60, TimeUnit.SECONDS)
+                .readTimeout(60, TimeUnit.SECONDS)
                 .build()
 
             retrofit = Retrofit.Builder()
@@ -47,5 +47,13 @@ object RetrofitClient {
 
     fun getAdminApi(context: Context): AdminApiService {
         return getClient(context).create(AdminApiService::class.java)
+    }
+
+    fun getTeamLeadApi(context: Context): TeamLeadApiService {
+        return getClient(context).create(TeamLeadApiService::class.java)
+    }
+
+    fun getAgentApi(context: Context): AgentApiService {
+        return getClient(context).create(AgentApiService::class.java)
     }
 }

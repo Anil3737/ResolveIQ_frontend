@@ -1,9 +1,16 @@
 package com.simats.resolveiq_frontend.repository
 
+import com.simats.resolveiq_frontend.api.RetrofitClient
 import com.simats.resolveiq_frontend.api.TicketApiService
-import com.simats.resolveiq_frontend.data.model.*
+import com.simats.resolveiq_frontend.data.model.Ticket
+import com.simats.resolveiq_frontend.data.model.CreateTicketRequest
+import com.simats.resolveiq_frontend.data.model.TicketDetailResponse
+import com.simats.resolveiq_frontend.data.model.ApiResponse
+import com.simats.resolveiq_frontend.data.model.ApproveTicketRequest
+import com.simats.resolveiq_frontend.data.model.UpdateTicketActionRequest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.json.JSONObject
 
 class TicketRepository(private val api: TicketApiService) {
 
@@ -22,17 +29,73 @@ class TicketRepository(private val api: TicketApiService) {
         }
     }
 
-    suspend fun createTicket(request: CreateTicketRequest): Result<Unit> {
+    suspend fun createTicket(request: CreateTicketRequest): Result<Int> {
         return try {
             val response = api.createTicket(request)
             if (response.isSuccessful) {
-                Result.success(Unit)
+                val apiResponse = response.body()
+                if (apiResponse != null && apiResponse.success && apiResponse.data != null) {
+                    Result.success(apiResponse.data.id)
+                } else {
+                    Result.failure(Exception(apiResponse?.message ?: "Failed to create ticket"))
+                }
             } else {
-                val errorMsg = response.errorBody()?.string() ?: "Failed to create ticket"
+                val errorMsg = try {
+                    val json = JSONObject(response.errorBody()?.string() ?: "")
+                    json.optString("message", "Failed to create ticket")
+                } catch (e: Exception) {
+                    "Failed to create ticket"
+                }
                 Result.failure(Exception(errorMsg))
             }
         } catch (e: kotlinx.coroutines.CancellationException) {
             throw e
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    suspend fun getTicketDetails(id: Int): Result<TicketDetailResponse> {
+        return try {
+            val response = api.getTicketDetails(id)
+            if (response.isSuccessful) {
+                val body = response.body()
+                if (body != null && body.success) {
+                    Result.success(body)
+                } else {
+                    Result.failure(Exception(body?.message ?: "Failed to fetch ticket details"))
+                }
+            } else {
+                Result.failure(Exception("Failed to fetch ticket details"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    suspend fun approveTicket(context: android.content.Context, ticketId: Int): Result<Unit> {
+        return try {
+            val teamLeadApi = RetrofitClient.getTeamLeadApi(context)
+            val response = teamLeadApi.approveTicket(ApproveTicketRequest(ticketId))
+            if (response.success) {
+                Result.success(Unit)
+            } else {
+                Result.failure(Exception(response.message ?: "Failed to approve ticket"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    suspend fun updateTicketAction(context: android.content.Context, ticketId: Int, action: String): Result<Ticket> {
+        return try {
+            val agentApi = RetrofitClient.getAgentApi(context)
+            val response = agentApi.updateTicketAction(UpdateTicketActionRequest(ticketId, action))
+            if (response.success && response.data != null) {
+                Result.success(response.data!!)
+            } else {
+                Result.failure(Exception(response.message ?: "Failed to $action ticket"))
+            }
         } catch (e: Exception) {
             Result.failure(e)
         }

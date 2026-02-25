@@ -36,9 +36,22 @@ class TeamsActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView() {
-        teamAdapter = TeamAdapter(emptyList())
+        teamAdapter = TeamAdapter(emptyList()) { team ->
+            navigateToTeamDetails(team)
+        }
         binding.rvTeams.layoutManager = LinearLayoutManager(this)
         binding.rvTeams.adapter = teamAdapter
+    }
+
+    private fun navigateToTeamDetails(team: com.simats.resolveiq_frontend.data.model.TeamData) {
+        val intent = android.content.Intent(this, TeamDetailsActivity::class.java)
+        intent.putExtra("teamId", team.id)
+        intent.putExtra("teamName", team.name)
+        intent.putExtra("description", team.description)
+        intent.putExtra("department", team.department)
+        intent.putExtra("teamLead", team.team_lead)
+        intent.putExtra("createdAt", team.created_at)
+        startActivity(intent)
     }
 
     private fun loadTeamsFromApi() {
@@ -47,7 +60,9 @@ class TeamsActivity : AppCompatActivity() {
                 val response = RetrofitClient.getAdminApi(this@TeamsActivity).getTeams()
                 if (response.success && response.data != null) {
                     // Replace adapter's data by creating a new adapter
-                    binding.rvTeams.adapter = TeamAdapter(response.data)
+                    binding.rvTeams.adapter = TeamAdapter(response.data) { team ->
+                        navigateToTeamDetails(team)
+                    }
                     if (response.data.isEmpty()) {
                         Toast.makeText(this@TeamsActivity, "No teams created yet", Toast.LENGTH_SHORT).show()
                     }

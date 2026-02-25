@@ -9,6 +9,7 @@ import com.simats.resolveiq_frontend.data.model.ActivitySeverity
 import com.simats.resolveiq_frontend.data.model.ActivityType
 import com.simats.resolveiq_frontend.data.model.AdminActivityLog
 import com.simats.resolveiq_frontend.databinding.ItemAdminActivityBinding
+import com.simats.resolveiq_frontend.utils.convertUtcToLocalShort
 
 class AdminActivityAdapter(
     private var activities: List<AdminActivityLog>,
@@ -19,28 +20,30 @@ class AdminActivityAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(activity: AdminActivityLog) {
-            binding.tvEventTitle.text = activity.title
+            binding.tvEventTitle.text = activity.action_type.replace("_", " ")
             binding.tvEventDescription.text = activity.description
-            binding.tvTimestamp.text = activity.timestamp
-            binding.tvSeverityBadge.text = activity.severity.name
-
-            // Set icon based on activity type
-            val iconRes = when (activity.type) {
-                ActivityType.USER_ACTION -> R.drawable.ic_user
-                ActivityType.ESCALATION -> R.drawable.ic_trend_up
-                ActivityType.SLA_BREACH -> R.drawable.ic_warning_amber
-                ActivityType.AI_EVENT -> R.drawable.ic_brain_chip
-                ActivityType.MAJOR_INCIDENT -> R.drawable.ic_announcement
+            
+            // Format timestamp: convert UTC ISO string to device local time
+            binding.tvTimestamp.text = convertUtcToLocalShort(activity.created_at)
+            
+            binding.tvSeverityBadge.text = activity.role
+            
+            // Set icon based on action type
+            val iconRes = when (activity.action_type) {
+                "USER_CREATED", "USER_LOGIN" -> R.drawable.ic_user
+                "TICKET_CREATED", "TICKET_ASSIGNED" -> R.drawable.ic_ticket
+                "STATUS_UPDATED", "MANUAL_CLOSED", "AUTO_CLOSED" -> R.drawable.ic_history
+                "AUTO_ESCALATED" -> R.drawable.ic_trend_up
+                "SLA_BREACHED" -> R.drawable.ic_warning_amber
                 else -> R.drawable.ic_history
             }
             binding.ivEventIcon.setImageResource(iconRes)
 
-            // Set severity badge color
-            val badgeColor = when (activity.severity) {
-                ActivitySeverity.INFO -> R.color.admin_blue_accent
-                ActivitySeverity.WARNING -> R.color.admin_amber
-                ActivitySeverity.CRITICAL -> R.color.admin_red
-                ActivitySeverity.SUCCESS -> R.color.admin_green_accent
+            // Set severity badge color based on action/role
+            val badgeColor = when {
+                activity.action_type == "SLA_BREACHED" || activity.action_type == "AUTO_ESCALATED" -> R.color.admin_red
+                activity.action_type == "USER_CREATED" -> R.color.admin_green_accent
+                else -> R.color.admin_blue_accent
             }
             binding.tvSeverityBadge.setBackgroundTintList(
                 ContextCompat.getColorStateList(binding.root.context, badgeColor)

@@ -23,7 +23,10 @@ data class Team(
     val slaBgColor: Int
 )
 
-class TeamAdapter(private val teams: List<TeamData>) : RecyclerView.Adapter<TeamAdapter.TeamViewHolder>() {
+class TeamAdapter(
+    private val teams: List<TeamData>,
+    private val onItemClick: (TeamData) -> Unit
+) : RecyclerView.Adapter<TeamAdapter.TeamViewHolder>() {
 
     class TeamViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val ivTeamIcon: ImageView = view.findViewById(R.id.ivTeamIcon)
@@ -57,6 +60,10 @@ class TeamAdapter(private val teams: List<TeamData>) : RecyclerView.Adapter<Team
         val textDefaultColor = holder.itemView.context.getColor(R.color.primary_blue)
         holder.tvSlaPercentage.setTextColor(textDefaultColor)
         holder.tvSlaPercentage.setBackgroundResource(R.drawable.bg_status_open)
+
+        holder.itemView.setOnClickListener {
+            onItemClick(team)
+        }
     }
 
     override fun getItemCount() = teams.size

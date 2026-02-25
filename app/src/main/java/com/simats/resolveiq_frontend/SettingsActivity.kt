@@ -33,7 +33,12 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         binding.btnProfileSettings.setOnClickListener {
-            startActivity(Intent(this, ProfileInformationActivity::class.java))
+            val role = userPreferences.getUserRole()?.uppercase() ?: "EMPLOYEE"
+            when (role) {
+                "AGENT" -> startActivity(Intent(this, AgentProfileInfoActivity::class.java))
+                "TEAM_LEAD" -> startActivity(Intent(this, TeamLeadProfileInfoActivity::class.java))
+                else -> startActivity(Intent(this, ProfileInformationActivity::class.java))
+            }
         }
 
         binding.btnSecuritySettings.setOnClickListener {
@@ -66,32 +71,56 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         // Bottom Navigation
-        binding.bottomNavigation.selectedItemId = R.id.nav_settings
+        val role = userPreferences.getUserRole()?.uppercase() ?: "EMPLOYEE"
+        
+        binding.bottomNavigation.menu.clear()
+        when (role) {
+            "ADMIN" -> binding.bottomNavigation.inflateMenu(R.menu.bottom_navigation_admin_menu)
+            "TEAM_LEAD" -> binding.bottomNavigation.inflateMenu(R.menu.bottom_navigation_team_lead_menu)
+            "AGENT" -> binding.bottomNavigation.inflateMenu(R.menu.bottom_navigation_agent_menu)
+            else -> binding.bottomNavigation.inflateMenu(R.menu.bottom_navigation_menu)
+        }
+
+        binding.bottomNavigation.selectedItemId = when (role) {
+            "ADMIN" -> R.id.nav_admin_settings
+            "TEAM_LEAD" -> R.id.nav_tl_settings
+            else -> R.id.nav_settings
+        }
         binding.bottomNavigation.setOnItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.nav_home -> {
-                    val role = userPreferences.getUserRole() ?: "employee"
-                    val targetActivity = if (role.equals("admin", ignoreCase = true)) {
-                        AdminHomeActivity::class.java
-                    } else {
-                        EmployeeHomeActivity::class.java
+                R.id.nav_home, R.id.nav_admin_dashboard, R.id.nav_tl_dashboard -> {
+                    val targetActivity = when (role) {
+                        "ADMIN" -> AdminHomeActivity::class.java
+                        "TEAM_LEAD" -> TeamLeadHomeActivity::class.java
+                        "AGENT" -> SupportAgentHomeActivity::class.java
+                        else -> EmployeeHomeActivity::class.java
                     }
                     val intent = Intent(this, targetActivity)
                     intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
                     startActivity(intent)
                     true
                 }
-                R.id.nav_tickets -> {
+                R.id.nav_tickets, R.id.nav_admin_tickets, R.id.nav_tl_tickets -> {
                     val intent = Intent(this, MyTicketsActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
                     startActivity(intent)
                     true
                 }
-                R.id.nav_activity -> {
-                    Toast.makeText(this, "Coming soon", Toast.LENGTH_SHORT).show()
-                    false
+                R.id.nav_admin_users -> {
+                    startActivity(Intent(this, UsersListActivity::class.java))
+                    true
                 }
-                R.id.nav_settings -> {
+                R.id.nav_activity, R.id.nav_admin_activity, R.id.nav_tl_activity -> {
+                    if (role == "ADMIN") {
+                        startActivity(Intent(this, AdminActivityLogActivity::class.java))
+                    } else if (role == "TEAM_LEAD") {
+                        Toast.makeText(this, "Team Activity coming soon", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(this, "Coming soon", Toast.LENGTH_SHORT).show()
+                    }
+                    true
+                }
+                R.id.nav_settings, R.id.nav_admin_settings, R.id.nav_tl_settings -> {
                     // Already on Settings
                     true
                 }
@@ -102,6 +131,11 @@ class SettingsActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        binding.bottomNavigation.selectedItemId = R.id.nav_settings
+        val role = userPreferences.getUserRole()?.uppercase() ?: "EMPLOYEE"
+        binding.bottomNavigation.selectedItemId = when (role) {
+            "ADMIN" -> R.id.nav_admin_settings
+            "TEAM_LEAD" -> R.id.nav_tl_settings
+            else -> R.id.nav_settings
+        }
     }
 }

@@ -13,5 +13,8 @@ interface TicketApiService {
     suspend fun getTickets(): ApiResponse<List<Ticket>>
 
     @POST("api/tickets")
-    suspend fun createTicket(@Body request: CreateTicketRequest): Response<Any>
+    suspend fun createTicket(@Body request: CreateTicketRequest): Response<ApiResponse<Ticket>>
+
+    @GET("api/tickets/{id}")
+    suspend fun getTicketDetails(@retrofit2.http.Path("id") id: Int): Response<TicketDetailResponse>
 }

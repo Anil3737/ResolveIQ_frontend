@@ -23,6 +23,7 @@ class MyTicketsActivity : AppCompatActivity() {
     private lateinit var userPreferences: UserPreferences
     private var allTickets: List<Ticket> = emptyList()
     private var isShowingActive = true
+    private var filterType: String? = null
     private var fetchJob: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,13 +43,28 @@ class MyTicketsActivity : AppCompatActivity() {
     }
 
     private fun setupUI() {
+        filterType = intent.getStringExtra("filter_type")
+        
         binding.ivBack.setOnClickListener {
             finish()
         }
 
+        // Adjust UI if a specific metric filter is applied
+        if (filterType != null && filterType != "ALL") {
+            binding.tabLayout.visibility = View.GONE
+            binding.tvHeaderTitle.text = when (filterType) {
+                "HIGH_RISK" -> "High Risk Tickets"
+                "SLA_BREACHED" -> "SLA Breached Tickets"
+                "ESCALATED" -> "Escalated Tickets"
+                else -> "Tickets"
+            }
+        }
+
         binding.rvMyTickets.layoutManager = LinearLayoutManager(this)
         adapter = MyTicketAdapter(emptyList()) { ticket ->
-            val intent = android.content.Intent(this, TicketDetailsActivity::class.java).apply {
+            val role = userPreferences.getUserRole()?.uppercase() ?: "EMPLOYEE"
+            val targetActivity = if (role == "ADMIN") AdminTicketDetailActivity::class.java else TicketDetailsActivity::class.java
+            val intent = android.content.Intent(this, targetActivity).apply {
                 putExtra("ticket", ticket)
             }
             startActivity(intent)
@@ -66,30 +82,39 @@ class MyTicketsActivity : AppCompatActivity() {
         }
 
         // Bottom Navigation
-        binding.bottomNavigation.selectedItemId = R.id.nav_tickets
+        val role = userPreferences.getUserRole()?.uppercase() ?: "EMPLOYEE"
+        if (role == "ADMIN") {
+            binding.bottomNavigation.menu.clear()
+            binding.bottomNavigation.inflateMenu(R.menu.bottom_navigation_admin_menu)
+            binding.bottomNavigation.selectedItemId = R.id.nav_admin_tickets
+        }
+
+        binding.bottomNavigation.selectedItemId = if (role == "ADMIN") R.id.nav_admin_tickets else R.id.nav_tickets
         binding.bottomNavigation.setOnItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.nav_home -> {
-                    val role = userPreferences.getUserRole() ?: "employee"
-                    val targetActivity = if (role.equals("admin", ignoreCase = true)) {
-                        AdminHomeActivity::class.java
-                    } else {
-                        EmployeeHomeActivity::class.java
-                    }
+                R.id.nav_home, R.id.nav_admin_dashboard -> {
+                    val targetActivity = if (role == "ADMIN") AdminHomeActivity::class.java else EmployeeHomeActivity::class.java
                     val intent = android.content.Intent(this, targetActivity)
                     intent.flags = android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP or android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP
                     startActivity(intent)
                     true
                 }
-                R.id.nav_tickets -> {
-                    // Already on Tickets
+                R.id.nav_tickets, R.id.nav_admin_tickets -> {
                     true
                 }
-                R.id.nav_activity -> {
-                    Toast.makeText(this, "Coming soon", Toast.LENGTH_SHORT).show()
-                    false
+                R.id.nav_admin_users -> {
+                    startActivity(android.content.Intent(this, UsersListActivity::class.java))
+                    true
                 }
-                R.id.nav_settings -> {
+                R.id.nav_activity, R.id.nav_admin_activity -> {
+                    if (role == "ADMIN") {
+                        startActivity(android.content.Intent(this, AdminActivityLogActivity::class.java))
+                    } else {
+                        Toast.makeText(this, "Coming soon", Toast.LENGTH_SHORT).show()
+                    }
+                    true
+                }
+                R.id.nav_settings, R.id.nav_admin_settings -> {
                     val intent = android.content.Intent(this, SettingsActivity::class.java)
                     intent.flags = android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP or android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP
                     startActivity(intent)
@@ -103,7 +128,9 @@ class MyTicketsActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        binding.bottomNavigation.selectedItemId = R.id.nav_tickets
+        val role = userPreferences.getUserRole()?.uppercase() ?: "EMPLOYEE"
+        binding.bottomNavigation.selectedItemId =
+            if (role == "ADMIN") R.id.nav_admin_tickets else R.id.nav_tickets
         fetchTickets()
     }
 
@@ -154,11 +181,31 @@ class MyTicketsActivity : AppCompatActivity() {
     }
 
     private fun filterTickets(isActive: Boolean) {
-        val filtered = if (isActive) {
+        var filtered = if (isActive) {
             allTickets.filter { it.status.lowercase() !in listOf("resolved", "closed") }
         } else {
             allTickets.filter { it.status.lowercase() in listOf("resolved", "closed") }
         }
+
+        // Apply metric filters if any
+        filterType?.let { type ->
+            filtered = when (type) {
+                "HIGH_RISK"    -> allTickets.filter { (it.ai_score ?: 0) >= 70 || (it.breach_risk ?: 0) >= 70 }
+                "SLA_BREACHED" -> allTickets.filter { it.sla_breached == true }
+                "ESCALATED"    -> allTickets.filter { it.status.uppercase() == "ESCALATED" }
+                "ALL" -> {
+                    // Reset tab layout visibility just in case
+                    binding.tabLayout.visibility = View.VISIBLE
+                    if (isActive) {
+                        allTickets.filter { it.status.lowercase() !in listOf("resolved", "closed") }
+                    } else {
+                        allTickets.filter { it.status.lowercase() in listOf("resolved", "closed") }
+                    }
+                }
+                else -> filtered
+            }
+        }
+
         adapter.updateTickets(filtered)
         
         if (filtered.isEmpty()) {

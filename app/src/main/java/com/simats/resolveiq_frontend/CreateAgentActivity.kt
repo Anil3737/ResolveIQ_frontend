@@ -14,9 +14,7 @@ import kotlinx.coroutines.launch
 class CreateAgentActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCreateAgentBinding
-    private var allTeamLeads: List<User> = emptyList()
 
-    data class TeamLeadMock(val id: Int, val name: String, val department: String)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,25 +24,8 @@ class CreateAgentActivity : AppCompatActivity() {
         setupToolbar()
         setupDropdowns()
         setupListeners()
-        fetchTeamLeads()
     }
 
-    private fun fetchTeamLeads() {
-        lifecycleScope.launch {
-            try {
-                val response = RetrofitClient.getAdminApi(this@CreateAgentActivity).getUsers()
-                if (response.success && response.data != null) {
-                    allTeamLeads = response.data.filter { it.role == "TEAM_LEAD" }
-                    val currentDept = binding.actDepartment.text.toString()
-                    if (currentDept.isNotEmpty() && currentDept != "Select Department First") {
-                        updateTeamLeadDropdown(currentDept)
-                    }
-                }
-            } catch (e: Exception) {
-                Toast.makeText(this@CreateAgentActivity, "Error fetching Team Leads: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
 
     private fun setupToolbar() {
         binding.toolbar.setNavigationOnClickListener {
@@ -69,16 +50,11 @@ class CreateAgentActivity : AppCompatActivity() {
         val locAdapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, locations)
         binding.actLocation.setAdapter(locAdapter)
         
-        // Initial Team Lead message
-        binding.actTeamLead.setText("Select Department First")
-        binding.actTeamLead.isEnabled = false
     }
 
     private fun setupListeners() {
-        // Department selection listener to filter Team Leads
         binding.actDepartment.setOnItemClickListener { _, _, _, _ ->
-            val selectedDept = binding.actDepartment.text.toString()
-            updateTeamLeadDropdown(selectedDept)
+            // Department selected
         }
 
         binding.btnRegisterAgent.setOnClickListener {
@@ -86,37 +62,13 @@ class CreateAgentActivity : AppCompatActivity() {
                 val name = binding.etFullName.text.toString().trim()
                 val empId = binding.etEmployeeId.text.toString().trim()
                 val department = binding.actDepartment.text.toString()
-                val teamLead = binding.actTeamLead.text.toString()
                 val location = binding.actLocation.text.toString()
 
-                registerAgent(name, empId, department, teamLead, location)
+                registerAgent(name, empId, department, location)
             }
         }
     }
 
-    private fun updateTeamLeadDropdown(department: String) {
-        val filteredLeads = allTeamLeads.filter { 
-            // The User model on backend has department_name if using to_dict() updated recently
-            // But we might need to be careful. Let's assume the user knows their department.
-            // For now, let's filter by matching department name if available, or just show all for that dept.
-            true // Simplified for now to show all since we don't have dept filtering on User object easily yet
-        }
-        
-        // Actually, let's just show all available Team Leads if we can't filter reliably yet
-        val displayLeads = allTeamLeads 
-        
-        if (displayLeads.isEmpty()) {
-            binding.actTeamLead.setText("No Team Lead available")
-            binding.actTeamLead.isEnabled = false
-        } else {
-            binding.actTeamLead.setText("")
-            binding.actTeamLead.isEnabled = true
-            
-            val leadNames = displayLeads.map { it.full_name }.toTypedArray()
-            val leadAdapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, leadNames)
-            binding.actTeamLead.setAdapter(leadAdapter)
-        }
-    }
 
     private fun validateForm(): Boolean {
         var isValid = true
@@ -170,14 +122,6 @@ class CreateAgentActivity : AppCompatActivity() {
             binding.tilDepartment.error = null
         }
 
-        // 4. Team Lead Validation
-        val teamLead = binding.actTeamLead.text.toString()
-        if (teamLead.isEmpty() || teamLead == "Select Department First" || teamLead == "No Team Lead available for this department") {
-            binding.tilTeamLead.error = "Please select a valid Team Lead"
-            isValid = false
-        } else {
-            binding.tilTeamLead.error = null
-        }
 
         // 5. Location Validation
         if (binding.actLocation.text.toString().isEmpty()) {
@@ -190,19 +134,13 @@ class CreateAgentActivity : AppCompatActivity() {
         return isValid
     }
 
-    private fun registerAgent(name: String, empId: String, department: String, teamLeadName: String, location: String) {
-        val selectedLead = allTeamLeads.find { it.full_name == teamLeadName }
-        if (selectedLead == null) {
-            Toast.makeText(this, "Please select a valid Team Lead", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        val requestData = mapOf(
-            "full_name" to name,
-            "emp_id" to empId,
-            "department" to department,
-            "team_lead_id" to selectedLead.id,
-            "location" to location
+    private fun registerAgent(name: String, empId: String, department: String, location: String) {
+        val requestData = com.simats.resolveiq_frontend.data.model.CreateAgentRequest(
+            full_name = name,
+            emp_id = empId,
+            department = department,
+            team_lead_id = null,
+            location = location
         )
 
         binding.btnRegisterAgent.isEnabled = false

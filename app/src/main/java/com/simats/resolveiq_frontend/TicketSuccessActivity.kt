@@ -19,18 +19,28 @@ class TicketSuccessActivity : AppCompatActivity() {
         
         userPreferences = UserPreferences(this)
         
+        val ticketId = intent.getIntExtra("ticket_id", -1)
+
         binding.btnCheckProgress.setOnClickListener {
-            // Navigate back to Home based on role
-            val role = userPreferences.getUserRole() ?: "employee"
-            val targetActivity = if (role.equals("admin", ignoreCase = true)) {
-                AdminHomeActivity::class.java
+            if (ticketId != -1) {
+                val intent = Intent(this, TicketProgressActivity::class.java).apply {
+                    putExtra("ticket_id", ticketId)
+                }
+                startActivity(intent)
+                finish()
             } else {
-                EmployeeHomeActivity::class.java
+                // Fallback if ID is missing
+                val role = userPreferences.getUserRole() ?: "employee"
+                val targetActivity = if (role.equals("admin", ignoreCase = true)) {
+                    AdminHomeActivity::class.java
+                } else {
+                    EmployeeHomeActivity::class.java
+                }
+                val intent = Intent(this, targetActivity)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
+                finish()
             }
-            val intent = Intent(this, targetActivity)
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-            startActivity(intent)
-            finish()
         }
 
         // Bottom Navigation
