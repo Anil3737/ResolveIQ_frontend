@@ -23,6 +23,8 @@ data class Ticket(
     val accepted_at: String? = null,
     val resolved_at: String? = null,
     val closed_at: String? = null,
+    val assigned_to: Int? = null,
+    val assigned_to_name: String? = null,
     val can_accept: Boolean? = false,
     val can_decline: Boolean? = false,
     val can_resolve: Boolean? = false

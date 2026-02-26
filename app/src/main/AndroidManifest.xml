@@ -151,6 +151,11 @@
             android:exported="false" />
 
         <activity
+            android:name=".TeamLeadTicketsActivity"
+            android:theme="@style/Theme.Resolveiq_frontend"
+            android:exported="false" />
+
+        <activity
             android:name=".AboutActivity"
             android:theme="@style/Theme.Resolveiq_frontend"
             android:exported="false" />

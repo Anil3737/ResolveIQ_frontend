@@ -7,6 +7,8 @@ import com.simats.resolveiq_frontend.data.model.CreateTicketRequest
 import com.simats.resolveiq_frontend.data.model.TicketDetailResponse
 import com.simats.resolveiq_frontend.data.model.ApiResponse
 import com.simats.resolveiq_frontend.data.model.ApproveTicketRequest
+import com.simats.resolveiq_frontend.data.model.AssignTicketRequest
+import com.simats.resolveiq_frontend.data.model.TeamMember
 import com.simats.resolveiq_frontend.data.model.UpdateTicketActionRequest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -95,6 +97,34 @@ class TicketRepository(private val api: TicketApiService) {
                 Result.success(response.data!!)
             } else {
                 Result.failure(Exception(response.message ?: "Failed to $action ticket"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    suspend fun assignTicket(context: android.content.Context, ticketId: Int, agentId: Int): Result<Unit> {
+        return try {
+            val teamLeadApi = RetrofitClient.getTeamLeadApi(context)
+            val response = teamLeadApi.assignTicket(AssignTicketRequest(ticketId, agentId))
+            if (response.success) {
+                Result.success(Unit)
+            } else {
+                Result.failure(Exception(response.message ?: "Failed to assign ticket"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    suspend fun getTeamMembers(context: android.content.Context): Result<List<TeamMember>> {
+        return try {
+            val teamLeadApi = RetrofitClient.getTeamLeadApi(context)
+            val response = teamLeadApi.getTeamMembers()
+            if (response.success) {
+                Result.success(response.data ?: emptyList())
+            } else {
+                Result.failure(Exception(response.message ?: "Failed to fetch team members"))
             }
         } catch (e: Exception) {
             Result.failure(e)

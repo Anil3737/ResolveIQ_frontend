@@ -12,4 +12,7 @@ interface TeamLeadApiService {
 
     @POST("api/team-lead/approve-ticket")
     suspend fun approveTicket(@Body request: ApproveTicketRequest): ApiResponse<Any>
+
+    @POST("api/team-lead/assign-ticket")
+    suspend fun assignTicket(@Body request: AssignTicketRequest): ApiResponse<Any>
 }

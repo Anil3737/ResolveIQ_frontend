@@ -4,9 +4,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.simats.resolveiq_frontend.api.RetrofitClient
+import com.simats.resolveiq_frontend.data.model.TeamMember
 import com.simats.resolveiq_frontend.data.model.Ticket
 import com.simats.resolveiq_frontend.databinding.ActivityTicketDetailsBinding
 import com.simats.resolveiq_frontend.repository.TicketRepository
@@ -47,12 +49,10 @@ class TicketDetailsActivity : AppCompatActivity() {
         binding.tvTicketTitle.text = ticket.title
         binding.tvCreatedAt.text = "Created on: ${convertUtcToLocal(ticket.created_at)}"
         
-        // Extract location from description if it follows our pattern "Location: ... \n\n ..."
         val locationRegex = "Location: (.*?)\\n".toRegex()
         val matchResult = locationRegex.find(ticket.description)
         val extractedLocation = matchResult?.groupValues?.get(1) ?: "N/A"
         
-        // Clean description (remove location prefix for display if it matches)
         val cleanDescription = if (matchResult != null) {
             ticket.description.replaceFirst("Location: .*?\\n\\n".toRegex(), "")
         } else {
@@ -62,7 +62,6 @@ class TicketDetailsActivity : AppCompatActivity() {
         binding.tvLocation.text = extractedLocation
         binding.tvDescription.text = cleanDescription
         
-        // SLA placeholder (Priority based mockup)
         binding.tvSla.text = when(ticket.priority.lowercase()) {
             "high" -> "4 Hours"
             "medium" -> "8 Hours"
@@ -91,12 +90,14 @@ class TicketDetailsActivity : AppCompatActivity() {
                 if (ticket.status.uppercase() == "OPEN") {
                     binding.btnApprove.visibility = View.VISIBLE
                     binding.btnApprove.setOnClickListener {
-                        performAction { repository.approveTicket(this, ticket.id) }
+                        performAction { repository.approveTicket(this@TicketDetailsActivity, ticket.id) }
                     }
                 } else if (ticket.status.uppercase() == "APPROVED" && ticket.assigned_to == null) {
-                    // TL can also pick up approved tickets if they want, or we can just leave it for agents
-                    // For now, let's just make sure they see the ticket.
-                    binding.actionLayout.visibility = View.GONE
+                    binding.btnAccept.visibility = View.VISIBLE
+                    binding.btnAccept.text = "Assign to Agent"
+                    binding.btnAccept.setOnClickListener {
+                        showAssignAgentDialog(ticket)
+                    }
                 } else {
                     binding.actionLayout.visibility = View.GONE
                 }
@@ -105,15 +106,15 @@ class TicketDetailsActivity : AppCompatActivity() {
                 if (ticket.can_accept == true) {
                     binding.btnAccept.visibility = View.VISIBLE
                     binding.btnAccept.setOnClickListener {
-                        performAction { repository.updateTicketAction(this, ticket.id, "ACCEPT") }
+                        performAction { repository.updateTicketAction(this@TicketDetailsActivity, ticket.id, "ACCEPT") }
                     }
                 } else if (ticket.can_decline == true || ticket.can_resolve == true) {
                     binding.agentActiveActions.visibility = View.VISIBLE
                     binding.btnDecline.setOnClickListener {
-                        performAction { repository.updateTicketAction(this, ticket.id, "DECLINE") }
+                        performAction { repository.updateTicketAction(this@TicketDetailsActivity, ticket.id, "DECLINE") }
                     }
                     binding.btnResolve.setOnClickListener {
-                        performAction { repository.updateTicketAction(this, ticket.id, "RESOLVE") }
+                        performAction { repository.updateTicketAction(this@TicketDetailsActivity, ticket.id, "RESOLVE") }
                     }
                 } else {
                     binding.actionLayout.visibility = View.GONE
@@ -125,13 +126,37 @@ class TicketDetailsActivity : AppCompatActivity() {
         }
     }
 
+    private fun showAssignAgentDialog(ticket: Ticket) {
+        lifecycleScope.launch {
+            val result = repository.getTeamMembers(this@TicketDetailsActivity)
+            if (result.isSuccess) {
+                val members = result.getOrNull() ?: emptyList()
+                if (members.isEmpty()) {
+                    Toast.makeText(this@TicketDetailsActivity, "No team members available", Toast.LENGTH_SHORT).show()
+                    return@launch
+                }
+                val names = members.map { "${it.full_name} (Active: ${it.active_tickets})" }.toTypedArray()
+                AlertDialog.Builder(this@TicketDetailsActivity)
+                    .setTitle("Assign Ticket to Agent")
+                    .setItems(names) { _, which ->
+                        val selectedAgent = members[which]
+                        performAction { repository.assignTicket(this@TicketDetailsActivity, ticket.id, selectedAgent.id) }
+                    }
+                    .setNegativeButton("Cancel", null)
+                    .show()
+            } else {
+                Toast.makeText(this@TicketDetailsActivity, "Error: ${result.exceptionOrNull()?.message}", Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
     private fun performAction(actionCall: suspend () -> Result<*>) {
         lifecycleScope.launch {
             binding.actionLayout.isEnabled = false
             val result = actionCall()
             if (result.isSuccess) {
                 Toast.makeText(this@TicketDetailsActivity, "Action performed successfully", Toast.LENGTH_SHORT).show()
-                finish() // Go back and refresh
+                finish()
             } else {
                 Toast.makeText(this@TicketDetailsActivity, "Error: ${result.exceptionOrNull()?.message}", Toast.LENGTH_LONG).show()
                 binding.actionLayout.isEnabled = true

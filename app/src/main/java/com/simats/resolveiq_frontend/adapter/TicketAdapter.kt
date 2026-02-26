@@ -17,15 +17,40 @@ class TicketAdapter(
             binding.tvTicketTitle.text = ticket.title
             binding.tvTicketDescription.text = ticket.description
             binding.tvTicketId.text = ticket.ticket_number ?: "IQ-IT-2026-${String.format("%06d", ticket.id)}"
-            
+
             // Status styling
             binding.tvTicketStatus.text = ticket.status.replace("_", " ")
             binding.tvTicketStatus.setTextColor(Color.parseColor(getStatusColor(ticket.status)))
-            
-            // Tags
+
+            // Priority tag
             binding.tvTag1.text = ticket.priority
             binding.tvTag1.setTextColor(Color.parseColor(getPriorityColor(ticket.priority)))
-            
+
+            // Department as second tag
+            if (!ticket.department_name.isNullOrBlank()) {
+                binding.tvTag2.text = ticket.department_name
+                binding.tvTag2.visibility = android.view.View.VISIBLE
+            } else {
+                binding.tvTag2.visibility = android.view.View.GONE
+            }
+
+            // Assignee name
+            binding.tvAssigneeName.text = ticket.assigned_to_name ?: "Unassigned"
+
+            // SLA time remaining
+            val secondsLeft = ticket.sla_remaining_seconds
+            if (secondsLeft != null && secondsLeft > 0) {
+                val hours = secondsLeft / 3600
+                val mins = (secondsLeft % 3600) / 60
+                binding.tvTimeRemaining.text = if (hours > 0) "${hours}h ${mins}m" else "${mins}m"
+                binding.tvTimeRemaining.setTextColor(Color.parseColor(if (secondsLeft < 3600) "#EF4444" else "#F57C00"))
+            } else if (ticket.sla_breached == true) {
+                binding.tvTimeRemaining.text = "SLA Breached"
+                binding.tvTimeRemaining.setTextColor(Color.parseColor("#EF4444"))
+            } else {
+                binding.tvTimeRemaining.text = ""
+            }
+
             binding.root.setOnClickListener { onTicketClick(ticket) }
         }
     }
@@ -33,6 +58,7 @@ class TicketAdapter(
     private fun getStatusColor(status: String): String {
         return when (status.uppercase()) {
             "OPEN" -> "#2E7D32" // Green
+            "APPROVED" -> "#7B1FA2" // Purple
             "IN_PROGRESS" -> "#F57C00" // Orange
             "RESOLVED" -> "#1976D2" // Blue
             "CLOSED" -> "#757575" // Grey

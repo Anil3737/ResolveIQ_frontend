@@ -43,8 +43,7 @@ class TeamLeadHomeActivity : AppCompatActivity() {
 
         // Quick Action Cards
         binding.btnTeamTickets.setOnClickListener {
-            // startActivity(Intent(this, TeamTicketsActivity::class.java))
-            Toast.makeText(this, "Opening Team Tickets", Toast.LENGTH_SHORT).show()
+            startActivity(Intent(this, TeamLeadTicketsActivity::class.java))
         }
 
         binding.btnHighRisk.setOnClickListener {
@@ -65,7 +64,7 @@ class TeamLeadHomeActivity : AppCompatActivity() {
             when (item.itemId) {
                 R.id.nav_tl_dashboard -> true
                 R.id.nav_tl_tickets -> {
-                    Toast.makeText(this, "Team Tickets Page", Toast.LENGTH_SHORT).show()
+                    startActivity(Intent(this, TeamLeadTicketsActivity::class.java))
                     true
                 }
                 R.id.nav_tl_activity -> {
