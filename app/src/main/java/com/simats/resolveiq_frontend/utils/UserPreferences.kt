@@ -26,8 +26,8 @@ class UserPreferences(context: Context) {
         return prefs.getString(KEY_TOKEN, null)
     }
 
-    fun saveUserName(name: String) {
-        prefs.edit().putString(KEY_USER_NAME, name).apply()
+    fun saveUserName(name: String?) {
+        prefs.edit().putString(KEY_USER_NAME, name ?: "User").apply()
     }
 
     fun getUserName(): String? {
@@ -35,8 +35,7 @@ class UserPreferences(context: Context) {
     }
 
     fun saveUserRole(role: String?) {
-        val finalRole = role ?: "employee"
-        prefs.edit().putString(KEY_USER_ROLE, finalRole).apply()
+        prefs.edit().putString(KEY_USER_ROLE, role ?: "employee").apply()
     }
 
     fun getUserRole(): String? {
@@ -51,8 +50,8 @@ class UserPreferences(context: Context) {
         return prefs.getInt(KEY_USER_ID, -1)
     }
 
-    fun saveUserEmail(email: String) {
-        prefs.edit().putString(KEY_USER_EMAIL, email).apply()
+    fun saveUserEmail(email: String?) {
+        prefs.edit().putString(KEY_USER_EMAIL, email ?: "").apply()
     }
 
     fun getUserEmail(): String? {

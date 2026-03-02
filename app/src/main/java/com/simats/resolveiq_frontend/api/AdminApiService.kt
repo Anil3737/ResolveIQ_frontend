@@ -19,6 +19,9 @@ interface AdminApiService {
     @GET("api/admin/teams")
     suspend fun getTeams(): ApiResponse<List<TeamData>>
 
+    @GET("api/admin/check-id")
+    suspend fun checkEmployeeIdExists(@Query("emp_id") empId: String): ApiResponse<Map<String, Boolean>>
+
     @POST("api/admin/create-staff")
     suspend fun createStaff(@Body request: CreateStaffRequest): ApiResponse<User>
 
@@ -27,9 +30,6 @@ interface AdminApiService {
     
     @POST("api/admin/create-agent")
     suspend fun createAgent(@Body request: com.simats.resolveiq_frontend.data.model.CreateAgentRequest): ApiResponse<User>
-
-    @GET("api/admin/tickets")
-    suspend fun getTickets(): ApiResponse<List<com.simats.resolveiq_frontend.data.model.Ticket>>
 
     @GET("api/admin/system-activity")
     suspend fun getSystemActivity(
@@ -50,4 +50,10 @@ interface AdminApiService {
 
     @GET("api/admin/teams/{id}/members")
     suspend fun getTeamMembers(@Path("id") id: Int): ApiResponse<List<User>>
+
+    @retrofit2.http.PUT("api/admin/teams/{id}")
+    suspend fun updateTeam(@Path("id") id: Int, @Body request: CreateTeamRequest): ApiResponse<Map<String, Any>>
+
+    @retrofit2.http.DELETE("api/admin/teams/{id}")
+    suspend fun deleteTeam(@Path("id") id: Int): ApiResponse<Map<String, Any>>
 }

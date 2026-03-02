@@ -129,7 +129,7 @@
                             android:id="@+id/tvWelcomeUser"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Welcome back, Jane!"
+                            android:text="Welcome!"
                             android:textColor="#FFFFFF"
                             android:textSize="20sp"
                             android:textStyle="bold" />
@@ -139,7 +139,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
-                            android:text="Need help? Create a ticket or check your\nexisting requests below"
+                            android:text=" "
                             android:textColor="#E0F2FE"
                             android:textSize="14sp" />
 
@@ -311,7 +311,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
-                                android:text="5"
+                                android:text="0"
                                 android:textColor="?attr/colorOnSurface"
                                 android:textSize="24sp"
                                 android:textStyle="bold" />
@@ -320,7 +320,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
-                                android:text="new workflows"
+                                android:text=" "
                                 android:textColor="#9CA3AF"
                                 android:textSize="11sp" />
 
@@ -371,7 +371,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
-                                android:text="2"
+                                android:text="0"
                                 android:textColor="?attr/colorOnSurface"
                                 android:textSize="24sp"
                                 android:textStyle="bold" />
@@ -380,7 +380,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
-                                android:text="Waiting on 3rd"
+                                android:text=" "
                                 android:textColor="#9CA3AF"
                                 android:textSize="11sp" />
 
@@ -431,7 +431,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
-                                android:text="12"
+                                android:text="0"
                                 android:textColor="?attr/colorOnSurface"
                                 android:textSize="24sp"
                                 android:textStyle="bold" />
@@ -440,7 +440,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
-                                android:text="This month"
+                                android:text=" "
                                 android:textColor="#9CA3AF"
                                 android:textSize="11sp" />
 
@@ -490,144 +490,18 @@
                     android:nestedScrollingEnabled="false"
                     tools:listitem="@layout/item_ticket" />
 
-                <!-- Announcements Section -->
-                <LinearLayout
+                <TextView
+                    android:id="@+id/tvNoTicketsMessage"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
-                    android:background="?attr/colorSurfaceVariant"
-                    android:orientation="vertical"
-                    android:padding="16dp">
+                    android:layout_marginHorizontal="16dp"
+                    android:gravity="center"
+                    android:text="No recent tickets found."
+                    android:textColor="#6B7280"
+                    android:textSize="14sp"
+                    android:visibility="gone" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="18dp"
-                            android:layout_height="18dp"
-                            android:src="@drawable/ic_announcement" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:text="Announcements"
-                            android:textColor="#374151"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
-
-                    </LinearLayout>
-
-                    <!-- Announcement Items -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:orientation="vertical">
-
-                        <!-- Announcement 1 -->
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <View
-                                android:layout_width="6dp"
-                                android:layout_height="6dp"
-                                android:layout_gravity="center_vertical"
-                                android:layout_marginTop="4dp"
-                                android:background="@drawable/dot_blue" />
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="12dp"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Scheduled Maintenance - VPN Services"
-                                    android:textColor="?attr/colorOnSurface"
-                                    android:textSize="13sp"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="4dp"
-                                    android:text="VPN will be temporarily unavailable on Friday 8pm-10pm for system upgrades."
-                                    android:textColor="?attr/colorOnSurfaceVariant"
-                                    android:textSize="12sp" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="6dp"
-                                    android:text="Posted 2 days ago"
-                                    android:textColor="?attr/colorOnSurfaceVariant"
-                                    android:textSize="11sp" />
-
-                            </LinearLayout>
-
-                        </LinearLayout>
-
-                        <!-- Announcement 2 -->
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="20dp"
-                            android:orientation="horizontal">
-
-                            <View
-                                android:layout_width="6dp"
-                                android:layout_height="6dp"
-                                android:layout_gravity="center_vertical"
-                                android:layout_marginTop="4dp"
-                                android:background="@drawable/dot_orange" />
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="12dp"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="New Self-Service Knowledge Base Available"
-                                    android:textColor="?attr/colorOnSurface"
-                                    android:textSize="13sp"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="4dp"
-                                    android:text="Check out our new knowledge base for quick solutions to common IT issues before creating a ticket."
-                                    android:textColor="#6B7280"
-                                    android:textSize="12sp" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="6dp"
-                                    android:text="Posted 1 week ago"
-                                    android:textColor="#9CA3AF"
-                                    android:textSize="11sp" />
-
-                            </LinearLayout>
-
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                </LinearLayout>
 
             </LinearLayout>
 

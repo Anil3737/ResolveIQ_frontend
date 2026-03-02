@@ -2,9 +2,10 @@ package com.simats.resolveiq_frontend
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
 import android.text.InputType
+import android.text.TextWatcher
 import android.util.Log
-import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -12,7 +13,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.simats.resolveiq_frontend.api.RetrofitClient
 import com.simats.resolveiq_frontend.repository.AuthRepository
 import com.simats.resolveiq_frontend.utils.UserPreferences
@@ -22,10 +22,13 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var emailInput: EditText
     private lateinit var passwordInput: EditText
-    private lateinit var togglePasswordVisibility: ImageView
+    private lateinit var tvEmailError: TextView
+    private lateinit var tvPasswordError: TextView
+    private lateinit var tvLoginError: TextView
+    private lateinit var ivTogglePasswordVisibility: ImageView
     private lateinit var forgotPasswordText: TextView
     private lateinit var signInButton: Button
-    
+
     private lateinit var authRepository: AuthRepository
     private lateinit var userPreferences: UserPreferences
     private var isPasswordVisible = false
@@ -39,23 +42,43 @@ class LoginActivity : AppCompatActivity() {
         setupClickListeners()
     }
 
-    private fun initializeViews() {
-        emailInput = findViewById(R.id.emailInput)
-        passwordInput = findViewById(R.id.passwordInput)
-        togglePasswordVisibility = findViewById(R.id.togglePasswordVisibility)
-        forgotPasswordText = findViewById(R.id.forgotPasswordText)
-        signInButton = findViewById(R.id.signInButton)
-        
-        // Setup Account Buttons
-        findViewById<Button>(R.id.btnCreateAccount).setOnClickListener {
-            startActivity(Intent(this, RegisterActivity::class.java))
-        }
-    }
-
     private fun initializeDependencies() {
         val authApi = RetrofitClient.getAuthApi(this)
         authRepository = AuthRepository(authApi)
         userPreferences = UserPreferences(this)
+    }
+
+    private fun initializeViews() {
+        emailInput = findViewById(R.id.emailInput)
+        passwordInput = findViewById(R.id.passwordInput)
+        tvEmailError = findViewById(R.id.tvEmailError)
+        tvPasswordError = findViewById(R.id.tvPasswordError)
+        tvLoginError = findViewById(R.id.tvLoginError)
+        ivTogglePasswordVisibility = findViewById(R.id.togglePasswordVisibility)
+        forgotPasswordText = findViewById(R.id.forgotPasswordText)
+        signInButton = findViewById(R.id.signInButton)
+
+        emailInput.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                tvEmailError.text = ""
+                tvLoginError.visibility = android.view.View.GONE
+            }
+            override fun afterTextChanged(s: Editable?) {}
+        })
+
+        passwordInput.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                tvPasswordError.text = ""
+                tvLoginError.visibility = android.view.View.GONE
+            }
+            override fun afterTextChanged(s: Editable?) {}
+        })
+
+        findViewById<Button>(R.id.btnCreateAccount).setOnClickListener {
+            startActivity(Intent(this, RegisterActivity::class.java))
+        }
     }
 
     private fun setupClickListeners() {
@@ -63,7 +86,7 @@ class LoginActivity : AppCompatActivity() {
             performLogin()
         }
 
-        togglePasswordVisibility.setOnClickListener {
+        ivTogglePasswordVisibility.setOnClickListener {
             togglePasswordVisibility()
         }
 
@@ -77,7 +100,12 @@ class LoginActivity : AppCompatActivity() {
         val password = passwordInput.text.toString()
 
         if (email.isEmpty() || password.isEmpty()) {
-            Toast.makeText(this, "Please enter email and password", Toast.LENGTH_SHORT).show()
+            if (email.isEmpty()) {
+                tvEmailError.text = "Email cannot be empty"
+            }
+            if (password.isEmpty()) {
+                tvPasswordError.text = "Password cannot be empty"
+            }
             return
         }
 
@@ -85,13 +113,12 @@ class LoginActivity : AppCompatActivity() {
         lifecycleScope.launch {
             val result = authRepository.login(email, password)
             setLoading(false)
-            
+
             if (result.isSuccess) {
                 val response = result.getOrThrow()
                 val data = response.data
-                
+
                 if (data != null) {
-                    // Save to Preferences
                     userPreferences.saveToken(data.access_token)
                     userPreferences.saveUserId(data.user.id)
                     userPreferences.saveUserRole(data.user.role ?: "employee")
@@ -99,27 +126,52 @@ class LoginActivity : AppCompatActivity() {
                     userPreferences.saveUserEmail(data.user.email ?: "")
                     userPreferences.saveUserLocation(data.user.location)
                     userPreferences.saveUserPhone(data.user.phone)
-                    
-                    Toast.makeText(this@LoginActivity, "Login Successful: ${data.user.full_name}", Toast.LENGTH_SHORT).show()
-                    
-                    // Navigate based on role
-                    val role = data.user.role?.uppercase() ?: "EMPLOYEE"
-                    val targetActivity = when (role) {
-                        "ADMIN" -> AdminHomeActivity::class.java
-                        "TEAM_LEAD" -> TeamLeadHomeActivity::class.java
-                        "AGENT" -> SupportAgentHomeActivity::class.java
-                        else -> EmployeeHomeActivity::class.java
+
+                    Toast.makeText(
+                        this@LoginActivity,
+                        "Login Successful: ${data.user.full_name}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    val role = (data.user.role ?: "EMPLOYEE").uppercase()
+
+                    if (data.user.requirePasswordChange) {
+                        val intent = Intent(this@LoginActivity, FirstLoginPromptActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        startActivity(intent)
+                    } else {
+                        val targetActivity = when (role) {
+                            "ADMIN" -> AdminHomeActivity::class.java
+                            "TEAM_LEAD" -> TeamLeadHomeActivity::class.java
+                            "AGENT" -> SupportAgentHomeActivity::class.java
+                            else -> EmployeeHomeActivity::class.java
+                        }
+                        val intent = Intent(this@LoginActivity, targetActivity)
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        startActivity(intent)
                     }
-                    val intent = Intent(this@LoginActivity, targetActivity)
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    startActivity(intent)
                     finish()
-                } else {
-                    showErrorDialog("Login Error", "Invalid response from server")
                 }
             } else {
-                val message = result.exceptionOrNull()?.message ?: "Login failed"
-                showErrorDialog("Login Error", message)
+                val exception = result.exceptionOrNull()
+                val message = exception?.message ?: "Login failed"
+
+                // Clear previous errors
+                tvEmailError.text = ""
+                tvPasswordError.text = ""
+                tvLoginError.visibility = android.view.View.GONE
+
+                // Show a single combined error for invalid credentials (401)
+                val is401 = (exception is retrofit2.HttpException && exception.code() == 401) ||
+                        message.contains("401") ||
+                        message.contains("Unauthorized", ignoreCase = true)
+
+                if (is401) {
+                    tvLoginError.text = "The email address or password you entered is invalid"
+                    tvLoginError.visibility = android.view.View.VISIBLE
+                } else {
+                    Log.e("LoginActivity", "Login error: $message")
+                }
             }
         }
     }
@@ -134,20 +186,12 @@ class LoginActivity : AppCompatActivity() {
     private fun togglePasswordVisibility() {
         if (isPasswordVisible) {
             passwordInput.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
-            togglePasswordVisibility.setImageResource(R.drawable.ic_visibility_off)
+            ivTogglePasswordVisibility.setImageResource(R.drawable.ic_visibility_off)
         } else {
             passwordInput.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
-            togglePasswordVisibility.setImageResource(R.drawable.ic_visibility)
+            ivTogglePasswordVisibility.setImageResource(R.drawable.ic_visibility)
         }
         isPasswordVisible = !isPasswordVisible
         passwordInput.setSelection(passwordInput.text.length)
-    }
-
-    private fun showErrorDialog(title: String, message: String) {
-        MaterialAlertDialogBuilder(this)
-            .setTitle(title)
-            .setMessage(message)
-            .setPositiveButton("OK", null)
-            .show()
     }
 }

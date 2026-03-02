@@ -5,12 +5,17 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
+import androidx.lifecycle.lifecycleScope
 import com.simats.resolveiq_frontend.databinding.ActivitySupportAgentHomeBinding
+import kotlinx.coroutines.launch
 
 class SupportAgentHomeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySupportAgentHomeBinding
     private lateinit var userPreferences: com.simats.resolveiq_frontend.utils.UserPreferences
+    private lateinit var repository: com.simats.resolveiq_frontend.repository.TicketRepository
+
+    private lateinit var adapter: com.simats.resolveiq_frontend.adapter.HighPriorityTicketAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,17 +23,66 @@ class SupportAgentHomeActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         userPreferences = com.simats.resolveiq_frontend.utils.UserPreferences(this)
+        repository = com.simats.resolveiq_frontend.repository.TicketRepository(
+            com.simats.resolveiq_frontend.api.RetrofitClient.getTicketApi(this)
+        )
+        
+        adapter = com.simats.resolveiq_frontend.adapter.HighPriorityTicketAdapter(emptyList()) { ticket ->
+            val intent = Intent(this, TicketDetailsActivity::class.java).apply {
+                putExtra("ticket", ticket)
+            }
+            startActivity(intent)
+        }
+        binding.rvHighPriorityQueue.adapter = adapter
+        
         val storedName = userPreferences.getUserName() ?: "Agent"
         binding.tvGreetingAgent.text = "Good morning, $storedName"
 
         setupListeners()
         setupBottomNavigation()
         setupDrawer()
+        setupBackPressHandler()
+        fetchDashboardStats()
+    }
+
+    private fun fetchDashboardStats() {
+        lifecycleScope.launch {
+            try {
+                val result = repository.getTickets()
+                if (result.isSuccess) {
+                    val tickets = result.getOrDefault(emptyList())
+                    
+                    val activeCount = tickets.count { 
+                        it.status.uppercase() in listOf("OPEN", "APPROVED", "IN_PROGRESS") 
+                    }
+                    val resolvedCount = tickets.count { 
+                        it.status.uppercase() in listOf("RESOLVED", "CLOSED") 
+                    }
+                    val breachCount = tickets.count { it.sla_breached == true }
+                    
+                    binding.tvActiveTicketsCount.text = activeCount.toString()
+                    binding.tvResolvedTicketsCount.text = resolvedCount.toString()
+                    binding.tvBreachTicketsCount.text = breachCount.toString()
+
+                    // Filter for High Priority Queue: P1, P2, or High Risk (>= 70)
+                    val highPriorityTickets = tickets.filter {
+                        val status = it.status.uppercase()
+                        val risk = it.ai_score ?: it.breach_risk ?: 0
+                        (status in listOf("OPEN", "APPROVED", "IN_PROGRESS", "PENDING")) &&
+                        (it.priority.uppercase() in listOf("P1", "P2") || risk >= 70)
+                    }.sortedByDescending { it.ai_score ?: it.breach_risk ?: 0 }
+                    
+                    adapter.updateTickets(highPriorityTickets)
+                }
+            } catch (e: Exception) {
+                // Silently fail for stats
+            }
+        }
     }
 
     private fun setupListeners() {
         binding.ivMenu.setOnClickListener {
-            binding.drawerLayout.openDrawer(GravityCompat.START)
+            binding.drawerLayout.openDrawer(androidx.core.view.GravityCompat.START)
         }
 
         binding.ivAgentProfile.setOnClickListener {
@@ -41,6 +95,10 @@ class SupportAgentHomeActivity : AppCompatActivity() {
 
         binding.fabCreate.setOnClickListener {
             startActivity(Intent(this, CreateTicketActivity::class.java))
+        }
+        
+        binding.cardAssignedQueue.setOnClickListener {
+            startActivity(Intent(this, AssignedTicketsActivity::class.java))
         }
     }
 
@@ -88,11 +146,6 @@ class SupportAgentHomeActivity : AppCompatActivity() {
             Toast.makeText(this, "Notifications coming soon...", Toast.LENGTH_SHORT).show()
         }
 
-        navBinding.agentMenuPerformance.setOnClickListener {
-            binding.drawerLayout.closeDrawer(GravityCompat.START)
-            Toast.makeText(this, "Performance coming soon...", Toast.LENGTH_SHORT).show()
-        }
-
         navBinding.agentMenuSettings.setOnClickListener {
             binding.drawerLayout.closeDrawer(GravityCompat.START)
             startActivity(Intent(this, SettingsActivity::class.java))
@@ -108,12 +161,16 @@ class SupportAgentHomeActivity : AppCompatActivity() {
         }
     }
 
-    @Deprecated("Deprecated in Java")
-    override fun onBackPressed() {
-        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            binding.drawerLayout.closeDrawer(GravityCompat.START)
-        } else {
-            super.onBackPressed()
-        }
+    private fun setupBackPressHandler() {
+        onBackPressedDispatcher.addCallback(this, object : androidx.activity.OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                    binding.drawerLayout.closeDrawer(GravityCompat.START)
+                } else {
+                    isEnabled = false
+                    onBackPressedDispatcher.onBackPressed()
+                }
+            }
+        })
     }
 }

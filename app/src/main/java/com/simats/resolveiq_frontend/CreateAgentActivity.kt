@@ -9,6 +9,8 @@ import androidx.lifecycle.lifecycleScope
 import com.simats.resolveiq_frontend.api.RetrofitClient
 import com.simats.resolveiq_frontend.data.model.User
 import com.simats.resolveiq_frontend.databinding.ActivityCreateAgentBinding
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class CreateAgentActivity : AppCompatActivity() {
@@ -67,6 +69,35 @@ class CreateAgentActivity : AppCompatActivity() {
                 registerAgent(name, empId, department, location)
             }
         }
+
+        // Real-time Employee ID validation
+        var checkJob: kotlinx.coroutines.Job? = null
+        binding.etEmployeeId.addTextChangedListener(object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                checkJob?.cancel()
+                val empId = s.toString().trim().uppercase()
+                if (empId.length == 7 && empId.startsWith("EMP")) {
+                    checkJob = lifecycleScope.launch {
+                        delay(500) // Debounce
+                        try {
+                            val response = RetrofitClient.getAdminApi(this@CreateAgentActivity).checkEmployeeIdExists(empId)
+                            if (response.success && response.data?.get("exists") == true) {
+                                binding.tilEmployeeId.error = "Employee id Already exist"
+                            } else {
+                                // Only clear if it was the "already exists" error
+                                if (binding.tilEmployeeId.error == "Employee id Already exist") {
+                                    binding.tilEmployeeId.error = null
+                                }
+                            }
+                        } catch (e: Exception) {
+                            // Silently ignore or log check errors
+                        }
+                    }
+                }
+            }
+            override fun afterTextChanged(s: android.text.Editable?) {}
+        })
     }
 
 

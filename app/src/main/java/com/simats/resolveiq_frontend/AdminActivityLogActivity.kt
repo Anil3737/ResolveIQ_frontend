@@ -9,6 +9,8 @@ import com.simats.resolveiq_frontend.data.model.ActivityType
 import com.simats.resolveiq_frontend.data.model.AdminActivityLog
 import com.simats.resolveiq_frontend.databinding.ActivityAdminActivityLogBinding
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.lifecycle.Lifecycle
 import kotlinx.coroutines.launch
 import com.simats.resolveiq_frontend.data.model.ActivityLogResponse
 
@@ -97,30 +99,32 @@ class AdminActivityLogActivity : AppCompatActivity() {
         isLoading = true
         val actionType = getSelectedActionType()
 
-        lifecycleScope.launchWhenStarted {
-            try {
-                val response = adminApiService.getSystemActivity(
-                    page = currentPage,
-                    limit = limit,
-                    actionType = actionType
-                )
-                
-                if (response.success) {
-                    if (refresh) fullLogList.clear()
+        lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                try {
+                    val response = adminApiService.getSystemActivity(
+                        page = currentPage,
+                        limit = limit,
+                        actionType = actionType
+                    )
                     
-                    val newLogs = response.logs
-                    fullLogList.addAll(newLogs)
-                    activityAdapter.updateData(fullLogList.toList())
-                    
-                    isLastPage = newLogs.size < limit
-                    if (!isLastPage) currentPage++
-                } else {
-                    android.widget.Toast.makeText(this@AdminActivityLogActivity, response.message ?: "Failed to fetch logs", android.widget.Toast.LENGTH_SHORT).show()
+                    if (response.success) {
+                        if (refresh) fullLogList.clear()
+                        
+                        val newLogs = response.logs
+                        fullLogList.addAll(newLogs)
+                        activityAdapter.updateData(fullLogList.toList())
+                        
+                        isLastPage = newLogs.size < limit
+                        if (!isLastPage) currentPage++
+                    } else {
+                        android.widget.Toast.makeText(this@AdminActivityLogActivity, response.message ?: "Failed to fetch logs", android.widget.Toast.LENGTH_SHORT).show()
+                    }
+                } catch (e: Exception) {
+                    android.widget.Toast.makeText(this@AdminActivityLogActivity, "Error: ${e.message}", android.widget.Toast.LENGTH_SHORT).show()
+                } finally {
+                    isLoading = false
                 }
-            } catch (e: Exception) {
-                android.widget.Toast.makeText(this@AdminActivityLogActivity, "Error: ${e.message}", android.widget.Toast.LENGTH_SHORT).show()
-            } finally {
-                isLoading = false
             }
         }
     }

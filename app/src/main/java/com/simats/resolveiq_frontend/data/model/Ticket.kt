@@ -18,6 +18,7 @@ data class Ticket(
     val created_by_name: String?,
     val created_by_emp_id: String?,
     val sla_deadline: String?,
+    val sla_hours: Int? = null,
     val sla_remaining_seconds: Long?,
     val approved_at: String? = null,
     val accepted_at: String? = null,
@@ -27,5 +28,6 @@ data class Ticket(
     val assigned_to_name: String? = null,
     val can_accept: Boolean? = false,
     val can_decline: Boolean? = false,
-    val can_resolve: Boolean? = false
+    val can_resolve: Boolean? = false,
+    val ai_explanation: Map<String, Any>? = null
 ) : Serializable

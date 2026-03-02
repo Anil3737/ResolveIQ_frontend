@@ -58,15 +58,15 @@ class ProfileActivity : AppCompatActivity() {
         val storedRole = userPreferences.getUserRole() ?: "Premium AI Support Member"
         
         binding.tvProfileName.text = storedName
-        binding.tvProfileMemberStatus.text = storedRole.lowercase().capitalize()
+        binding.tvProfileMemberStatus.text = storedRole.lowercase().replaceFirstChar { it.uppercase() }
 
         lifecycleScope.launch {
             val result = authRepository.getCurrentUser()
             if (result.isSuccess) {
                 val user = result.getOrNull()
                 user?.let {
-                    binding.tvProfileName.text = it.full_name
-                    binding.tvProfileMemberStatus.text = it.role.lowercase().capitalize()
+                    binding.tvProfileName.text = it.full_name ?: "User"
+                    binding.tvProfileMemberStatus.text = it.role?.lowercase()?.replaceFirstChar { it.uppercase() } ?: "Support Member"
                     
                     // Sync preferences
                     userPreferences.saveUserName(it.full_name)

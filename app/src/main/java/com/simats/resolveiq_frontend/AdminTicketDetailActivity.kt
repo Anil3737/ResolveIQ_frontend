@@ -21,7 +21,12 @@ class AdminTicketDetailActivity : AppCompatActivity() {
         binding = ActivityAdminTicketDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val ticket = intent.getSerializableExtra("ticket") as? Ticket
+        val ticket = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            intent.getSerializableExtra("ticket", Ticket::class.java)
+        } else {
+            @Suppress("DEPRECATION")
+            intent.getSerializableExtra("ticket") as? Ticket
+        }
         if (ticket == null) {
             finish()
             return
@@ -52,6 +57,34 @@ class AdminTicketDetailActivity : AppCompatActivity() {
 
         binding.tvLocation.text = extractedLocation
         binding.tvDescription.text = cleanDescription
+
+        // Risk Score
+        if (ticket.breach_risk != null) {
+            binding.tvRiskScore.visibility = android.view.View.VISIBLE
+            binding.tvRiskScore.text = "RISK: ${ticket.breach_risk}%"
+        } else {
+            binding.tvRiskScore.visibility = android.view.View.GONE
+        }
+
+        // AI Explanation
+        val explanationText = ticket.ai_explanation?.let {
+            val parts = mutableListOf<String>()
+            it["severity"]?.let { v -> parts.add("Severity: $v") }
+            it["impact"]?.let { v -> parts.add("Impact: $v") }
+            it["urgency"]?.let { v -> parts.add("Urgency: $v") }
+            it["history"]?.let { v -> parts.add("History: $v") }
+            it["complexity"]?.let { v -> parts.add("Complexity: $v") }
+            if (parts.isNotEmpty()) "Risk Factors Breakdown:\n• ${parts.joinToString("\n• ")}" else null
+        }
+
+        if (!explanationText.isNullOrEmpty()) {
+            binding.tvAiExplanationLabel.visibility = android.view.View.VISIBLE
+            binding.tvAiExplanation.visibility = android.view.View.VISIBLE
+            binding.tvAiExplanation.text = explanationText
+        } else {
+            binding.tvAiExplanationLabel.visibility = android.view.View.GONE
+            binding.tvAiExplanation.visibility = android.view.View.GONE
+        }
 
         // Employee Details
         binding.tvEmployeeName.text = ticket.created_by_name ?: "Unknown Employee"

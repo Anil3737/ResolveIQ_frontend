@@ -61,6 +61,26 @@
             android:exported="false" />
 
         <activity
+            android:name=".TicketWaitingActivity"
+            android:theme="@style/Theme.Resolveiq_frontend"
+            android:exported="false" />
+
+        <activity
+            android:name=".TicketFailureActivity"
+            android:theme="@style/Theme.Resolveiq_frontend"
+            android:exported="false" />
+
+        <activity
+            android:name=".AdminGroupedTicketsActivity"
+            android:theme="@style/Theme.Resolveiq_frontend"
+            android:exported="false" />
+
+        <activity
+            android:name=".AdminFilteredTicketsActivity"
+            android:theme="@style/Theme.Resolveiq_frontend"
+            android:exported="false" />
+
+        <activity
             android:name=".AgreementsActivity"
             android:theme="@style/Theme.Resolveiq_frontend"
             android:exported="false" />
@@ -171,6 +191,11 @@
             android:exported="false" />
 
         <activity
+            android:name=".AssignedTicketsActivity"
+            android:theme="@style/Theme.Resolveiq_frontend"
+            android:exported="false" />
+
+        <activity
             android:name=".AgentProfileInfoActivity"
             android:theme="@style/Theme.Resolveiq_frontend"
             android:exported="false" />
@@ -192,6 +217,21 @@
 
         <activity
             android:name=".TeamMembersActivity"
+            android:theme="@style/Theme.Resolveiq_frontend"
+            android:exported="false" />
+
+        <activity
+            android:name=".ChangePasswordActivity"
+            android:theme="@style/Theme.Resolveiq_frontend"
+            android:exported="false" />
+
+        <activity
+            android:name=".PasswordSuccessActivity"
+            android:theme="@style/Theme.Resolveiq_frontend"
+            android:exported="false" />
+
+        <activity
+            android:name=".FirstLoginPromptActivity"
             android:theme="@style/Theme.Resolveiq_frontend"
             android:exported="false" />
     </application>

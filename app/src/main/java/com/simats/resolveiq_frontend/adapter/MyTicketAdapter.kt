@@ -47,9 +47,10 @@ class MyTicketAdapter(
         }
 
         // Show risk score if available (only for admin/agent views)
-        if (ticket.breach_risk != null) {
+        val riskValue = ticket.ai_score ?: ticket.breach_risk
+        if (riskValue != null) {
             holder.binding.tvRiskScore.visibility = android.view.View.VISIBLE
-            holder.binding.tvRiskScore.text = "Risk: ${ticket.breach_risk}%"
+            holder.binding.tvRiskScore.text = "Risk: $riskValue%"
         } else {
             holder.binding.tvRiskScore.visibility = android.view.View.GONE
         }

@@ -15,4 +15,7 @@ interface AuthApiService {
     
     @GET("api/auth/me")
     suspend fun getCurrentUser(): ApiResponse<User>
+
+    @POST("api/auth/change-password")
+    suspend fun changePassword(@Body request: ChangePasswordRequest): ApiResponse<Unit>
 }

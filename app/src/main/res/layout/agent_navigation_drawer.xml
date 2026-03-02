@@ -194,36 +194,6 @@
 
                 </LinearLayout>
 
-                <!-- Performance -->
-                <LinearLayout
-                    android:id="@+id/agentMenuPerformance"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="16dp"
-                    android:paddingVertical="14dp">
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:contentDescription="Performance"
-                        android:src="@drawable/ic_bar_chart"
-                        app:tint="#4B5563" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:text="Performance"
-                        android:textColor="#4B5563"
-                        android:textSize="16sp" />
-
-                </LinearLayout>
-
                 <!-- Settings -->
                 <LinearLayout
                     android:id="@+id/agentMenuSettings"

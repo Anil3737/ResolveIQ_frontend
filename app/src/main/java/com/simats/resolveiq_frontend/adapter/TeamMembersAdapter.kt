@@ -35,9 +35,9 @@ class TeamMembersAdapter(private val context: Context) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(member: TeamMember) {
-            binding.tvAgentName.text = member.full_name
-            binding.tvLocation.text = member.location
-            binding.tvDepartment.text = member.department
+            binding.tvAgentName.text = member.full_name ?: "-"
+            binding.tvLocation.text = member.location ?: "-"
+            binding.tvDepartment.text = member.department ?: "-"
             
             val active = member.active_tickets
             val capacity = member.daily_capacity

@@ -7,6 +7,12 @@ data class CreateTicketRequest(
     val description: String,
 
     @SerializedName("department_id")
-    val departmentId: Int
+    val departmentId: Int,
+
+    @SerializedName("issue_type")
+    val issueType: String,
+
+    @SerializedName("expected_resolution_time")
+    val expectedResolutionTime: String?
 )
 

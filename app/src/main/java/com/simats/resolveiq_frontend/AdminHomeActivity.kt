@@ -20,6 +20,7 @@ class AdminHomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAdminHomeBinding
     private lateinit var userPreferences: UserPreferences
     private lateinit var adminApiService: AdminApiService
+    private lateinit var ticketApiService: com.simats.resolveiq_frontend.api.TicketApiService
     private lateinit var ticketAdapter: MyTicketAdapter
     private var allTickets: List<Ticket> = emptyList()
 
@@ -30,10 +31,12 @@ class AdminHomeActivity : AppCompatActivity() {
 
         userPreferences = UserPreferences(this)
         adminApiService = com.simats.resolveiq_frontend.api.RetrofitClient.getAdminApi(this)
+        ticketApiService = com.simats.resolveiq_frontend.api.RetrofitClient.getTicketApi(this)
         
         setupUI()
         setupRecyclerView()
         setupDrawer()
+        setupBackPressHandler()
         fetchDashboardData()
     }
 
@@ -54,11 +57,18 @@ class AdminHomeActivity : AppCompatActivity() {
         binding.swipeRefreshLayout.isRefreshing = true
         lifecycleScope.launch {
             try {
+                // Fetch dashboard summary
                 val response = adminApiService.getDashboardData()
-                if (response.success) {
+                
+                // Also fetch all tickets to ensure metrics and lists are accurate
+                val ticketsResult = ticketApiService.getTickets()
+                
+                if (response.success && ticketsResult.success) {
+                    val allTickets = ticketsResult.data ?: emptyList()
+                    updateDashboardWithAccuracy(response, allTickets)
+                } else if (response.success) {
+                    // Fallback to limited dashboard data if full list fails
                     updateDashboardUI(response)
-                } else {
-                    Toast.makeText(this@AdminHomeActivity, response.message ?: "Failed to fetch dashboard data", Toast.LENGTH_SHORT).show()
                 }
             } catch (e: Exception) {
                 Toast.makeText(this@AdminHomeActivity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
@@ -66,6 +76,47 @@ class AdminHomeActivity : AppCompatActivity() {
                 binding.swipeRefreshLayout.isRefreshing = false
             }
         }
+    }
+
+    private fun updateDashboardWithAccuracy(response: AdminDashboardResponse, tickets: List<Ticket>) {
+        // 1. Recalculate metrics from ALL tickets for maximum accuracy
+        val totalTickets = tickets.size
+        val highRiskCount = tickets.count { (it.ai_score ?: it.breach_risk ?: 0) >= 70 }
+        val slaBreachedCount = tickets.count { it.sla_breached == true }
+        val escalatedCount = tickets.count { it.status.equals("ESCALATED", true) }
+
+        binding.tvTotalTickets.text = java.text.NumberFormat.getInstance().format(totalTickets)
+        binding.tvHighRisk.text = highRiskCount.toString()
+        binding.tvSlaBreached.text = slaBreachedCount.toString()
+        binding.tvEscalated.text = String.format("%02d", escalatedCount)
+
+        // 2. Risk Distribution (using the provided distribution or recalculating)
+        // Recalculating distribution for consistency
+        val critical = tickets.count { (it.ai_score ?: it.breach_risk ?: 0) >= 90 }
+        val high = tickets.count { (it.ai_score ?: it.breach_risk ?: 0) in 70..89 }
+        val medium = tickets.count { (it.ai_score ?: it.breach_risk ?: 0) in 40..69 }
+        val low = tickets.count { (it.ai_score ?: it.breach_risk ?: 0) < 40 }
+
+        val formattedTotal = if (totalTickets >= 1000) String.format("%.1fk", totalTickets / 1000.0) else totalTickets.toString()
+        binding.tvDonutTotal.text = formattedTotal
+
+        fun getLegendText(label: String, value: Int): String {
+            val percent = if (totalTickets > 0) (value * 100 / totalTickets) else 0
+            return "$label ($percent%)"
+        }
+
+        binding.tvCriticalLegend.text = getLegendText("Critical", critical)
+        binding.tvHighLegend.text = getLegendText("High", high)
+        binding.tvMediumLegend.text = getLegendText("Medium", medium)
+        binding.tvLowLegend.text = getLegendText("Low", low)
+
+        // 3. Top Risky Tickets - use the full list to ensure the 91% ticket is included
+        val topRisky = tickets
+            .filter { (it.ai_score ?: it.breach_risk ?: 0) >= 70 }
+            .sortedByDescending { it.ai_score ?: it.breach_risk ?: 0 }
+            .take(5) // Show top 5 on home page
+
+        ticketAdapter.updateTickets(topRisky)
     }
 
     private fun updateDashboardUI(response: AdminDashboardResponse) {
@@ -94,8 +145,10 @@ class AdminHomeActivity : AppCompatActivity() {
         binding.tvMediumLegend.text = getLegendText("Medium", dist.medium)
         binding.tvLowLegend.text = getLegendText("Low", dist.low)
 
-        // 3. Update Top Risky Tickets List
-        val riskyTickets = response.topRiskyTickets.map { t ->
+        // 3. Update Top Risky Tickets List — sorted highest risk score first
+        val riskyTickets = response.topRiskyTickets
+            .sortedByDescending { it.aiScore }
+            .map { t ->
             Ticket(
                 id = t.id,
                 ticket_number = t.ticketNumber,
@@ -116,6 +169,7 @@ class AdminHomeActivity : AppCompatActivity() {
             )
         }
         ticketAdapter.updateTickets(riskyTickets)
+
     }
 
     private fun setupUI() {
@@ -185,7 +239,7 @@ class AdminHomeActivity : AppCompatActivity() {
             when (item.itemId) {
                 R.id.nav_admin_dashboard -> true
                 R.id.nav_admin_tickets -> {
-                    startActivity(Intent(this, MyTicketsActivity::class.java))
+                    startActivity(Intent(this, AdminGroupedTicketsActivity::class.java))
                     true
                 }
                 R.id.nav_admin_users -> {
@@ -216,10 +270,7 @@ class AdminHomeActivity : AppCompatActivity() {
         // Tickets
         navView.adminMenuTickets.setOnClickListener {
             binding.drawerLayout.closeDrawer(GravityCompat.START)
-            val intent = Intent(this, MyTicketsActivity::class.java).apply {
-                putExtra("filter_type", "ALL")
-            }
-            startActivity(intent)
+            startActivity(Intent(this, AdminGroupedTicketsActivity::class.java))
         }
 
         // Teams
@@ -309,11 +360,16 @@ class AdminHomeActivity : AppCompatActivity() {
         binding.adminBottomNavigation.selectedItemId = R.id.nav_admin_dashboard
     }
 
-    override fun onBackPressed() {
-        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            binding.drawerLayout.closeDrawer(GravityCompat.START)
-        } else {
-            super.onBackPressed()
-        }
+    private fun setupBackPressHandler() {
+        onBackPressedDispatcher.addCallback(this, object : androidx.activity.OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                    binding.drawerLayout.closeDrawer(GravityCompat.START)
+                } else {
+                    isEnabled = false
+                    onBackPressedDispatcher.onBackPressed()
+                }
+            }
+        })
     }
 }

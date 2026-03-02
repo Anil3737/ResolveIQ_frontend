@@ -71,14 +71,14 @@ class ProfileInfoActivity : AppCompatActivity() {
         }
     }
 
-    private fun updateUI(name: String, role: String, empId: String, email: String, location: String) {
-        binding.tvDispName.text = name
-        binding.tvDispRole.text = role.lowercase().replaceFirstChar { it.uppercase() }
+    private fun updateUI(name: String?, role: String?, empId: String?, email: String?, location: String?) {
+        binding.tvDispName.text = name ?: "-"
+        binding.tvDispRole.text = role?.lowercase()?.replaceFirstChar { it.uppercase() } ?: "-"
         
-        binding.tvFullName.text = name
-        binding.tvRole.text = role.lowercase().replaceFirstChar { it.uppercase() }
-        binding.tvEmpId.text = empId
-        binding.tvEmail.text = if (email != "-") email else "-"
-        binding.tvLocation.text = location
+        binding.tvFullName.text = name ?: "-"
+        binding.tvRole.text = role?.lowercase()?.replaceFirstChar { it.uppercase() } ?: "-"
+        binding.tvEmpId.text = empId ?: "-"
+        binding.tvEmail.text = if (!email.isNullOrBlank() && email != "-") email else "-"
+        binding.tvLocation.text = location ?: "-"
     }
 }

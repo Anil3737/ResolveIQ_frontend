@@ -200,13 +200,13 @@ class CreateTeamActivity : AppCompatActivity() {
             return
         }
 
-        val names = filteredLeads.map { it.full_name }.toTypedArray()
+        val names = filteredLeads.map { it.full_name ?: "Unknown" }.toTypedArray()
 
         val builder = androidx.appcompat.app.AlertDialog.Builder(this)
         builder.setTitle("Select Team Lead ($specialty)")
         builder.setItems(names) { _, which ->
             val selectedLead = filteredLeads[which]
-            binding.tvSelectTeamLead.text = selectedLead.full_name
+            binding.tvSelectTeamLead.text = selectedLead.full_name ?: "Unknown"
             selectedTeamLeadId = selectedLead.id
         }
         builder.show()
@@ -228,7 +228,7 @@ class CreateTeamActivity : AppCompatActivity() {
             return
         }
 
-        val names = filteredAgents.map { it.full_name }.toTypedArray()
+        val names = filteredAgents.map { it.full_name ?: "Unknown" }.toTypedArray()
         val checkedItems = BooleanArray(filteredAgents.size) { index ->
             selectedAgentIds.contains(filteredAgents[index].id)
         }
@@ -249,7 +249,7 @@ class CreateTeamActivity : AppCompatActivity() {
             if (selectedAgentIds.isEmpty()) {
                 binding.tvSelectedAgents.text = "Select support agents"
             } else {
-                val selectedNames = supportAgents.filter { selectedAgentIds.contains(it.id) }.map { it.full_name }
+                val selectedNames = supportAgents.filter { selectedAgentIds.contains(it.id) }.map { it.full_name ?: "Unknown" }
                 binding.tvSelectedAgents.text = selectedNames.joinToString(", ")
             }
         }

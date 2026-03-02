@@ -16,9 +16,9 @@ import org.json.JSONObject
 
 class TicketRepository(private val api: TicketApiService) {
 
-    suspend fun getTickets(): Result<List<Ticket>> {
+    suspend fun getTickets(limit: Int? = null): Result<List<Ticket>> {
         return try {
-            val response = api.getTickets()
+            val response = api.getTickets(limit)
             if (response.success) {
                 Result.success(response.data ?: emptyList())
             } else {

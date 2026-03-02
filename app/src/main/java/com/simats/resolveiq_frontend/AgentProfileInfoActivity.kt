@@ -75,9 +75,9 @@ class AgentProfileInfoActivity : AppCompatActivity() {
                         empId, 
                         it.email, 
                         it.location ?: "Main Campus, SIMATS",
-                        it.team_lead_name ?: "Santhosh Mani", // Dummy for now if not in DB
-                        it.department_name ?: "Network Automation", // Mapping department to Team
-                        it.joining_date ?: "12 Jan 2024" // Dummy for now
+                        it.team_lead_name ?: "Santhosh Mani", 
+                        it.department_name ?: "Network Automation", 
+                        it.joining_date ?: "12 Jan 2024"
                     )
                     
                     // Sync preferences
@@ -91,23 +91,23 @@ class AgentProfileInfoActivity : AppCompatActivity() {
     }
 
     private fun updateUI(
-        name: String, 
-        role: String, 
-        empId: String, 
-        email: String, 
-        location: String,
-        teamLead: String,
-        team: String,
-        joinDate: String
+        name: String?, 
+        role: String?, 
+        empId: String?, 
+        email: String?, 
+        location: String?,
+        teamLead: String?,
+        team: String?,
+        joinDate: String?
     ) {
-        binding.tvDispName.text = name
-        binding.tvDispRole.text = role.lowercase().replaceFirstChar { it.uppercase() }
+        binding.tvDispName.text = name ?: "-"
+        binding.tvDispRole.text = role?.lowercase()?.replaceFirstChar { it.uppercase() } ?: "-"
         
-        binding.tvFullName.text = name
-        binding.tvRole.text = role.lowercase().replaceFirstChar { it.uppercase() }
-        binding.tvEmpId.text = empId
-        binding.tvEmail.text = if (email != "-") email else "-"
-        binding.tvLocation.text = location
+        binding.tvFullName.text = name ?: "-"
+        binding.tvRole.text = role?.lowercase()?.replaceFirstChar { it.uppercase() } ?: "-"
+        binding.tvEmpId.text = empId ?: "-"
+        binding.tvEmail.text = if (!email.isNullOrBlank() && email != "-") email else "-"
+        binding.tvLocation.text = location ?: "-"
         
         binding.tvTeamLead.text = teamLead
         binding.tvTeam.text = team

@@ -10,6 +10,8 @@ import androidx.lifecycle.lifecycleScope
 import com.simats.resolveiq_frontend.api.RetrofitClient
 import com.simats.resolveiq_frontend.data.model.CreateStaffRequest
 import com.simats.resolveiq_frontend.databinding.ActivityCreateTeamLeadBinding
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class CreateTeamLeadActivity : AppCompatActivity() {
@@ -62,6 +64,32 @@ class CreateTeamLeadActivity : AppCompatActivity() {
                 registerTeamLead(name, empId, department, location)
             }
         }
+
+        // Real-time Employee ID validation
+        var checkJob: kotlinx.coroutines.Job? = null
+        binding.etEmployeeId.addTextChangedListener(object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                checkJob?.cancel()
+                val empId = s.toString().trim().uppercase()
+                if (empId.length == 7 && empId.startsWith("EMP")) {
+                    checkJob = lifecycleScope.launch {
+                        delay(500) // Debounce
+                        try {
+                            val response = RetrofitClient.getAdminApi(this@CreateTeamLeadActivity).checkEmployeeIdExists(empId)
+                            if (response.success && response.data?.get("exists") == true) {
+                                binding.tilEmployeeId.error = "Employee id Already exist"
+                            } else {
+                                if (binding.tilEmployeeId.error == "Employee id Already exist") {
+                                    binding.tilEmployeeId.error = null
+                                }
+                            }
+                        } catch (e: Exception) {}
+                    }
+                }
+            }
+            override fun afterTextChanged(s: android.text.Editable?) {}
+        })
     }
 
     private fun validateForm(): Boolean {

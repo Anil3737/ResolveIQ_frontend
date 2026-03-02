@@ -25,7 +25,12 @@
     <color name="blue_50">#EFF6FF</color>
     <color name="green_50">#F0FDF4</color>
     <color name="orange_50">#FFF7ED</color>
+    <color name="orange_100">#FFEDD5</color>
+    <color name="red_50">#FEF2F2</color>
+    <color name="red_100">#FEE2E2</color>
+    <color name="red_600">#DC2626</color>
     <color name="gray_50">#F9FAFB</color>
+    <color name="gray_100">#F3F4F6</color>
 
     <!-- Admin Dashboard Colors -->
     <color name="admin_red">#EF4444</color>

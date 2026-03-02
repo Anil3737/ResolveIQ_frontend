@@ -10,7 +10,7 @@ import retrofit2.http.POST
 interface TicketApiService {
 
     @GET("api/tickets")
-    suspend fun getTickets(): ApiResponse<List<Ticket>>
+    suspend fun getTickets(@retrofit2.http.Query("limit") limit: Int? = null): ApiResponse<List<Ticket>>
 
     @POST("api/tickets")
     suspend fun createTicket(@Body request: CreateTicketRequest): Response<ApiResponse<Ticket>>

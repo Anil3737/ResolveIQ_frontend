@@ -150,6 +150,7 @@
                     android:layout_marginBottom="24dp">
 
                     <LinearLayout
+                        android:id="@+id/cardAssignedQueue"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -251,9 +252,10 @@
                                 android:layout_marginStart="4dp"/>
                         </LinearLayout>
                         <TextView
+                            android:id="@+id/tvActiveTicketsCount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="14"
+                            android:text="0"
                             android:textSize="24sp"
                             android:textStyle="bold"
                             android:layout_marginTop="4dp"
@@ -295,9 +297,10 @@
                                 android:layout_marginStart="4dp"/>
                         </LinearLayout>
                         <TextView
+                            android:id="@+id/tvBreachTicketsCount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="4"
+                            android:text="0"
                             android:textSize="24sp"
                             android:textStyle="bold"
                             android:layout_marginTop="4dp"
@@ -339,9 +342,10 @@
                                 android:layout_marginStart="4dp"/>
                         </LinearLayout>
                         <TextView
+                            android:id="@+id/tvResolvedTicketsCount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="8"
+                            android:text="0"
                             android:textSize="24sp"
                             android:textStyle="bold"
                             android:layout_marginTop="4dp"
@@ -394,348 +398,14 @@
                         android:layout_centerVertical="true"/>
                 </RelativeLayout>
 
-                <!-- Ticket Card #1 -->
-                <LinearLayout
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvHighPriorityQueue"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_card_rounded"
-                    android:orientation="vertical"
-                    android:padding="16dp"
-                    android:layout_marginBottom="12dp">
-                    
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                        
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="P1"
-                                android:background="@drawable/circle_filled"
-                                android:backgroundTint="#111827"
-                                android:textColor="@color/white"
-                                android:textSize="9sp"
-                                android:textStyle="bold"
-                                android:padding="4dp"/>
-                            
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="CRITICAL"
-                                android:textColor="#EF4444"
-                                android:background="#FEE2E2"
-                                android:textSize="9sp"
-                                android:textStyle="bold"
-                                android:paddingHorizontal="6dp"
-                                android:paddingVertical="2dp"
-                                android:layout_marginStart="8dp"/>
-
-                             <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="98 RISK"
-                                android:textColor="#4F46E5"
-                                android:background="#EEF2FF"
-                                android:textSize="9sp"
-                                android:textStyle="bold"
-                                android:paddingHorizontal="6dp"
-                                android:paddingVertical="2dp"
-                                android:layout_marginStart="8dp"/>
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:background="@drawable/bg_badge_live"
-                            android:backgroundTint="#FEF2F2"
-                            android:gravity="center_vertical"
-                            android:paddingHorizontal="8dp"
-                            android:paddingVertical="4dp">
-                            <ImageView
-                                android:layout_width="12dp"
-                                android:layout_height="12dp"
-                                android:src="@drawable/ic_clock"
-                                app:tint="#EF4444"/>
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="00:14:22"
-                                android:textColor="#EF4444"
-                                android:textSize="10sp"
-                                android:textStyle="bold"
-                                android:layout_marginStart="4dp"/>
-                        </LinearLayout>
-                    </RelativeLayout>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="AG-IT-2026-001"
-                        android:textSize="10sp"
-                        android:textColor="?attr/colorOnSurfaceVariant"
-                        android:layout_marginTop="8dp"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Database Connectivity: Production Outage"
-                        android:textStyle="bold"
-                        android:textSize="16sp"
-                        android:textColor="?attr/colorOnSurface"
-                        android:layout_marginTop="4dp"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="All requests to US-WEST-1 are timing out. Redis cache appearing disconnected..."
-                        android:textColor="?attr/colorOnSurfaceVariant"
-                        android:textSize="12sp"
-                        android:layout_marginTop="4dp"/>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp">
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:gravity="center_vertical">
-                            <ImageView
-                                android:layout_width="12dp"
-                                android:layout_height="12dp"
-                                android:src="@drawable/ic_network_node"
-                                app:tint="?attr/colorOnSurfaceVariant"/>
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Infrastructure"
-                                android:textSize="11sp"
-                                android:textColor="?attr/colorOnSurfaceVariant"
-                                android:layout_marginStart="6dp"/>
-                        </LinearLayout>
-
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:src="@drawable/ic_profile"
-                            android:layout_alignParentEnd="true"
-                            android:background="@drawable/circle_filled"
-                            android:padding="2dp"/>
-                    </RelativeLayout>
-                </LinearLayout>
-
-                <!-- Ticket Card #2 (Simplified for summary) -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_card_rounded"
-                    android:orientation="vertical"
-                    android:padding="16dp"
-                    android:layout_marginBottom="24dp">
-                    
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="P2"
-                                android:background="@drawable/circle_filled"
-                                android:backgroundTint="#F97316"
-                                android:textColor="@color/white"
-                                android:textSize="9sp"
-                                android:textStyle="bold"
-                                android:padding="4dp"/>
-                            
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="HIGH"
-                                android:textColor="#F97316"
-                                android:background="#FFF7ED"
-                                android:textSize="9sp"
-                                android:textStyle="bold"
-                                android:paddingHorizontal="6dp"
-                                android:paddingVertical="2dp"
-                                android:layout_marginStart="8dp"/>
-                        </LinearLayout>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:text="04:45:00"
-                            android:textSize="10sp"
-                            android:textColor="#92400E"
-                            android:background="#FEF3C7"
-                            android:paddingHorizontal="8dp"
-                            android:paddingVertical="4dp"
-                            android:textStyle="bold"
-                            android:drawablePadding="4dp"/>
-                    </RelativeLayout>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Executive VPN issues - NYC Office"
-                        android:textStyle="bold"
-                        android:textSize="16sp"
-                        android:textColor="?attr/colorOnSurface"
-                        android:layout_marginTop="8dp"/>
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/deptLabel"
-                            android:text="Network"
-                            android:textSize="11sp"
-                            android:textColor="?attr/colorOnSurfaceVariant"
-                            app:drawableStartCompat="@drawable/ic_location"
-                            android:drawablePadding="4dp"
-                            app:drawableTint="?attr/colorOnSurfaceVariant"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:text="ASSIGNED"
-                            android:textSize="10sp"
-                            android:textStyle="bold"
-                            android:textColor="#2563EB"
-                            android:background="#EFF6FF"
-                            android:paddingHorizontal="8dp"
-                            android:paddingVertical="4dp"/>
-                    </RelativeLayout>
-                </LinearLayout>
-
-                <!-- Team Performance Section -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Team Performance"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:textColor="?attr/colorOnSurface"
-                    android:layout_marginBottom="16dp"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="2"
-                    android:layout_marginBottom="16dp">
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginEnd="8dp"
-                        android:background="@drawable/bg_performance_card_blue"
-                        android:padding="16dp"
-                        android:orientation="vertical">
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-                            <ImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:src="@drawable/ic_clock"
-                                app:tint="#2563EB"/>
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentEnd="true"
-                                android:text="+12%"
-                                android:textColor="#2563EB"
-                                android:textSize="10sp"
-                                android:textStyle="bold"/>
-                        </RelativeLayout>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="2.4h"
-                            android:textSize="22sp"
-                            android:textStyle="bold"
-                            android:textColor="#1E3A8A"
-                            android:layout_marginTop="8dp"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Avg. Resolution"
-                            android:textSize="10sp"
-                            android:textColor="#2563EB"
-                            android:textStyle="bold"/>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginStart="8dp"
-                        android:background="@drawable/bg_performance_card_green"
-                        android:padding="16dp"
-                        android:orientation="vertical">
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-                            <ImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:src="@drawable/ic_check_green"
-                                app:tint="#16A34A"
-                                android:id="@+id/ivCsat"/>
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentEnd="true"
-                                android:text="98%"
-                                android:textColor="#16A34A"
-                                android:textSize="10sp"
-                                android:textStyle="bold"/>
-                        </RelativeLayout>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="4.9/5"
-                            android:textSize="22sp"
-                            android:textStyle="bold"
-                            android:textColor="#064E3B"
-                            android:layout_marginTop="8dp"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="CSAT Score"
-                            android:textSize="10sp"
-                            android:textColor="#16A34A"
-                            android:textStyle="bold"/>
-                    </LinearLayout>
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Agent Workspace (iOS)"
-                    android:gravity="center"
-                    android:textColor="?attr/colorOnSurfaceVariant"
-                    android:background="#F3F4F6"
-                    android:paddingVertical="12dp"
-                    android:textSize="13sp"
-                    android:layout_marginBottom="16dp"
-                    app:drawableStartCompat="@drawable/ic_document"
-                    app:drawableTint="?attr/colorOnSurfaceVariant"
-                    android:drawablePadding="8dp"
-                    android:paddingHorizontal="16dp"/>
+                    android:divider="@null"
+                    android:nestedScrollingEnabled="false"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/item_high_priority_ticket" />
 
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>

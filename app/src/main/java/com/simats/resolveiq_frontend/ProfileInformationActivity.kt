@@ -65,23 +65,23 @@ class ProfileInformationActivity : AppCompatActivity() {
         }
     }
 
-    private fun bindUserData(name: String, role: String, employeeId: String?, location: String?, email: String) {
-        binding.tvFullName.text = name
-        binding.tvHeaderName.text = name
+    private fun bindUserData(name: String?, role: String?, employeeId: String?, location: String?, email: String?) {
+        binding.tvFullName.text = name ?: "-"
+        binding.tvHeaderName.text = name ?: "-"
         
-        binding.tvRole.text = role.replaceFirstChar { it.uppercase() }
-        binding.tvHeaderRole.text = role.replaceFirstChar { it.uppercase() }
+        binding.tvRole.text = role?.lowercase()?.replaceFirstChar { it.uppercase() } ?: "-"
+        binding.tvHeaderRole.text = role?.lowercase()?.replaceFirstChar { it.uppercase() } ?: "-"
         
         binding.tvEmployeeId.text = employeeId ?: "N/A"
         binding.tvLocation.text = location ?: "N/A"
-        binding.tvEmail.text = email
+        binding.tvEmail.text = email ?: "-"
 
         // Initials
-        val initials = name.split(" ")
-            .mapNotNull { it.firstOrNull()?.toString() }
-            .take(2)
-            .joinToString("")
-            .uppercase()
+        val initials = name?.split(" ")
+            ?.mapNotNull { it.firstOrNull()?.toString() }
+            ?.take(2)
+            ?.joinToString("")
+            ?.uppercase() ?: ""
         
         binding.tvInitials.text = if (initials.isNotEmpty()) initials else "?"
     }

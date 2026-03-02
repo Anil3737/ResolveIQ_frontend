@@ -47,6 +47,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:paddingBottom="80dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/headerLayout">
 
@@ -192,6 +194,62 @@
                 android:textColor="#4B5563"
                 android:textSize="16sp" />
 
+            <TextView
+                android:id="@+id/tvAdminAiExplanationLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="AI EXPLANATION"
+                android:textColor="#94A3B8"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.05"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/tvAdminAiExplanation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textColor="#4B5563"
+                android:textSize="14sp"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/tvRiskLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="AI [RISK] ASSESSMENT"
+                android:textColor="#94A3B8"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.05"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/tvRiskScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_risk_badge_high"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp"
+                android:text="Risk: 0%"
+                android:textColor="#991B1B"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/tvLeadAiExplanation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:textColor="#4B5563"
+                android:textSize="14sp"
+                android:visibility="gone" />
+
             <Button
                 android:id="@+id/btnViewProgress"
                 android:layout_width="match_parent"
@@ -278,5 +336,15 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

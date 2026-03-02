@@ -45,4 +45,17 @@ class AuthRepository(private val api: AuthApiService) {
             Result.failure(e)
         }
     }
+
+    suspend fun changePassword(newPassword: String): Result<Unit> {
+        return try {
+            val response = api.changePassword(ChangePasswordRequest(newPassword))
+            if (response.success) {
+                Result.success(Unit)
+            } else {
+                Result.failure(Exception(response.message ?: "Failed to change password"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
 }

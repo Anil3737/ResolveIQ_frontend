@@ -89,6 +89,7 @@ class CreateTicketActivity : AppCompatActivity() {
         // Combine Location into Title and Description
         val fullTitle = "[$issueType] at $location"
         val fullDescription = "Location: $location\n\n$description"
+        val expectedResolutionTime = binding.etResolutionTime.text.toString()
         
         // Map issue type → department_id (must match DEPARTMENT_RANGES in ticket_id_generator.py)
         val departmentId = when (issueType) {
@@ -99,34 +100,18 @@ class CreateTicketActivity : AppCompatActivity() {
             "Other"                                      -> 5
             else -> {
                 Toast.makeText(this, "Invalid department selected. Please try again.", Toast.LENGTH_SHORT).show()
-                binding.btnSubmit.isEnabled = true
                 return
             }
         }
         
-        lifecycleScope.launch {
-            binding.btnSubmit.isEnabled = false
-            
-            val request = CreateTicketRequest(
-                title = fullTitle,
-                description = fullDescription,
-                departmentId = departmentId
-            )
-
-            val result = ticketRepository.createTicket(request)
-            
-            if (result.isSuccess) {
-                val ticketId = result.getOrNull() ?: -1
-                Toast.makeText(this@CreateTicketActivity, "Ticket Created Successfully", Toast.LENGTH_SHORT).show()
-                val intent = Intent(this@CreateTicketActivity, TicketSuccessActivity::class.java).apply {
-                    putExtra("ticket_id", ticketId)
-                }
-                startActivity(intent)
-                finish()
-            } else {
-                binding.btnSubmit.isEnabled = true
-                Toast.makeText(this@CreateTicketActivity, "Failed: ${result.exceptionOrNull()?.message}", Toast.LENGTH_LONG).show()
-            }
+        // Navigate to Waiting Activity
+        val intent = Intent(this, TicketWaitingActivity::class.java).apply {
+            putExtra("title", fullTitle)
+            putExtra("description", fullDescription)
+            putExtra("department_id", departmentId)
+            putExtra("issue_type", issueType)
+            putExtra("expected_resolution_time", expectedResolutionTime)
         }
+        startActivity(intent)
     }
 }

@@ -176,7 +176,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:layout_marginBottom="16dp"
                     android:background="@drawable/bg_register_input"
                     android:drawableStart="@drawable/ic_email"
                     android:drawablePadding="12dp"
@@ -187,6 +186,17 @@
                     android:textColorHint="#9CA3AF"
                     android:textSize="14sp"
                     android:importantForAutofill="no" />
+
+                <TextView
+                    android:id="@+id/tvEmailError"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="12dp"
+                    android:text=""
+                    android:textColor="#D32F2F"
+                    android:textSize="12sp"
+                    android:visibility="gone" />
 
                 <!-- Password -->
                 <TextView
@@ -200,8 +210,7 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="4dp">
+                    android:layout_marginTop="8dp">
 
                     <EditText
                         android:id="@+id/etPassword"
@@ -234,6 +243,17 @@
 
                 </RelativeLayout>
 
+                <TextView
+                    android:id="@+id/tvPasswordError"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:text=""
+                    android:textColor="#D32F2F"
+                    android:textSize="12sp"
+                    android:visibility="gone" />
+
                 <!-- Confirm Password -->
                 <TextView
                     android:layout_width="wrap_content"
@@ -247,8 +267,7 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="4dp">
+                    android:layout_marginTop="8dp">
 
                     <EditText
                         android:id="@+id/etConfirmPassword"
@@ -281,6 +300,17 @@
 
                 </RelativeLayout>
 
+                <TextView
+                    android:id="@+id/tvConfirmPasswordError"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:text=""
+                    android:textColor="#D32F2F"
+                    android:textSize="12sp"
+                    android:visibility="gone" />
+
                 <!-- Office Location -->
                 <TextView
                     android:layout_width="wrap_content"
@@ -311,21 +341,38 @@
 
         </androidx.cardview.widget.CardView>
 
+        <!-- Duplicate Credentials Error -->
+        <TextView
+            android:id="@+id/tvRegisterError"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginTop="12dp"
+            android:text=""
+            android:textColor="#D32F2F"
+            android:textSize="13sp"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/formCard"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
         <!-- Terms Checkbox -->
         <CheckBox
             android:id="@+id/cbTerms"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="24dp"
             android:text="@string/terms_agreement"
             android:textColor="?attr/colorOnSurfaceVariant"
             android:textSize="13sp"
             android:drawablePadding="8dp"
+            android:lineSpacingExtra="2dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/formCard" />
+            app:layout_constraintTop_toBottomOf="@id/tvRegisterError" />
 
         <!-- Create Account Button -->
         <FrameLayout

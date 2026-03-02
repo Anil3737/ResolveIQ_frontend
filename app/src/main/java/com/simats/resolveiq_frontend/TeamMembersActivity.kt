@@ -31,7 +31,7 @@ class TeamMembersActivity : AppCompatActivity() {
 
     private fun setupToolbar() {
         binding.toolbar.setNavigationOnClickListener {
-            onBackPressed()
+            onBackPressedDispatcher.onBackPressed()
         }
     }
 

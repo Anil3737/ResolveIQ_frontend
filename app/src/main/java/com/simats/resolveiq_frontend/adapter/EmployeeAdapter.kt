@@ -21,7 +21,7 @@ class EmployeeAdapter(
 
         fun bind(employee: Employee) {
             binding.tvEmpId.text = employee.employeeId
-            binding.tvEmpName.text = employee.fullName
+            binding.tvEmpName.text = employee.fullName ?: "-"
             
             binding.root.setOnClickListener {
                 onItemClick(employee)
@@ -53,7 +53,7 @@ class EmployeeAdapter(
                 } else {
                     val resultList = mutableListOf<Employee>()
                     for (row in employees) {
-                        if (row.fullName.lowercase(Locale.ROOT).contains(charSearch.lowercase(Locale.ROOT)) ||
+                        if ((row.fullName?.lowercase(Locale.ROOT)?.contains(charSearch.lowercase(Locale.ROOT)) ?: false) ||
                             row.employeeId.lowercase(Locale.ROOT).contains(charSearch.lowercase(Locale.ROOT))
                         ) {
                             resultList.add(row)

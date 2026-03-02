@@ -1,5 +1,6 @@
 package com.simats.resolveiq_frontend
 
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.View
@@ -36,6 +37,9 @@ class TicketProgressActivity : AppCompatActivity() {
         fetchTicketProgress(ticketId)
 
         binding.ivBack.setOnClickListener {
+            val intent = Intent(this, MyTicketsActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+            startActivity(intent)
             finish()
         }
     }

@@ -24,6 +24,7 @@ class MyTicketsActivity : AppCompatActivity() {
     private var allTickets: List<Ticket> = emptyList()
     private var isShowingActive = true
     private var filterType: String? = null
+    private var departmentName: String? = null
     private var fetchJob: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,6 +45,7 @@ class MyTicketsActivity : AppCompatActivity() {
 
     private fun setupUI() {
         filterType = intent.getStringExtra("filter_type")
+        departmentName = intent.getStringExtra("department_name")
         
         binding.ivBack.setOnClickListener {
             finish()
@@ -56,6 +58,7 @@ class MyTicketsActivity : AppCompatActivity() {
                 "HIGH_RISK" -> "High Risk Tickets"
                 "SLA_BREACHED" -> "SLA Breached Tickets"
                 "ESCALATED" -> "Escalated Tickets"
+                "DEPARTMENT" -> departmentName ?: "Tickets"
                 else -> "Tickets"
             }
         }
@@ -100,6 +103,7 @@ class MyTicketsActivity : AppCompatActivity() {
                     true
                 }
                 R.id.nav_tickets, R.id.nav_admin_tickets -> {
+                    // Stay here
                     true
                 }
                 R.id.nav_admin_users -> {
@@ -190,9 +194,18 @@ class MyTicketsActivity : AppCompatActivity() {
         // Apply metric filters if any
         filterType?.let { type ->
             filtered = when (type) {
-                "HIGH_RISK"    -> allTickets.filter { (it.ai_score ?: 0) >= 70 || (it.breach_risk ?: 0) >= 70 }
+                "HIGH_RISK"    -> allTickets.filter { (it.ai_score ?: 0) >= 70 || (it.breach_risk ?: 0) >= 70 }.sortedByDescending { it.ai_score ?: it.breach_risk ?: 0 }
                 "SLA_BREACHED" -> allTickets.filter { it.sla_breached == true }
                 "ESCALATED"    -> allTickets.filter { it.status.uppercase() == "ESCALATED" }
+                "DEPARTMENT"    -> allTickets.filter { ticket ->
+                    val title = ticket.title
+                    val extractedTag = if (title.startsWith("[") && title.contains("]")) {
+                        title.substring(1, title.indexOf("]"))
+                    } else {
+                        ticket.department_name ?: "Other"
+                    }
+                    extractedTag == departmentName
+                }.filter { if (isActive) it.status.lowercase() !in listOf("resolved", "closed") else it.status.lowercase() in listOf("resolved", "closed") }
                 "ALL" -> {
                     // Reset tab layout visibility just in case
                     binding.tabLayout.visibility = View.VISIBLE

@@ -42,7 +42,7 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         binding.btnSecuritySettings.setOnClickListener {
-            Toast.makeText(this, "Security Settings clicked", Toast.LENGTH_SHORT).show()
+            startActivity(Intent(this, ChangePasswordActivity::class.java))
         }
 
         binding.btnHelpCenter.setOnClickListener {

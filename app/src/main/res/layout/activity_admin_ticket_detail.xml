@@ -148,6 +148,19 @@
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/tvRiskScore"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/bg_risk_badge_high"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="4dp"
+                        android:text="RISK: 0%"
+                        android:textColor="#991B1B"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <TextView
                         android:id="@+id/tvTicketCreatedOn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -214,6 +227,27 @@
                         android:text="User reporting no internet since morning. Verified router lights are red."
                         android:textColor="#334155"
                         android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/tvAiExplanationLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:text="AI EXPLANATION"
+                        android:textColor="#94A3B8"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:letterSpacing="0.05"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/tvAiExplanation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:textColor="#334155"
+                        android:textSize="14sp"
+                        android:visibility="gone" />
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>

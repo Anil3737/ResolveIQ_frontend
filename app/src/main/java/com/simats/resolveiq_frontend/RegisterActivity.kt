@@ -11,6 +11,8 @@ import com.simats.resolveiq_frontend.databinding.ActivityRegisterBinding
 import com.simats.resolveiq_frontend.repository.AuthRepository
 import com.simats.resolveiq_frontend.data.model.RegisterRequest
 import android.util.Log
+import android.text.Editable
+import android.text.TextWatcher
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.method.LinkMovementMethod
@@ -92,6 +94,82 @@ class RegisterActivity : AppCompatActivity() {
             finish()
         }
 
+        // Clear duplicate-error when user edits Employee ID or Company Email
+        val clearRegisterError = object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                binding.tvRegisterError.visibility = View.GONE
+            }
+            override fun afterTextChanged(s: Editable?) {}
+        }
+        binding.etEmployeeId.addTextChangedListener(clearRegisterError)
+        binding.etCompanyEmail.addTextChangedListener(clearRegisterError)
+
+        // Live email domain validation
+        binding.etCompanyEmail.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val email = s.toString().trim()
+                if (email.isNotEmpty() && !isValidEmail(email)) {
+                    binding.tvEmailError.text = "Please enter a valid email address"
+                    binding.tvEmailError.visibility = View.VISIBLE
+                } else {
+                    binding.tvEmailError.visibility = View.GONE
+                }
+            }
+            override fun afterTextChanged(s: Editable?) {}
+        })
+
+        // Live password strength validation
+        binding.etPassword.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val pwd = s.toString()
+                if (pwd.isNotEmpty()) {
+                    val err = passwordStrengthError(pwd)
+                    if (err != null) {
+                        binding.tvPasswordError.text = err
+                        binding.tvPasswordError.visibility = View.VISIBLE
+                    } else {
+                        binding.tvPasswordError.visibility = View.GONE
+                    }
+                } else {
+                    binding.tvPasswordError.visibility = View.GONE
+                }
+                // also re-check confirm match if confirm has text
+                val confirm = binding.etConfirmPassword.text.toString()
+                if (confirm.isNotEmpty()) {
+                    if (s.toString() != confirm) {
+                        binding.tvConfirmPasswordError.text = "Passwords do not match"
+                        binding.tvConfirmPasswordError.visibility = View.VISIBLE
+                    } else {
+                        binding.tvConfirmPasswordError.visibility = View.GONE
+                    }
+                }
+            }
+            override fun afterTextChanged(s: Editable?) {}
+        })
+
+        // Live confirm-password match validation
+        binding.etConfirmPassword.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val confirm = s.toString()
+                val pwd = binding.etPassword.text.toString()
+                if (confirm.isNotEmpty()) {
+                    if (confirm != pwd) {
+                        binding.tvConfirmPasswordError.text = "Passwords do not match"
+                        binding.tvConfirmPasswordError.visibility = View.VISIBLE
+                    } else {
+                        binding.tvConfirmPasswordError.visibility = View.GONE
+                    }
+                } else {
+                    binding.tvConfirmPasswordError.visibility = View.GONE
+                }
+            }
+            override fun afterTextChanged(s: Editable?) {}
+        })
+
         // Password Visibility Toggle
         binding.ivPasswordToggle.setOnClickListener {
             isPasswordVisible = !isPasswordVisible
@@ -133,13 +211,30 @@ class RegisterActivity : AppCompatActivity() {
 
         val location = binding.etOfficeLocation.text.toString().trim()
 
-        if (fullName.isEmpty() || email.isEmpty() || password.isEmpty()) {
+        if (fullName.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
             Toast.makeText(this, "Please fill in all required fields", Toast.LENGTH_SHORT).show()
             return
         }
 
+        // Email domain check
+        if (!isValidEmail(email)) {
+            binding.tvEmailError.text = "Please enter a valid email address"
+            binding.tvEmailError.visibility = View.VISIBLE
+            return
+        }
+
+        // Password strength check
+        val pwdError = passwordStrengthError(password)
+        if (pwdError != null) {
+            binding.tvPasswordError.text = pwdError
+            binding.tvPasswordError.visibility = View.VISIBLE
+            return
+        }
+
+        // Confirm password match check
         if (password != confirmPassword) {
-            Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show()
+            binding.tvConfirmPasswordError.text = "Passwords do not match"
+            binding.tvConfirmPasswordError.visibility = View.VISIBLE
             return
         }
 
@@ -171,13 +266,28 @@ class RegisterActivity : AppCompatActivity() {
                 finish()
             } else {
                 val e = result.exceptionOrNull()
-                val errorMessage = when (e) {
-                    is java.net.SocketTimeoutException -> "Connection timeout. Please check your internet."
-                    is java.net.ConnectException -> "Could not connect to server. Ensure backend is running."
-                    else -> "Registration failed: ${e?.localizedMessage ?: "Unknown error"}"
+                val message = e?.message ?: ""
+
+                // Detect 400 / conflict — Employee ID or Email already exists
+                val is400 = (e is retrofit2.HttpException && e.code() == 400) ||
+                        message.contains("400") ||
+                        message.contains("already", ignoreCase = true) ||
+                        message.contains("exist", ignoreCase = true) ||
+                        message.contains("conflict", ignoreCase = true) ||
+                        message.contains("duplicate", ignoreCase = true)
+
+                if (is400) {
+                    binding.tvRegisterError.text = "The Employee ID and Email Address Already Exist"
+                    binding.tvRegisterError.visibility = View.VISIBLE
+                } else {
+                    val errorMessage = when (e) {
+                        is java.net.SocketTimeoutException -> "Connection timeout. Please check your internet."
+                        is java.net.ConnectException -> "Could not connect to server. Ensure backend is running."
+                        else -> "Registration failed: ${e?.localizedMessage ?: "Unknown error"}"
+                    }
+                    Log.e("RegisterActivity", "Registration Error", e)
+                    showErrorDialog("Error", errorMessage)
                 }
-                Log.e("RegisterActivity", "Registration Error", e)
-                showErrorDialog("Error", errorMessage)
             }
         }
     }
@@ -188,6 +298,19 @@ class RegisterActivity : AppCompatActivity() {
             .setMessage(message)
             .setPositiveButton("OK", null)
             .show()
+    }
+
+    private fun isValidEmail(email: String): Boolean {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
+    }
+
+    private fun passwordStrengthError(password: String): String? {
+        if (password.length <= 8) return "Password must be more than 8 characters"
+        if (!password.any { it.isUpperCase() }) return "Password must contain at least one uppercase letter"
+        if (!password.any { it.isLowerCase() }) return "Password must contain at least one lowercase letter"
+        if (!password.any { it.isDigit() }) return "Password must contain at least one number"
+        if (!password.any { !it.isLetterOrDigit() }) return "Password must contain at least one special character"
+        return null
     }
 
     private fun setLoading(isLoading: Boolean) {
