@@ -118,6 +118,3 @@ graph TD
 
 ---
 
-<p align="center">
-  Generated with ❤️ by <b>Antigravity</b>
-</p>
