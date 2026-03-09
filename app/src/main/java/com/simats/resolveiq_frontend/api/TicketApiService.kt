@@ -17,4 +17,15 @@ interface TicketApiService {
 
     @GET("api/tickets/{id}")
     suspend fun getTicketDetails(@retrofit2.http.Path("id") id: Int): Response<TicketDetailResponse>
+
+    @POST("api/tickets/{id}/feedback")
+    suspend fun submitFeedback(
+        @retrofit2.http.Path("id") id: Int,
+        @Body request: FeedbackRequest
+    ): Response<FeedbackResponse>
+
+    @GET("api/tickets/{id}/feedback")
+    suspend fun getFeedback(
+        @retrofit2.http.Path("id") id: Int
+    ): Response<FeedbackResponse>
 }

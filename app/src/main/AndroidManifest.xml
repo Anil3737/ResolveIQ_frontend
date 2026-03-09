@@ -234,6 +234,26 @@
             android:name=".FirstLoginPromptActivity"
             android:theme="@style/Theme.Resolveiq_frontend"
             android:exported="false" />
+
+        <activity
+            android:name=".TeamLeadActivityLogActivity"
+            android:theme="@style/Theme.Resolveiq_frontend"
+            android:exported="false" />
+
+        <activity
+            android:name=".SlaPoliciesActivity"
+            android:theme="@style/Theme.Resolveiq_frontend"
+            android:exported="false" />
+
+        <activity
+            android:name=".AdminReportsActivity"
+            android:theme="@style/Theme.Resolveiq_frontend"
+            android:exported="false" />
+
+        <activity
+            android:name=".FeedbackActivity"
+            android:theme="@style/Theme.Resolveiq_frontend"
+            android:exported="false" />
     </application>
 
 </manifest>

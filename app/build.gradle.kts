@@ -67,4 +67,7 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
 
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+    
+    // Charting
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
 }

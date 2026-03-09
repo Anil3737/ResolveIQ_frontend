@@ -457,20 +457,22 @@
                                 app:tint="#2563EB" />
 
                             <TextView
+                                android:id="@+id/tvAvgResolutionTrend"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentEnd="true"
-                                android:text="+12%"
+                                android:text="--"
                                 android:textColor="#2563EB"
                                 android:textSize="10sp"
                                 android:textStyle="bold" />
                         </RelativeLayout>
 
                         <TextView
+                            android:id="@+id/tvAvgResolutionValue"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
-                            android:text="2.4h"
+                            android:text="--"
                             android:textColor="#1E3A8A"
                             android:textSize="22sp"
                             android:textStyle="bold" />
@@ -478,7 +480,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Avg. Resolution"
+                            android:text="Resolved Today"
                             android:textColor="#2563EB"
                             android:textSize="10sp"
                             android:textStyle="bold" />
@@ -505,20 +507,22 @@
                                 app:tint="#16A34A" />
 
                             <TextView
+                                android:id="@+id/tvTeamLoadTrend"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentEnd="true"
-                                android:text="98%"
+                                android:text="--"
                                 android:textColor="#16A34A"
                                 android:textSize="10sp"
                                 android:textStyle="bold" />
                         </RelativeLayout>
 
                         <TextView
+                            android:id="@+id/tvTeamLoadValue"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
-                            android:text="4.9/5"
+                            android:text="--%"
                             android:textColor="#064E3B"
                             android:textSize="22sp"
                             android:textStyle="bold" />
@@ -526,7 +530,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="CSAT Score"
+                            android:text="Team Workload"
                             android:textColor="#16A34A"
                             android:textSize="10sp"
                             android:textStyle="bold" />
@@ -587,7 +591,7 @@
 
     <include
         android:id="@+id/navView"
-        layout="@layout/navigation_drawer"
+        layout="@layout/navigation_drawer_team_lead"
         android:layout_width="280dp"
         android:layout_height="match_parent"
         android:layout_gravity="start" />

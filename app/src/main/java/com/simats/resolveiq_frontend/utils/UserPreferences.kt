@@ -16,6 +16,44 @@ class UserPreferences(context: Context) {
         private const val KEY_USER_LOCATION = "user_location"
         private const val KEY_USER_PHONE = "user_phone"
         private const val KEY_DARK_MODE = "dark_mode"
+        private const val KEY_REMEMBER_ME = "remember_me"
+        private const val KEY_SAVED_ACCOUNTS = "saved_accounts_json"
+    }
+
+    fun setRememberMe(enabled: Boolean) {
+        prefs.edit().putBoolean(KEY_REMEMBER_ME, enabled).apply()
+    }
+
+    fun getRememberMe(): Boolean {
+        return prefs.getBoolean(KEY_REMEMBER_ME, false)
+    }
+
+    fun saveAccount(email: String, password: String) {
+        val accounts = getSavedAccounts().toMutableMap()
+        accounts[email] = password
+        val json = com.google.gson.Gson().toJson(accounts)
+        prefs.edit().putString(KEY_SAVED_ACCOUNTS, json).apply()
+    }
+
+    fun getSavedAccounts(): Map<String, String> {
+        val json = prefs.getString(KEY_SAVED_ACCOUNTS, null) ?: return emptyMap()
+        return try {
+            val type = object : com.google.gson.reflect.TypeToken<Map<String, String>>() {}.type
+            com.google.gson.Gson().fromJson(json, type) ?: emptyMap()
+        } catch (e: Exception) {
+            emptyMap()
+        }
+    }
+
+    fun removeAccount(email: String) {
+        val accounts = getSavedAccounts().toMutableMap()
+        accounts.remove(email)
+        val json = com.google.gson.Gson().toJson(accounts)
+        prefs.edit().putString(KEY_SAVED_ACCOUNTS, json).apply()
+    }
+
+    fun clearAllSavedAccounts() {
+        prefs.edit().remove(KEY_SAVED_ACCOUNTS).apply()
     }
 
     fun saveToken(token: String) {
@@ -35,7 +73,9 @@ class UserPreferences(context: Context) {
     }
 
     fun saveUserRole(role: String?) {
-        prefs.edit().putString(KEY_USER_ROLE, role ?: "employee").apply()
+        if (!role.isNullOrBlank()) {
+            prefs.edit().putString(KEY_USER_ROLE, role).apply()
+        }
     }
 
     fun getUserRole(): String? {

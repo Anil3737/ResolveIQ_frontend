@@ -101,7 +101,13 @@ class SettingsActivity : AppCompatActivity() {
                     true
                 }
                 R.id.nav_tickets, R.id.nav_admin_tickets, R.id.nav_tl_tickets -> {
-                    val intent = Intent(this, MyTicketsActivity::class.java)
+                    val targetActivity = when (role) {
+                        "ADMIN" -> AdminGroupedTicketsActivity::class.java
+                        "TEAM_LEAD" -> TeamLeadTicketsActivity::class.java
+                        "AGENT" -> MyTicketsActivity::class.java
+                        else -> MyTicketsActivity::class.java
+                    }
+                    val intent = Intent(this, targetActivity)
                     intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
                     startActivity(intent)
                     true
@@ -111,10 +117,16 @@ class SettingsActivity : AppCompatActivity() {
                     true
                 }
                 R.id.nav_activity, R.id.nav_admin_activity, R.id.nav_tl_activity -> {
-                    if (role == "ADMIN") {
-                        startActivity(Intent(this, AdminActivityLogActivity::class.java))
-                    } else if (role == "TEAM_LEAD") {
-                        Toast.makeText(this, "Team Activity coming soon", Toast.LENGTH_SHORT).show()
+                    val targetActivity = when (role) {
+                        "ADMIN" -> AdminActivityLogActivity::class.java
+                        "AGENT" -> AgentPerformanceActivity::class.java
+                        "TEAM_LEAD" -> TeamLeadActivityLogActivity::class.java
+                        else -> null
+                    }
+                    if (targetActivity != null) {
+                        val intent = Intent(this, targetActivity)
+                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                        startActivity(intent)
                     } else {
                         Toast.makeText(this, "Coming soon", Toast.LENGTH_SHORT).show()
                     }

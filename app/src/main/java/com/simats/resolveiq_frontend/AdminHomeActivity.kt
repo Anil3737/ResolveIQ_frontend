@@ -317,10 +317,7 @@ class AdminHomeActivity : AppCompatActivity() {
         // SLA Policies
         navView.adminMenuSlaPolicies.setOnClickListener {
             binding.drawerLayout.closeDrawer(GravityCompat.START)
-            val intent = Intent(this, MyTicketsActivity::class.java).apply {
-                putExtra("filter_type", "SLA_BREACHED")
-            }
-            startActivity(intent)
+            startActivity(Intent(this, SlaPoliciesActivity::class.java))
         }
 
         // Escalations
@@ -335,7 +332,7 @@ class AdminHomeActivity : AppCompatActivity() {
         // Reports
         navView.adminMenuReports.setOnClickListener {
             binding.drawerLayout.closeDrawer(GravityCompat.START)
-            Toast.makeText(this, "Reports", Toast.LENGTH_SHORT).show()
+            startActivity(Intent(this, AdminReportsActivity::class.java))
         }
 
         // Settings

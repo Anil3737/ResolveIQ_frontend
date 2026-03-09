@@ -90,25 +90,24 @@
                         android:layout_height="24dp"
                         android:contentDescription="Home"
                         android:src="@drawable/ic_home"
-                        app:tint="#4B5563" />
+                        app:tint="?attr/colorOnSurfaceVariant" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:text="Home"
-                        android:textColor="#4B5563"
+                        android:textColor="?attr/colorOnSurface"
                         android:textSize="16sp" />
 
                 </LinearLayout>
 
-                <!-- My Tickets (Selected Highlight) -->
+                <!-- Assigned Queue -->
                 <LinearLayout
-                    android:id="@+id/agentMenuTickets"
+                    android:id="@+id/agentMenuAssignedQueue"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:background="@drawable/bg_admin_menu_selected"
                     android:clickable="true"
                     android:focusable="true"
                     android:gravity="center_vertical"
@@ -119,18 +118,17 @@
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:contentDescription="My Tickets"
-                        android:src="@drawable/ic_my_tickets"
-                        app:tint="#3B82F6" />
+                        android:contentDescription="Assigned Queue"
+                        android:src="@drawable/ic_tickets"
+                        app:tint="?attr/colorOnSurfaceVariant" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:text="My Tickets"
-                        android:textColor="#3B82F6"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                        android:text="Assigned Queue"
+                        android:textColor="?attr/colorOnSurface"
+                        android:textSize="16sp" />
 
                 </LinearLayout>
 
@@ -152,21 +150,21 @@
                         android:layout_height="24dp"
                         android:contentDescription="Knowledge Base"
                         android:src="@drawable/ic_document"
-                        app:tint="#4B5563" />
+                        app:tint="?attr/colorOnSurfaceVariant" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:text="Knowledge Base"
-                        android:textColor="#4B5563"
+                        android:textColor="?attr/colorOnSurface"
                         android:textSize="16sp" />
 
                 </LinearLayout>
 
-                <!-- Notifications -->
+                <!-- My Tickets -->
                 <LinearLayout
-                    android:id="@+id/agentMenuNotifications"
+                    android:id="@+id/agentMenuTickets"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
@@ -180,16 +178,46 @@
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:contentDescription="Notifications"
-                        android:src="@drawable/ic_notification_bell"
-                        app:tint="#4B5563" />
+                        android:contentDescription="My Tickets"
+                        android:src="@drawable/ic_my_tickets"
+                        app:tint="?attr/colorOnSurfaceVariant" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:text="Notifications"
-                        android:textColor="#4B5563"
+                        android:text="My Tickets"
+                        android:textColor="?attr/colorOnSurface"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+                <!-- Performance -->
+                <LinearLayout
+                    android:id="@+id/agentMenuPerformance"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="14dp">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:contentDescription="Performance"
+                        android:src="@drawable/ic_bar_chart"
+                        app:tint="?attr/colorOnSurfaceVariant" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:text="Performance"
+                        android:textColor="?attr/colorOnSurface"
                         android:textSize="16sp" />
 
                 </LinearLayout>
@@ -212,14 +240,14 @@
                         android:layout_height="24dp"
                         android:contentDescription="Settings"
                         android:src="@drawable/ic_settings"
-                        app:tint="#4B5563" />
+                        app:tint="?attr/colorOnSurfaceVariant" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:text="Settings"
-                        android:textColor="#4B5563"
+                        android:textColor="?attr/colorOnSurface"
                         android:textSize="16sp" />
 
                 </LinearLayout>
@@ -255,14 +283,14 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:src="@drawable/ic_logout"
-                    app:tint="#6B7280" />
+                    app:tint="?attr/colorOnSurfaceVariant" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:text="Logout"
-                    android:textColor="#6B7280"
+                    android:textColor="?attr/colorOnSurfaceVariant"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 

@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit
 
 object RetrofitClient {
 
-    private const val BASE_URL = "http://10.117.68.108:5000/"
+    private const val BASE_URL = "http://10.210.228.108:5000/"
 
     private var retrofit: Retrofit? = null
 
@@ -55,5 +55,13 @@ object RetrofitClient {
 
     fun getAgentApi(context: Context): AgentApiService {
         return getClient(context).create(AgentApiService::class.java)
+    }
+
+    fun getAnalyticsApi(context: Context): AnalyticsApiService {
+        return getClient(context).create(AnalyticsApiService::class.java)
+    }
+
+    fun getSlaApi(context: Context): SlaApiService {
+        return getClient(context).create(SlaApiService::class.java)
     }
 }

@@ -12,6 +12,8 @@ import com.simats.resolveiq_frontend.data.model.TeamMember
 import com.simats.resolveiq_frontend.data.model.UpdateTicketActionRequest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import com.simats.resolveiq_frontend.data.model.FeedbackRequest
+import com.simats.resolveiq_frontend.data.model.FeedbackResponse
 import org.json.JSONObject
 
 class TicketRepository(private val api: TicketApiService) {
@@ -125,6 +127,54 @@ class TicketRepository(private val api: TicketApiService) {
                 Result.success(response.data ?: emptyList())
             } else {
                 Result.failure(Exception(response.message ?: "Failed to fetch team members"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    suspend fun submitFeedback(ticketId: Int, request: FeedbackRequest): Result<FeedbackResponse> {
+        return try {
+            val response = api.submitFeedback(ticketId, request)
+            if (response.isSuccessful) {
+                val body = response.body()
+                if (body != null && body.success) {
+                    Result.success(body)
+                } else {
+                    Result.failure(Exception(body?.message ?: "Failed to submit feedback"))
+                }
+            } else {
+                val errorMsg = try {
+                    val json = JSONObject(response.errorBody()?.string() ?: "")
+                    json.optString("message", "Failed to submit feedback")
+                } catch (e: Exception) {
+                    "Failed to submit feedback"
+                }
+                Result.failure(Exception(errorMsg))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    suspend fun getFeedback(ticketId: Int): Result<FeedbackResponse> {
+        return try {
+            val response = api.getFeedback(ticketId)
+            if (response.isSuccessful) {
+                val body = response.body()
+                if (body != null && body.success) {
+                    Result.success(body)
+                } else {
+                    Result.failure(Exception(body?.message ?: "Failed to fetch feedback"))
+                }
+            } else {
+                val errorMsg = try {
+                    val json = JSONObject(response.errorBody()?.string() ?: "")
+                    json.optString("message", "Failed to fetch feedback")
+                } catch (e: Exception) {
+                    "Failed to fetch feedback"
+                }
+                Result.failure(Exception(errorMsg))
             }
         } catch (e: Exception) {
             Result.failure(e)

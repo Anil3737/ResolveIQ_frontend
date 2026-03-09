@@ -30,7 +30,47 @@ class AssignedTicketsActivity : AppCompatActivity() {
         repository = TicketRepository(RetrofitClient.getTicketApi(this))
 
         setupUI()
+        setupBottomNavigation()
         fetchAssignedTickets()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        binding.bottomNavigation.selectedItemId = 0 // Not a primary tab
+        fetchAssignedTickets()
+    }
+
+    private fun setupBottomNavigation() {
+        // Assigned Queue is not a primary bottom navigation item, 
+        // but we show it with 'Home' or 'Tickets' selected or none.
+        // Let's keep it clear to avoid confusion.
+        binding.bottomNavigation.selectedItemId = 0 // None selected
+        
+        binding.bottomNavigation.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_home -> {
+                    val intent = Intent(this, SupportAgentHomeActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    startActivity(intent)
+                    true
+                }
+                R.id.nav_tickets -> {
+                    val intent = Intent(this, MyTicketsActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    startActivity(intent)
+                    true
+                }
+                R.id.nav_activity -> {
+                    startActivity(Intent(this, AgentPerformanceActivity::class.java))
+                    true
+                }
+                R.id.nav_settings -> {
+                    startActivity(Intent(this, SettingsActivity::class.java))
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
     private fun setupUI() {
@@ -80,8 +120,4 @@ class AssignedTicketsActivity : AppCompatActivity() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        fetchAssignedTickets()
-    }
 }

@@ -86,17 +86,26 @@ class MyTicketsActivity : AppCompatActivity() {
 
         // Bottom Navigation
         val role = userPreferences.getUserRole()?.uppercase() ?: "EMPLOYEE"
-        if (role == "ADMIN") {
-            binding.bottomNavigation.menu.clear()
-            binding.bottomNavigation.inflateMenu(R.menu.bottom_navigation_admin_menu)
-            binding.bottomNavigation.selectedItemId = R.id.nav_admin_tickets
+        
+        binding.bottomNavigation.menu.clear()
+        when (role) {
+            "ADMIN" -> binding.bottomNavigation.inflateMenu(R.menu.bottom_navigation_admin_menu)
+            "AGENT" -> binding.bottomNavigation.inflateMenu(R.menu.bottom_navigation_agent_menu)
+            else -> binding.bottomNavigation.inflateMenu(R.menu.bottom_navigation_menu)
         }
 
-        binding.bottomNavigation.selectedItemId = if (role == "ADMIN") R.id.nav_admin_tickets else R.id.nav_tickets
+        binding.bottomNavigation.selectedItemId = when (role) {
+            "ADMIN" -> R.id.nav_admin_tickets
+            else -> R.id.nav_tickets
+        }
         binding.bottomNavigation.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_home, R.id.nav_admin_dashboard -> {
-                    val targetActivity = if (role == "ADMIN") AdminHomeActivity::class.java else EmployeeHomeActivity::class.java
+                    val targetActivity = when (role) {
+                        "ADMIN" -> AdminHomeActivity::class.java
+                        "AGENT" -> SupportAgentHomeActivity::class.java
+                        else -> EmployeeHomeActivity::class.java
+                    }
                     val intent = android.content.Intent(this, targetActivity)
                     intent.flags = android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP or android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP
                     startActivity(intent)
@@ -111,10 +120,10 @@ class MyTicketsActivity : AppCompatActivity() {
                     true
                 }
                 R.id.nav_activity, R.id.nav_admin_activity -> {
-                    if (role == "ADMIN") {
-                        startActivity(android.content.Intent(this, AdminActivityLogActivity::class.java))
-                    } else {
-                        Toast.makeText(this, "Coming soon", Toast.LENGTH_SHORT).show()
+                    when (role) {
+                        "ADMIN" -> startActivity(android.content.Intent(this, AdminActivityLogActivity::class.java))
+                        "AGENT" -> startActivity(android.content.Intent(this, AgentPerformanceActivity::class.java))
+                        else -> Toast.makeText(this, "Coming soon", Toast.LENGTH_SHORT).show()
                     }
                     true
                 }
@@ -133,8 +142,10 @@ class MyTicketsActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         val role = userPreferences.getUserRole()?.uppercase() ?: "EMPLOYEE"
-        binding.bottomNavigation.selectedItemId =
-            if (role == "ADMIN") R.id.nav_admin_tickets else R.id.nav_tickets
+        binding.bottomNavigation.selectedItemId = when (role) {
+            "ADMIN" -> R.id.nav_admin_tickets
+            else -> R.id.nav_tickets
+        }
         fetchTickets()
     }
 
@@ -162,6 +173,7 @@ class MyTicketsActivity : AppCompatActivity() {
             binding.btnActiveTab.setTypeface(null, android.graphics.Typeface.NORMAL)
         }
     }
+
 
     private fun fetchTickets() {
         fetchJob?.cancel()
@@ -194,7 +206,10 @@ class MyTicketsActivity : AppCompatActivity() {
         // Apply metric filters if any
         filterType?.let { type ->
             filtered = when (type) {
-                "HIGH_RISK"    -> allTickets.filter { (it.ai_score ?: 0) >= 70 || (it.breach_risk ?: 0) >= 70 }.sortedByDescending { it.ai_score ?: it.breach_risk ?: 0 }
+                "HIGH_RISK"    -> {
+                    val risky = allTickets.filter { (it.ai_score ?: 0) >= 70 || (it.breach_risk ?: 0) >= 70 }
+                    risky.sortedByDescending { it.ai_score ?: it.breach_risk ?: 0 }
+                }
                 "SLA_BREACHED" -> allTickets.filter { it.sla_breached == true }
                 "ESCALATED"    -> allTickets.filter { it.status.uppercase() == "ESCALATED" }
                 "DEPARTMENT"    -> allTickets.filter { ticket ->

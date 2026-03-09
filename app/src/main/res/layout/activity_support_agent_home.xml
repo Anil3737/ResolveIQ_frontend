@@ -64,15 +64,6 @@
                 android:background="@drawable/circle_filled"
                 android:padding="2dp"/>
 
-            <ImageView
-                android:id="@+id/ivSearch"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:src="@drawable/ic_search"
-                android:layout_toStartOf="@id/ivAgentProfile"
-                android:layout_marginEnd="16dp"
-                android:layout_centerVertical="true"
-                app:tint="?attr/colorOnSurfaceVariant"/>
 
         </RelativeLayout>
 
@@ -163,9 +154,11 @@
                         <ImageView
                             android:layout_width="40dp"
                             android:layout_height="40dp"
-                            android:src="@drawable/bg_circle_placeholder"
-                            android:background="@color/blue_50"
-                            android:padding="8dp"/>
+                            android:src="@drawable/ic_tickets"
+                            android:background="@drawable/circle_primary"
+                            android:backgroundTint="#EFF6FF"
+                            android:padding="8dp"
+                            app:tint="#2563EB"/>
                         
                         <TextView
                             android:layout_width="wrap_content"
@@ -183,6 +176,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/cardKnowledgeBase"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -418,24 +412,10 @@
             android:background="?attr/colorSurface"
             app:menu="@menu/bottom_navigation_agent_menu"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:itemIconTint="@color/primary_blue"
-            app:itemTextColor="@color/primary_blue"
+            app:itemIconTint="@color/bottom_nav_color"
+            app:itemTextColor="@color/bottom_nav_color"
             app:labelVisibilityMode="labeled" />
 
-        <!-- Floating Action Button (Center overlapping Bottom Nav as peek in designs) -->
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fabCreate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_add_white"
-            app:backgroundTint="#2563EB"
-            app:tint="@color/white"
-            app:fabSize="normal"
-            app:layout_constraintBottom_toTopOf="@id/bottomNavigation"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginBottom="-28dp"
-            android:elevation="12dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -25,6 +25,7 @@ class TicketDetailsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityTicketDetailsBinding
     private lateinit var repository: TicketRepository
     private lateinit var userPreferences: UserPreferences
+    private var hasFeedback: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,7 +53,14 @@ class TicketDetailsActivity : AppCompatActivity() {
     private fun refreshTicketDetails(ticketId: Int) {
         lifecycleScope.launch {
             binding.progressBar.visibility = View.VISIBLE
+            
+            // Fetch ticket details
             val result = repository.getTicketDetails(ticketId)
+            
+            // Also check if feedback exists for this ticket
+            val feedbackResult = repository.getFeedback(ticketId)
+            hasFeedback = feedbackResult.isSuccess && feedbackResult.getOrNull()?.data != null
+            
             binding.progressBar.visibility = View.GONE
             if (result.isSuccess) {
                 val response = result.getOrNull()
@@ -167,6 +175,42 @@ class TicketDetailsActivity : AppCompatActivity() {
                 putExtra("ticket_status", ticket.status)
             }
             startActivity(intent)
+        }
+
+        binding.btnGiveFeedback.setOnClickListener {
+            val intent = Intent(this, FeedbackActivity::class.java).apply {
+                putExtra("ticket_id", ticket.id)
+                putExtra("ticket_number", ticket.ticket_number)
+                putExtra("ticket_title", ticket.title)
+                putExtra("is_read_only", hasFeedback)
+            }
+            startActivity(intent)
+        }
+
+        if (hasFeedback) {
+            binding.btnGiveFeedback.text = "View Submitted Feedback"
+            binding.btnGiveFeedback.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0) // Remove star icon
+            binding.btnGiveFeedback.backgroundTintList = android.content.res.ColorStateList.valueOf(Color.parseColor("#4B5563")) // Gray for submitted
+        } else {
+            binding.btnGiveFeedback.text = "Give Feedback"
+            binding.btnGiveFeedback.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_star, 0, 0, 0)
+            binding.btnGiveFeedback.backgroundTintList = android.content.res.ColorStateList.valueOf(Color.parseColor("#4F46E5")) // Indigo for new
+        }
+
+        // --- NEW: Feedback Button Visibility for Employees ---
+        // Robust check: handle null role (default to EMPLOYEE) and case-insensitive status
+        val currentRole = userPreferences.getUserRole() ?: "EMPLOYEE"
+        val currentStatus = ticket.status ?: ""
+        
+        // Show if role is EMPLOYEE (or unknown) AND status is RESOLVED or CLOSED
+        val isEmployee = currentRole.equals("EMPLOYEE", ignoreCase = true)
+        val isResolved = currentStatus.equals("RESOLVED", ignoreCase = true) || 
+                         currentStatus.equals("CLOSED", ignoreCase = true)
+        
+        if (isEmployee && isResolved) {
+            binding.btnGiveFeedback.visibility = View.VISIBLE
+        } else {
+            binding.btnGiveFeedback.visibility = View.GONE
         }
     }
 

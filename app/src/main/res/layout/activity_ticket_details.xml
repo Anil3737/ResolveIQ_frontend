@@ -264,6 +264,21 @@
                 android:paddingStart="16dp"
                 android:drawablePadding="8dp" />
 
+            <Button
+                android:id="@+id/btnGiveFeedback"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:backgroundTint="#4F46E5"
+                android:text="Give Feedback"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:visibility="gone"
+                app:cornerRadius="8dp"
+                android:drawableStart="@drawable/ic_star"
+                android:paddingStart="16dp"
+                android:drawablePadding="8dp" />
+
         </LinearLayout>
     </ScrollView>
 

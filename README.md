@@ -117,4 +117,3 @@ graph TD
 **SIMATS (Saveetha Institute of Medical and Technical Sciences)**
 
 ---
-

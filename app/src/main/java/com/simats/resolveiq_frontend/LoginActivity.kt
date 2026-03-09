@@ -13,6 +13,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.simats.resolveiq_frontend.api.ApiConstants
 import com.simats.resolveiq_frontend.api.RetrofitClient
 import com.simats.resolveiq_frontend.repository.AuthRepository
 import com.simats.resolveiq_frontend.utils.UserPreferences
@@ -28,6 +29,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var ivTogglePasswordVisibility: ImageView
     private lateinit var forgotPasswordText: TextView
     private lateinit var signInButton: Button
+    private lateinit var cbRememberMe: android.widget.CheckBox
 
     private lateinit var authRepository: AuthRepository
     private lateinit var userPreferences: UserPreferences
@@ -57,6 +59,46 @@ class LoginActivity : AppCompatActivity() {
         ivTogglePasswordVisibility = findViewById(R.id.togglePasswordVisibility)
         forgotPasswordText = findViewById(R.id.forgotPasswordText)
         signInButton = findViewById(R.id.signInButton)
+        cbRememberMe = findViewById(R.id.cbRememberMe)
+
+        // Set initial state from preferences
+        cbRememberMe.isChecked = userPreferences.getRememberMe()
+
+        // Autofill logic with Popup selection for all saved credentials
+        val showSavedCredentialsPopup = {
+            if (cbRememberMe.isChecked) {
+                val savedAccounts = userPreferences.getSavedAccounts()
+                
+                if (savedAccounts.isNotEmpty()) {
+                    val popup = androidx.appcompat.widget.ListPopupWindow(this)
+                    popup.anchorView = emailInput
+                    
+                    val emailList = savedAccounts.keys.toTypedArray()
+                    val adapter = android.widget.ArrayAdapter(
+                        this,
+                        android.R.layout.simple_list_item_1,
+                        emailList
+                    )
+                    
+                    popup.setAdapter(adapter)
+                    popup.setOnItemClickListener { _, _, position, _ ->
+                        val selectedEmail = emailList[position]
+                        emailInput.setText(selectedEmail)
+                        val password = savedAccounts[selectedEmail]
+                        if (!password.isNullOrBlank()) {
+                            passwordInput.setText(password)
+                        }
+                        popup.dismiss()
+                    }
+                    popup.show()
+                }
+            }
+        }
+
+        emailInput.setOnClickListener { showSavedCredentialsPopup() }
+        emailInput.setOnFocusChangeListener { _, hasFocus -> 
+            if (hasFocus) showSavedCredentialsPopup() 
+        }
 
         emailInput.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -127,6 +169,19 @@ class LoginActivity : AppCompatActivity() {
                     userPreferences.saveUserLocation(data.user.location)
                     userPreferences.saveUserPhone(data.user.phone)
 
+                    // Save or clear remembered credentials logic for multi-account
+                    if (cbRememberMe.isChecked) {
+                        userPreferences.setRememberMe(true)
+                        userPreferences.saveAccount(email, password)
+                    } else {
+                        userPreferences.setRememberMe(false)
+                        // Note: We don't clear all accounts if one login is "not remembered", 
+                        // we just don't save/update THIS one.
+                        // If you want to clear EVERYTHING when unchecked, use clearAllSavedAccounts().
+                        // The user said "when user selects any one of the saved login cresidentials auto fill".
+                        // This implies keeping the list.
+                    }
+
                     Toast.makeText(
                         this@LoginActivity,
                         "Login Successful: ${data.user.full_name}",
@@ -171,6 +226,9 @@ class LoginActivity : AppCompatActivity() {
                     tvLoginError.visibility = android.view.View.VISIBLE
                 } else {
                     Log.e("LoginActivity", "Login error: $message")
+                    tvLoginError.text = "Connection error. Please check if the server is running at ${ApiConstants.BASE_URL}"
+                    tvLoginError.visibility = android.view.View.VISIBLE
+                    Toast.makeText(this@LoginActivity, "Network Error: $message", Toast.LENGTH_LONG).show()
                 }
             }
         }
