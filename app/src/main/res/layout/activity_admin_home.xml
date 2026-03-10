@@ -42,7 +42,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginStart="14dp"
                 android:layout_toEndOf="@id/ivAdminMenu"
-                android:text="@string/admin_core"
+                android:text="ResolveIQ"
                 android:textColor="?attr/colorOnSurface"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -373,32 +373,32 @@
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
-                        <!-- Donut Chart Area -->
+                        <!-- Dynamic Pie Chart Area -->
                         <FrameLayout
-                            android:layout_width="130dp"
-                            android:layout_height="130dp">
+                            android:layout_width="140dp"
+                            android:layout_height="140dp">
 
-                            <!-- Ring background -->
-                            <View
+                            <com.github.mikephil.charting.charts.PieChart
+                                android:id="@+id/riskPieChart"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:background="@drawable/donut_chart_ring" />
+                                android:layout_height="match_parent" />
 
-                            <!-- Center text -->
+                            <!-- Center text overlay -->
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:gravity="center"
-                                android:orientation="vertical">
+                                android:orientation="vertical"
+                                android:layout_marginBottom="2dp">
 
                                 <TextView
                                     android:id="@+id/tvDonutTotal"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="1.2k"
+                                    android:text="0"
                                     android:textColor="?attr/colorOnSurface"
-                                    android:textSize="22sp"
+                                    android:textSize="20dp"
                                     android:textStyle="bold" />
 
                                 <TextView
@@ -406,7 +406,7 @@
                                     android:layout_height="wrap_content"
                                     android:text="@string/total_label"
                                     android:textColor="#9CA3AF"
-                                    android:textSize="10sp" />
+                                    android:textSize="9sp" />
 
                             </LinearLayout>
 

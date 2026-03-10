@@ -14,6 +14,8 @@ class TeamsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityTeamsBinding
     private lateinit var teamAdapter: TeamAdapter
+    private var allTeams: List<com.simats.resolveiq_frontend.data.model.TeamData> = emptyList()
+    private var currentFilter: String = "All Teams"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,6 +23,7 @@ class TeamsActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setupRecyclerView()
+        setupFilters()
         loadTeamsFromApi()
 
         binding.btnCreateTeam.setOnClickListener {
@@ -31,7 +34,6 @@ class TeamsActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        // Reload teams whenever we return to this screen (e.g., after creating a team)
         loadTeamsFromApi()
     }
 
@@ -41,6 +43,59 @@ class TeamsActivity : AppCompatActivity() {
         }
         binding.rvTeams.layoutManager = LinearLayoutManager(this)
         binding.rvTeams.adapter = teamAdapter
+    }
+
+    private fun setupFilters() {
+        binding.filterAll.setOnClickListener { updateFilter("All Teams") }
+        binding.filterNetwork.setOnClickListener { updateFilter("Network") }
+        binding.filterHardware.setOnClickListener { updateFilter("Hardware") }
+        binding.filterSoftware.setOnClickListener { updateFilter("Software") }
+        binding.filterApplication.setOnClickListener { updateFilter("Application") }
+        binding.filterOthers.setOnClickListener { updateFilter("Others") }
+    }
+
+    private fun updateFilter(filter: String) {
+        currentFilter = filter
+        applyFilter()
+        updateFilterUI()
+    }
+
+    private fun applyFilter() {
+        val filteredList = if (currentFilter == "All Teams") {
+            allTeams
+        } else if (currentFilter == "Others") {
+            // "Others" includes anything not in the main categories
+            val mainCategories = listOf("Network", "Hardware", "Software", "Application")
+            allTeams.filter { team ->
+                mainCategories.none { cat -> team.department.contains(cat, ignoreCase = true) }
+            }
+        } else {
+            allTeams.filter { team ->
+                // Use contains for more flexible matching (e.g., "NETWORK ISSUE" matches "Network")
+                team.department.contains(currentFilter, ignoreCase = true)
+            }
+        }
+        android.util.Log.d("TeamsActivity", "Filter: $currentFilter, Count: ${filteredList.size}")
+        teamAdapter.updateData(filteredList)
+    }
+
+    private fun updateFilterUI() {
+        val filters = listOf(
+            binding.filterAll, binding.filterNetwork, binding.filterHardware,
+            binding.filterSoftware, binding.filterApplication, binding.filterOthers
+        )
+
+        filters.forEach { textView ->
+            if (textView.text.toString().equals(currentFilter, ignoreCase = true)) {
+                textView.setBackgroundResource(R.drawable.button_primary)
+                textView.setTextColor(getColor(R.color.white))
+                textView.setTypeface(null, android.graphics.Typeface.BOLD)
+            } else {
+                textView.setBackgroundResource(R.drawable.bg_card_border)
+                textView.setTextColor(getColor(R.color.text_secondary))
+                textView.setTypeface(null, android.graphics.Typeface.NORMAL)
+            }
+        }
     }
 
     private fun navigateToTeamDetails(team: com.simats.resolveiq_frontend.data.model.TeamData) {
@@ -59,10 +114,8 @@ class TeamsActivity : AppCompatActivity() {
             try {
                 val response = RetrofitClient.getAdminApi(this@TeamsActivity).getTeams()
                 if (response.success && response.data != null) {
-                    // Replace adapter's data by creating a new adapter
-                    binding.rvTeams.adapter = TeamAdapter(response.data) { team ->
-                        navigateToTeamDetails(team)
-                    }
+                    allTeams = response.data
+                    applyFilter() // Apply current filter to new data
                     if (response.data.isEmpty()) {
                         Toast.makeText(this@TeamsActivity, "No teams created yet", Toast.LENGTH_SHORT).show()
                     }

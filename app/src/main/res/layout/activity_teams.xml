@@ -60,7 +60,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#FFFFFF"
-        android:paddingBottom="16dp"
+        android:paddingBottom="12dp"
         android:scrollbars="none">
 
         <LinearLayout
@@ -70,49 +70,77 @@
             android:paddingHorizontal="16dp">
 
             <TextView
+                android:id="@+id/filterAll"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
+                android:layout_marginEnd="8dp"
                 android:background="@drawable/button_primary"
-                android:paddingHorizontal="20dp"
-                android:paddingVertical="10dp"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp"
                 android:text="All Teams"
                 android:textColor="@color/white"
-                android:textSize="14sp"
+                android:textSize="13sp"
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/filterNetwork"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
+                android:layout_marginEnd="8dp"
                 android:background="@drawable/bg_card_border"
-                android:paddingHorizontal="20dp"
-                android:paddingVertical="10dp"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp"
                 android:text="Network"
                 android:textColor="@color/text_secondary"
-                android:textSize="14sp" />
+                android:textSize="13sp" />
 
             <TextView
+                android:id="@+id/filterHardware"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
+                android:layout_marginEnd="8dp"
                 android:background="@drawable/bg_card_border"
-                android:paddingHorizontal="20dp"
-                android:paddingVertical="10dp"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp"
                 android:text="Hardware"
                 android:textColor="@color/text_secondary"
-                android:textSize="14sp" />
+                android:textSize="13sp" />
 
             <TextView
+                android:id="@+id/filterSoftware"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
+                android:layout_marginEnd="8dp"
                 android:background="@drawable/bg_card_border"
-                android:paddingHorizontal="20dp"
-                android:paddingVertical="10dp"
-                android:text="Security"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp"
+                android:text="Software"
                 android:textColor="@color/text_secondary"
-                android:textSize="14sp" />
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/filterApplication"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/bg_card_border"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp"
+                android:text="Application"
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/filterOthers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/bg_card_border"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp"
+                android:text="Others"
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp" />
 
         </LinearLayout>
 

@@ -35,7 +35,10 @@ class TeamAdapter(
         val tvSlaPercentage: TextView = view.findViewById(R.id.tvSlaPercentage)
         val tvSlaStatus: TextView = view.findViewById(R.id.tvSlaStatus)
         val tvLeadInfo: TextView = view.findViewById(R.id.tvLeadInfo)
+        val ivLeadAvatar: ImageView = view.findViewById(R.id.ivLeadAvatar)
     }
+
+    private var currentTeams: List<TeamData> = teams
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TeamViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_team, parent, false)
@@ -43,28 +46,33 @@ class TeamAdapter(
     }
 
     override fun onBindViewHolder(holder: TeamViewHolder, position: Int) {
-        val team = teams[position]
+        val team = currentTeams[position]
         holder.tvTeamName.text = team.name
         holder.tvTeamCategory.text = team.department.uppercase()
-        holder.tvSlaPercentage.text = team.department
-        holder.tvSlaStatus.text = team.created_at.take(10) // Show date only
-        holder.tvLeadInfo.text = "Lead: ${team.team_lead}"
-
-        // Use a generic team icon for all teams
-        holder.ivTeamIcon.setImageResource(R.drawable.ic_team_group)
-        holder.ivTeamIcon.setBackgroundResource(R.drawable.bg_rounded_icon)
-        val defaultColor = holder.itemView.context.getColor(R.color.blue_50)
-        holder.ivTeamIcon.backgroundTintList = android.content.res.ColorStateList.valueOf(defaultColor)
-
-        // Style the "department badge"
-        val textDefaultColor = holder.itemView.context.getColor(R.color.primary_blue)
-        holder.tvSlaPercentage.setTextColor(textDefaultColor)
+        
+        // Show department as a tag/badge on the right
+        holder.tvSlaPercentage.text = team.department.uppercase()
         holder.tvSlaPercentage.setBackgroundResource(R.drawable.bg_status_open)
-
+        
+        // Show creation date at the bottom right
+        val date = if (team.created_at.length >= 10) team.created_at.substring(0, 10) else team.created_at
+        holder.tvSlaStatus.text = date
+        
+        // Show lead info
+        holder.tvLeadInfo.text = team.team_lead
+        
+        // Set team icon based on department (simplified)
+        holder.ivTeamIcon.setImageResource(R.drawable.ic_team_group)
+        
         holder.itemView.setOnClickListener {
             onItemClick(team)
         }
     }
 
-    override fun getItemCount() = teams.size
+    fun updateData(newTeams: List<TeamData>) {
+        currentTeams = newTeams
+        notifyDataSetChanged()
+    }
+
+    override fun getItemCount() = currentTeams.size
 }

@@ -14,6 +14,10 @@ import com.simats.resolveiq_frontend.data.model.AdminDashboardResponse
 import com.simats.resolveiq_frontend.data.model.Ticket
 import com.simats.resolveiq_frontend.api.AdminApiService
 import com.simats.resolveiq_frontend.adapter.MyTicketAdapter
+import android.graphics.Color
+import com.github.mikephil.charting.data.PieData
+import com.github.mikephil.charting.data.PieDataSet
+import com.github.mikephil.charting.data.PieEntry
 
 class AdminHomeActivity : AppCompatActivity() {
 
@@ -34,6 +38,7 @@ class AdminHomeActivity : AppCompatActivity() {
         ticketApiService = com.simats.resolveiq_frontend.api.RetrofitClient.getTicketApi(this)
         
         setupUI()
+        setupRiskChart()
         setupRecyclerView()
         setupDrawer()
         setupBackPressHandler()
@@ -64,7 +69,7 @@ class AdminHomeActivity : AppCompatActivity() {
                 val ticketsResult = ticketApiService.getTickets()
                 
                 if (response.success && ticketsResult.success) {
-                    val allTickets = ticketsResult.data ?: emptyList()
+                    allTickets = ticketsResult.data ?: emptyList()
                     updateDashboardWithAccuracy(response, allTickets)
                 } else if (response.success) {
                     // Fallback to limited dashboard data if full list fails
@@ -83,7 +88,14 @@ class AdminHomeActivity : AppCompatActivity() {
         val totalTickets = tickets.size
         val highRiskCount = tickets.count { (it.ai_score ?: it.breach_risk ?: 0) >= 70 }
         val slaBreachedCount = tickets.count { it.sla_breached == true }
-        val escalatedCount = tickets.count { it.status.equals("ESCALATED", true) }
+        // Look for any indicator of escalation, but exclude RESOLVED/CLOSED tickets
+        val escalatedCount = tickets.count { 
+            (it.status.equals("ESCALATED", true) || 
+             it.status.equals("HIGH_RISK", true) ||
+             (it.ai_score ?: 0) >= 80) && 
+            !it.status.equals("RESOLVED", true) && 
+            !it.status.equals("CLOSED", true)
+        }
 
         binding.tvTotalTickets.text = java.text.NumberFormat.getInstance().format(totalTickets)
         binding.tvHighRisk.text = highRiskCount.toString()
@@ -117,6 +129,55 @@ class AdminHomeActivity : AppCompatActivity() {
             .take(5) // Show top 5 on home page
 
         ticketAdapter.updateTickets(topRisky)
+        updateRiskChart(critical, high, medium, low)
+    }
+
+    private fun updateRiskChart(critical: Int, high: Int, medium: Int, low: Int) {
+        val entries = mutableListOf<PieEntry>()
+        val colors = mutableListOf<Int>()
+
+        if (critical > 0) {
+            entries.add(PieEntry(critical.toFloat(), ""))
+            colors.add(Color.parseColor("#EF4444")) // Critical - Red
+        }
+        if (high > 0) {
+            entries.add(PieEntry(high.toFloat(), ""))
+            colors.add(Color.parseColor("#F97316")) // High - Orange
+        }
+        if (medium > 0) {
+            entries.add(PieEntry(medium.toFloat(), ""))
+            colors.add(Color.parseColor("#FBBF24")) // Medium - Amber
+        }
+        if (low > 0) {
+            entries.add(PieEntry(low.toFloat(), ""))
+            colors.add(Color.parseColor("#3B82F6")) // Low - Blue
+        }
+
+        val dataSet = PieDataSet(entries, "").apply {
+            this.colors = colors
+            sliceSpace = 4f
+            setDrawValues(false)
+        }
+
+        binding.riskPieChart.apply {
+            data = PieData(dataSet)
+            animateY(1000)
+            invalidate()
+        }
+    }
+
+    private fun setupRiskChart() {
+        binding.riskPieChart.apply {
+            description.isEnabled = false
+            legend.isEnabled = false
+            setUsePercentValues(true)
+            isDrawHoleEnabled = true
+            holeRadius = 75f // Large hole for modern donut look
+            setHoleColor(Color.TRANSPARENT)
+            setTransparentCircleAlpha(0)
+            setDrawEntryLabels(false)
+            setTouchEnabled(false) // Purely visual or handle clicks if needed
+        }
     }
 
     private fun updateDashboardUI(response: AdminDashboardResponse) {
@@ -127,7 +188,14 @@ class AdminHomeActivity : AppCompatActivity() {
         binding.tvTotalTickets.text = java.text.NumberFormat.getInstance().format(metrics.totalTickets)
         binding.tvHighRisk.text = metrics.highRisk.toString()
         binding.tvSlaBreached.text = metrics.slaBreached.toString()
-        binding.tvEscalated.text = String.format("%02d", metrics.escalated)
+        val escalated = if (metrics.escalated == 0) {
+            allTickets.count { 
+                it.status.equals("ESCALATED", true) && 
+                !it.status.equals("RESOLVED", true) && 
+                !it.status.equals("CLOSED", true) 
+            }
+        } else metrics.escalated
+        binding.tvEscalated.text = String.format("%02d", escalated)
         
         // 2. Update Risk Distribution Text
         val totalTickets = metrics.totalTickets
@@ -169,7 +237,7 @@ class AdminHomeActivity : AppCompatActivity() {
             )
         }
         ticketAdapter.updateTickets(riskyTickets)
-
+        updateRiskChart(dist.critical, dist.high, dist.medium, dist.low)
     }
 
     private fun setupUI() {
@@ -193,7 +261,7 @@ class AdminHomeActivity : AppCompatActivity() {
 
         // Profile icon
         binding.ivAdminProfile.setOnClickListener {
-            startActivity(Intent(this, ProfileActivity::class.java))
+            startActivity(Intent(this, ProfileInfoActivity::class.java))
         }
 
         // View All risky tickets
