@@ -7,6 +7,21 @@
     android:background="@drawable/splash_background"
     tools:context=".SplashActivity">
 
+    <!-- College Logo -->
+    <ImageView
+        android:id="@+id/ivCollegeLogo"
+        android:layout_width="280dp"
+        android:layout_height="80dp"
+        android:layout_marginBottom="24dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/clg_logo"
+        android:contentDescription="College Logo"
+        app:layout_constraintBottom_toTopOf="@id/iconContainer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.8" />
+
     <!-- Shield Icon with Glow Effect -->
     <androidx.cardview.widget.CardView
         android:id="@+id/iconContainer"
@@ -20,7 +35,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.35">
+        app:layout_constraintVertical_bias="0.45">
 
         <ImageView
             android:id="@+id/ivLogo"
@@ -90,23 +105,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <ImageView
-            android:id="@+id/ivSecurityIcon"
-            android:layout_width="14dp"
-            android:layout_height="14dp"
-            android:layout_marginEnd="6dp"
-            android:contentDescription="@string/security_icon"
-            android:src="@drawable/ic_shield_small"
-            android:tint="#D1D5DB" />
-
         <TextView
             android:id="@+id/tvFooter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif"
             android:letterSpacing="0.12"
-            android:text="@string/footer_security"
-            android:textColor="#D1D5DB"
+            android:text="Powered by SIMATS Engineering"
+            android:textColor="#000000"
             android:textSize="11sp" />
     </LinearLayout>
 
