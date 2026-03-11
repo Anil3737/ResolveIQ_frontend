@@ -129,8 +129,10 @@ class EmployeeHomeActivity : AppCompatActivity() {
                     true
                 }
                 R.id.nav_activity -> {
-                    Toast.makeText(this, "Coming soon", Toast.LENGTH_SHORT).show()
-                    false
+                    val intent = Intent(this, EmployeeInsightsActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    startActivity(intent)
+                    true
                 }
                 R.id.nav_settings -> {
                     val intent = Intent(this, SettingsActivity::class.java)

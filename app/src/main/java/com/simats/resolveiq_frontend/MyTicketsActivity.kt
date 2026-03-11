@@ -211,7 +211,13 @@ class MyTicketsActivity : AppCompatActivity() {
                     risky.sortedByDescending { it.ai_score ?: it.breach_risk ?: 0 }
                 }
                 "SLA_BREACHED" -> allTickets.filter { it.sla_breached == true }
-                "ESCALATED"    -> allTickets.filter { it.status.uppercase() == "ESCALATED" }
+                "ESCALATED"    -> allTickets.filter { 
+                    (it.status.equals("ESCALATED", true) || 
+                     it.status.equals("HIGH_RISK", true) ||
+                     (it.ai_score ?: 0) >= 80) && 
+                    !it.status.equals("RESOLVED", true) && 
+                    !it.status.equals("CLOSED", true)
+                }
                 "DEPARTMENT"    -> allTickets.filter { ticket ->
                     val title = ticket.title
                     val extractedTag = if (title.startsWith("[") && title.contains("]")) {

@@ -254,11 +254,6 @@ class AdminHomeActivity : AppCompatActivity() {
         val storedName = userPreferences.getUserName() ?: "Admin"
         binding.tvWelcomeAdmin.text = "Welcome back, $storedName!"
 
-        // Notification bell
-        binding.ivNotification.setOnClickListener {
-            Toast.makeText(this, "Notifications", Toast.LENGTH_SHORT).show()
-        }
-
         // Profile icon
         binding.ivAdminProfile.setOnClickListener {
             startActivity(Intent(this, ProfileInfoActivity::class.java))

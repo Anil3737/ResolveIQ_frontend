@@ -44,7 +44,7 @@ class ProfileActivity : AppCompatActivity() {
         }
         
         binding.btnTicketProgress.setOnClickListener {
-            startActivity(Intent(this, MyTicketsActivity::class.java))
+            startActivity(Intent(this, ProfileInformationActivity::class.java))
         }
         
         binding.btnWorkflow.setOnClickListener {

@@ -37,11 +37,20 @@ class TicketProgressActivity : AppCompatActivity() {
         fetchTicketProgress(ticketId)
 
         binding.ivBack.setOnClickListener {
-            val intent = Intent(this, MyTicketsActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
-            startActivity(intent)
-            finish()
+            navigateToTickets()
         }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        navigateToTickets()
+    }
+
+    private fun navigateToTickets() {
+        val intent = Intent(this, MyTicketsActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+        startActivity(intent)
+        finish()
     }
 
     private fun fetchTicketProgress(ticketId: Int) {

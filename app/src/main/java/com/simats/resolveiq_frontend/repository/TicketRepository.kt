@@ -180,4 +180,17 @@ class TicketRepository(private val api: TicketApiService) {
             Result.failure(e)
         }
     }
+    suspend fun getAgentTickets(context: android.content.Context): Result<List<Ticket>> {
+        return try {
+            val agentApi = RetrofitClient.getAgentApi(context)
+            val response = agentApi.getAgentTickets()
+            if (response.success) {
+                Result.success(response.data ?: emptyList())
+            } else {
+                Result.failure(Exception(response.message ?: "Failed to fetch agent tickets"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
 }

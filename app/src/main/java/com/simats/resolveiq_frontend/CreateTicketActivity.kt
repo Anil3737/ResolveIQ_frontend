@@ -4,18 +4,20 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import com.simats.resolveiq_frontend.api.RetrofitClient
-import com.simats.resolveiq_frontend.data.model.CreateTicketRequest
 import com.simats.resolveiq_frontend.databinding.ActivityCreateTicketBinding
 import com.simats.resolveiq_frontend.repository.TicketRepository
 import com.simats.resolveiq_frontend.utils.UserPreferences
-import kotlinx.coroutines.launch
+import java.util.UUID
 
 class CreateTicketActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCreateTicketBinding
     private lateinit var ticketRepository: TicketRepository
+    private lateinit var userPreferences: UserPreferences
+
+    // Flag to prevent double-tap / rapid multiple submissions
+    private var isSubmitting = false
     
     // Hardcoded issue types for demo
     private val issueTypes = listOf("Network Issue", "Hardware Failure", "Software Installation", "Application Downtime / Application Issues", "Other")
@@ -32,6 +34,7 @@ class CreateTicketActivity : AppCompatActivity() {
     private fun setupDependencies() {
         val api = RetrofitClient.getTicketApi(this)
         ticketRepository = TicketRepository(api)
+        userPreferences = UserPreferences(this)
     }
 
     private fun setupUI() {
@@ -45,14 +48,20 @@ class CreateTicketActivity : AppCompatActivity() {
             showIssueTypeDialog()
         }
 
-        // Submit Button
+        // Submit Button — guarded against double-tap
         binding.btnSubmit.setOnClickListener {
-            submitTicket()
+            if (!isSubmitting) {
+                submitTicket()
+            }
         }
     }
 
     override fun onResume() {
         super.onResume()
+        // Re-enable submit when user returns to this screen (e.g., after navigating back)
+        isSubmitting = false
+        binding.btnSubmit.isEnabled = true
+        binding.btnSubmit.alpha = 1.0f
     }
     
     private fun showIssueTypeDialog() {
@@ -103,15 +112,39 @@ class CreateTicketActivity : AppCompatActivity() {
                 return
             }
         }
+
+        // ── DUPLICATE GUARD ──────────────────────────────────────────
+        // Check if a submission with the same title+department was made
+        // within the last 2 minutes (prevents re-submit after timeout)
+        if (userPreferences.isDuplicateSubmission(fullTitle, departmentId)) {
+            Toast.makeText(
+                this,
+                "A ticket with the same details was recently submitted. Please wait before trying again.",
+                Toast.LENGTH_LONG
+            ).show()
+            return
+        }
+
+        // ── LOCK SUBMIT BUTTON ───────────────────────────────────────
+        // Prevent double-tap by disabling immediately
+        isSubmitting = true
+        binding.btnSubmit.isEnabled = false
+        binding.btnSubmit.alpha = 0.5f
+
+        // ── GENERATE IDEMPOTENCY KEY ─────────────────────────────────
+        // Unique UUID for this submission attempt
+        val idempotencyKey = UUID.randomUUID().toString()
         
-        // Navigate to Waiting Activity
+        // Navigate to Waiting Activity with all data + idempotency key
         val intent = Intent(this, TicketWaitingActivity::class.java).apply {
             putExtra("title", fullTitle)
             putExtra("description", fullDescription)
             putExtra("department_id", departmentId)
             putExtra("issue_type", issueType)
             putExtra("expected_resolution_time", expectedResolutionTime)
+            putExtra("idempotency_key", idempotencyKey)
         }
         startActivity(intent)
+        finish()
     }
 }

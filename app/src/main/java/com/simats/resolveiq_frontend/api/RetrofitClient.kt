@@ -24,8 +24,12 @@ object RetrofitClient {
             val client = OkHttpClient.Builder()
                 .addInterceptor(logging)
                 .addInterceptor(AuthInterceptor(UserPreferences(context)))
-                .connectTimeout(60, TimeUnit.SECONDS)
-                .readTimeout(60, TimeUnit.SECONDS)
+                .connectTimeout(90, TimeUnit.SECONDS)
+                .readTimeout(90, TimeUnit.SECONDS)
+                .writeTimeout(60, TimeUnit.SECONDS)
+                // Disable automatic retry — prevents OkHttp from silently
+                // re-sending failed POST requests (which creates duplicates)
+                .retryOnConnectionFailure(false)
                 .build()
 
             retrofit = Retrofit.Builder()

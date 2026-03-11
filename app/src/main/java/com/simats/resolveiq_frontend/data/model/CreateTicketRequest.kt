@@ -13,6 +13,10 @@ data class CreateTicketRequest(
     val issueType: String,
 
     @SerializedName("expected_resolution_time")
-    val expectedResolutionTime: String?
+    val expectedResolutionTime: String?,
+
+    // Unique key per submission attempt — backend can use this to deduplicate
+    @SerializedName("idempotency_key")
+    val idempotencyKey: String? = null
 )
 

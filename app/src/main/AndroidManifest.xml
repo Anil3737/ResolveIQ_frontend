@@ -251,6 +251,31 @@
             android:exported="false" />
 
         <activity
+            android:name=".AgentPerformanceActivity"
+            android:theme="@style/Theme.Resolveiq_frontend"
+            android:exported="false" />
+
+        <activity
+            android:name=".KnowledgeBaseActivity"
+            android:theme="@style/Theme.Resolveiq_frontend"
+            android:exported="false" />
+
+        <activity
+            android:name=".KnowledgeDetailActivity"
+            android:theme="@style/Theme.Resolveiq_frontend"
+            android:exported="false" />
+
+        <activity
+            android:name=".EmployeeInsightsActivity"
+            android:theme="@style/Theme.Resolveiq_frontend"
+            android:exported="false" />
+
+        <activity
+            android:name=".TeamLeadEscalationsActivity"
+            android:theme="@style/Theme.Resolveiq_frontend"
+            android:exported="false" />
+
+        <activity
             android:name=".FeedbackActivity"
             android:theme="@style/Theme.Resolveiq_frontend"
             android:exported="false" />

@@ -18,6 +18,14 @@ class UserPreferences(context: Context) {
         private const val KEY_DARK_MODE = "dark_mode"
         private const val KEY_REMEMBER_ME = "remember_me"
         private const val KEY_SAVED_ACCOUNTS = "saved_accounts_json"
+        // Pending submission tracking keys to prevent duplicate tickets
+        private const val KEY_PENDING_IDEMPOTENCY_KEY = "pending_idempotency_key"
+        private const val KEY_PENDING_TITLE = "pending_title"
+        private const val KEY_PENDING_DEPARTMENT_ID = "pending_department_id"
+        private const val KEY_PENDING_TIMESTAMP = "pending_timestamp"
+        private const val KEY_PENDING_COMPLETED = "pending_completed"
+        // Duplicate guard window: 2 minutes in milliseconds
+        private const val DUPLICATE_GUARD_WINDOW_MS = 2 * 60 * 1000L
     }
 
     fun setRememberMe(enabled: Boolean) {
@@ -125,4 +133,87 @@ class UserPreferences(context: Context) {
     fun clear() {
         prefs.edit().clear().apply()
     }
+
+    // ───────────────────────────────────────────────────────────────
+    // Pending Submission Tracking — prevents duplicate ticket creation
+    // ───────────────────────────────────────────────────────────────
+
+    /**
+     * Saves a pending ticket submission so we can detect duplicates on retry.
+     */
+    fun savePendingSubmission(idempotencyKey: String, title: String, departmentId: Int) {
+        prefs.edit()
+            .putString(KEY_PENDING_IDEMPOTENCY_KEY, idempotencyKey)
+            .putString(KEY_PENDING_TITLE, title)
+            .putInt(KEY_PENDING_DEPARTMENT_ID, departmentId)
+            .putLong(KEY_PENDING_TIMESTAMP, System.currentTimeMillis())
+            .putBoolean(KEY_PENDING_COMPLETED, false)
+            .apply()
+    }
+
+    /**
+     * Returns the idempotency key of the pending submission, or null if none.
+     */
+    fun getPendingIdempotencyKey(): String? {
+        return prefs.getString(KEY_PENDING_IDEMPOTENCY_KEY, null)
+    }
+
+    /**
+     * Returns the title of the pending submission, or null if none.
+     */
+    fun getPendingTitle(): String? {
+        return prefs.getString(KEY_PENDING_TITLE, null)
+    }
+
+    /**
+     * Returns the department ID of the pending submission, or -1.
+     */
+    fun getPendingDepartmentId(): Int {
+        return prefs.getInt(KEY_PENDING_DEPARTMENT_ID, -1)
+    }
+
+    /**
+     * Marks the pending submission as completed (ticket was created).
+     */
+    fun markSubmissionComplete() {
+        prefs.edit().putBoolean(KEY_PENDING_COMPLETED, true).apply()
+    }
+
+    /**
+     * Checks if the pending submission was already completed.
+     */
+    fun isSubmissionCompleted(): Boolean {
+        return prefs.getBoolean(KEY_PENDING_COMPLETED, false)
+    }
+
+    /**
+     * Clears all pending submission data.
+     */
+    fun clearPendingSubmission() {
+        prefs.edit()
+            .remove(KEY_PENDING_IDEMPOTENCY_KEY)
+            .remove(KEY_PENDING_TITLE)
+            .remove(KEY_PENDING_DEPARTMENT_ID)
+            .remove(KEY_PENDING_TIMESTAMP)
+            .remove(KEY_PENDING_COMPLETED)
+            .apply()
+    }
+
+    /**
+     * Checks if a submission with the same title and department was made
+     * within the duplicate guard window (2 minutes). Returns true if
+     * a duplicate submission is detected (should block re-submission).
+     */
+    fun isDuplicateSubmission(title: String, departmentId: Int): Boolean {
+        val pendingTitle = getPendingTitle() ?: return false
+        val pendingDeptId = getPendingDepartmentId()
+        val pendingTimestamp = prefs.getLong(KEY_PENDING_TIMESTAMP, 0L)
+        val elapsed = System.currentTimeMillis() - pendingTimestamp
+
+        // Check if same title + department and within the guard window
+        return pendingTitle == title
+                && pendingDeptId == departmentId
+                && elapsed < DUPLICATE_GUARD_WINDOW_MS
+    }
 }
+
