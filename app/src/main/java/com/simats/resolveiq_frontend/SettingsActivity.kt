@@ -2,11 +2,15 @@ package com.simats.resolveiq_frontend
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.lifecycle.lifecycleScope
+import com.simats.resolveiq_frontend.api.RetrofitClient
 import com.simats.resolveiq_frontend.databinding.ActivitySettingsBinding
 import com.simats.resolveiq_frontend.utils.UserPreferences
+import kotlinx.coroutines.launch
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -25,11 +29,40 @@ class SettingsActivity : AppCompatActivity() {
 
     private fun setupUI() {
         binding.switchDarkMode.isChecked = userPreferences.isDarkMode()
+        
+        val role = userPreferences.getUserRole()?.uppercase() ?: "EMPLOYEE"
+        if (role == "ADMIN") {
+            binding.vSeparatorResetRequests.visibility = View.VISIBLE
+            binding.btnPasswordResetRequests.visibility = View.VISIBLE
+            fetchPendingResetCount()
+        }
+    }
+
+    private fun fetchPendingResetCount() {
+        lifecycleScope.launch {
+            try {
+                val adminApi = RetrofitClient.getAdminApi(this@SettingsActivity)
+                val response = adminApi.getDashboardData()
+                val count = response.metrics?.pendingResetCount ?: 0
+                if (count > 0) {
+                    binding.tvResetRequestsBadge.text = count.toString()
+                    binding.tvResetRequestsBadge.visibility = View.VISIBLE
+                } else {
+                    binding.tvResetRequestsBadge.visibility = View.GONE
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
     }
 
     private fun setupListeners() {
         binding.ivBack.setOnClickListener {
             finish()
+        }
+
+        binding.btnPasswordResetRequests.setOnClickListener {
+            startActivity(Intent(this, PasswordResetRequestsActivity::class.java))
         }
 
         binding.btnProfileSettings.setOnClickListener {

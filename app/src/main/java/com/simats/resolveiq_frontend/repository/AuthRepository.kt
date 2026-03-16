@@ -58,4 +58,17 @@ class AuthRepository(private val api: AuthApiService) {
             Result.failure(e)
         }
     }
+
+    suspend fun checkEmployeeIdExists(empId: String): Result<Boolean> {
+        return try {
+            val response = api.checkEmployeeIdExists(empId)
+            if (response.success && response.data != null) {
+                Result.success(response.data["exists"] ?: false)
+            } else {
+                Result.success(false)
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
 }

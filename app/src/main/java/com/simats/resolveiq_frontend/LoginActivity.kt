@@ -133,7 +133,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
         forgotPasswordText.setOnClickListener {
-            Toast.makeText(this, "Feature coming soon", Toast.LENGTH_SHORT).show()
+            startActivity(Intent(this, PasswordResetRequestActivity::class.java))
         }
     }
 

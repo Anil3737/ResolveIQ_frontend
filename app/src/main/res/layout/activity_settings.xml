@@ -112,7 +112,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:background="?attr/colorSurfaceVariant"
-                        android:layout_marginHorizontal="16dp"/>
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"/>
 
                     <!-- Security Settings -->
                     <LinearLayout
@@ -138,6 +139,65 @@
                             android:layout_marginStart="16dp"
                             android:textColor="?attr/colorOnSurface"
                             android:textSize="16sp"/>
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_chevron_right"
+                            app:tint="#9CA3AF"/>
+
+                    </LinearLayout>
+
+                    <View
+                        android:id="@+id/vSeparatorResetRequests"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="?attr/colorSurfaceVariant"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:visibility="gone"/>
+
+                    <!-- Password Reset Requests (Admin Only) -->
+                    <LinearLayout
+                        android:id="@+id/btnPasswordResetRequests"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="16dp"
+                        android:gravity="center_vertical"
+                        android:background="?attr/selectableItemBackground"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_lock"
+                            app:tint="#D32F2F"/>
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Password Reset Requests"
+                            android:layout_marginStart="16dp"
+                            android:textColor="?attr/colorOnSurface"
+                            android:textSize="16sp"/>
+
+                        <TextView
+                            android:id="@+id/tvResetRequestsBadge"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_badge_red"
+                            android:paddingLeft="8dp"
+                            android:paddingRight="8dp"
+                            android:paddingTop="2dp"
+                            android:paddingBottom="2dp"
+                            android:text="0"
+                            android:textColor="@android:color/white"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            android:visibility="gone"
+                            android:layout_marginRight="8dp"/>
 
                         <ImageView
                             android:layout_width="20dp"
@@ -211,7 +271,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:background="?attr/colorSurfaceVariant"
-                        android:layout_marginHorizontal="16dp"/>
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"/>
 
                     <!-- Dark Mode -->
                     <LinearLayout
@@ -310,7 +371,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:background="?attr/colorSurfaceVariant"
-                        android:layout_marginHorizontal="16dp"/>
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"/>
 
                     <!-- About -->
                     <LinearLayout
