@@ -1,6 +1,7 @@
 package com.simats.resolveiq_frontend.api
 
 import android.content.Context
+import com.simats.resolveiq_frontend.BuildConfig
 import com.simats.resolveiq_frontend.utils.UserPreferences
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -10,15 +11,23 @@ import java.util.concurrent.TimeUnit
 
 object RetrofitClient {
 
-    private const val BASE_URL = "http://10.210.228.108:5000/"
+    // ── Single source of truth: URL is defined in ApiConstants, which reads
+    //    from BuildConfig injected by build.gradle.kts at compile time.
+    //    Debug  → http://10.210.228.108:5000/
+    //    Release → https://api.resolveiq.com/
+    //    To change the dev URL: edit debug.buildConfigField in app/build.gradle.kts
 
     private var retrofit: Retrofit? = null
 
     private fun getClient(context: Context): Retrofit {
         if (retrofit == null) {
 
+            // Logging: full body only in debug — NEVER logs tokens/passwords in release
             val logging = HttpLoggingInterceptor().apply {
-                level = HttpLoggingInterceptor.Level.BODY
+                level = if (BuildConfig.DEBUG)
+                    HttpLoggingInterceptor.Level.BODY
+                else
+                    HttpLoggingInterceptor.Level.NONE
             }
 
             val client = OkHttpClient.Builder()
@@ -33,7 +42,7 @@ object RetrofitClient {
                 .build()
 
             retrofit = Retrofit.Builder()
-                .baseUrl(BASE_URL)
+                .baseUrl(ApiConstants.BASE_URL)   // ← single source, no duplicate
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
                 .build()

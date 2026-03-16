@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+
+    <!-- Allow HTTP only for the development machine -->
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">10.210.228.108</domain>
+    </domain-config>
+
+    <!-- Default rule: block cleartext everywhere else -->
+    <base-config cleartextTrafficPermitted="false" />
+
+</network-security-config>
