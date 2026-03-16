@@ -38,11 +38,11 @@ class CreateAgentActivity : AppCompatActivity() {
     private fun setupDropdowns() {
         // Department options
         val departments = arrayOf(
-            "Network Issue",
+            "Network Issues",
             "Hardware Failure",
             "Software Installation",
-            "Application Downtime / Application Issues",
-            "Other"
+            "Application Down/ Application Issue",
+            "Others"
         )
         val deptAdapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, departments)
         binding.actDepartment.setAdapter(deptAdapter)
@@ -83,10 +83,10 @@ class CreateAgentActivity : AppCompatActivity() {
                         try {
                             val response = RetrofitClient.getAdminApi(this@CreateAgentActivity).checkEmployeeIdExists(empId)
                             if (response.success && response.data?.get("exists") == true) {
-                                binding.tilEmployeeId.error = "Employee id Already exist"
+                                binding.tilEmployeeId.error = "Employee Id Already exist"
                             } else {
                                 // Only clear if it was the "already exists" error
-                                if (binding.tilEmployeeId.error == "Employee id Already exist") {
+                                if (binding.tilEmployeeId.error == "Employee Id Already exist") {
                                     binding.tilEmployeeId.error = null
                                 }
                             }

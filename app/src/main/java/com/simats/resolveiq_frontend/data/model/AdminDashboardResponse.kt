@@ -14,7 +14,8 @@ data class DashboardMetrics(
     @SerializedName("total_tickets") val totalTickets: Int,
     @SerializedName("high_risk") val highRisk: Int,
     @SerializedName("sla_breached") val slaBreached: Int,
-    @SerializedName("escalated") val escalated: Int
+    @SerializedName("escalated") val escalated: Int,
+    @SerializedName("pending_reset_count") val pendingResetCount: Int? = 0
 )
 
 data class RiskDistribution(

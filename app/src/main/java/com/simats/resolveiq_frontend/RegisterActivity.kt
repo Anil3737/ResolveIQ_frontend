@@ -22,6 +22,7 @@ import android.graphics.Color
 import android.view.View
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.delay
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -104,6 +105,31 @@ class RegisterActivity : AppCompatActivity() {
         }
         binding.etEmployeeId.addTextChangedListener(clearRegisterError)
         binding.etCompanyEmail.addTextChangedListener(clearRegisterError)
+        
+        // Real-time Employee ID uniqueness check
+        var checkJob: kotlinx.coroutines.Job? = null
+        binding.etEmployeeId.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                checkJob?.cancel()
+                val empId = s.toString().trim().uppercase()
+                if (empId.length >= 3) {
+                    checkJob = lifecycleScope.launch {
+                        delay(500) // Debounce
+                        val result = authRepository.checkEmployeeIdExists(empId)
+                        if (result.isSuccess && result.getOrNull() == true) {
+                            binding.tvRegisterError.text = "Employee Id Already exist"
+                            binding.tvRegisterError.visibility = View.VISIBLE
+                        } else {
+                            if (binding.tvRegisterError.text == "Employee Id Already exist") {
+                                binding.tvRegisterError.visibility = View.GONE
+                            }
+                        }
+                    }
+                }
+            }
+            override fun afterTextChanged(s: Editable?) {}
+        })
 
         // Live email domain validation
         binding.etCompanyEmail.addTextChangedListener(object : TextWatcher {

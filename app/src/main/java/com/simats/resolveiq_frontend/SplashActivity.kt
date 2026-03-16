@@ -8,6 +8,7 @@ import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.simats.resolveiq_frontend.utils.UserPreferences
 
 class SplashActivity : AppCompatActivity() {
@@ -15,6 +16,7 @@ class SplashActivity : AppCompatActivity() {
     private val SPLASH_DURATION = 3000L // 3 seconds
     
     override fun onCreate(savedInstanceState: Bundle?) {
+        installSplashScreen()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
         

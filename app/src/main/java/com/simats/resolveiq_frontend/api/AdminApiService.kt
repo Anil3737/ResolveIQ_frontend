@@ -14,7 +14,11 @@ import retrofit2.http.Query
 interface AdminApiService {
 
     @GET("api/admin/users")
-    suspend fun getUsers(@Query("role") role: String? = null): ApiResponse<List<User>>
+    suspend fun getUsers(
+        @Query("role") role: String? = null,
+        @Query("department_id") departmentId: Int? = null,
+        @Query("exclude_assigned") excludeAssigned: Boolean? = null
+    ): ApiResponse<List<User>>
 
     @GET("api/admin/teams")
     suspend fun getTeams(): ApiResponse<List<TeamData>>
@@ -56,4 +60,13 @@ interface AdminApiService {
 
     @retrofit2.http.DELETE("api/admin/teams/{id}")
     suspend fun deleteTeam(@Path("id") id: Int): ApiResponse<Map<String, Any>>
+
+    @GET("api/admin/reset-password/requests")
+    suspend fun getPasswordResetRequests(@Query("status") status: String): ApiResponse<List<com.simats.resolveiq_frontend.data.model.AdminPasswordResetRequest>>
+
+    @POST("api/admin/reset-password/approve")
+    suspend fun approvePasswordReset(@Body request: com.simats.resolveiq_frontend.data.model.ApproveResetRequest): ApiResponse<Unit>
+
+    @POST("api/admin/reset-password/reject")
+    suspend fun rejectPasswordReset(@Body request: com.simats.resolveiq_frontend.data.model.RejectResetRequest): ApiResponse<Unit>
 }

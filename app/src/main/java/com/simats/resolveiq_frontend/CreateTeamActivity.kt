@@ -49,7 +49,7 @@ class CreateTeamActivity : AppCompatActivity() {
     private fun fetchSupportAgents() {
         lifecycleScope.launch {
             try {
-                val response = RetrofitClient.getAdminApi(this@CreateTeamActivity).getUsers("AGENT")
+                val response = RetrofitClient.getAdminApi(this@CreateTeamActivity).getUsers(role = "AGENT", excludeAssigned = true)
                 if (response.success && response.data != null) {
                     supportAgents = response.data
                 }
@@ -62,7 +62,7 @@ class CreateTeamActivity : AppCompatActivity() {
     private fun fetchTeamLeads() {
         lifecycleScope.launch {
             try {
-                val response = RetrofitClient.getAdminApi(this@CreateTeamActivity).getUsers("TEAM_LEAD")
+                val response = RetrofitClient.getAdminApi(this@CreateTeamActivity).getUsers(role = "TEAM_LEAD", excludeAssigned = true)
                 if (response.success && response.data != null) {
                     teamLeads = response.data
                 } else {
@@ -141,19 +141,19 @@ class CreateTeamActivity : AppCompatActivity() {
 
     private fun showIssueTypePicker() {
         val specialties = arrayOf(
-            "Network Issue",
+            "Network Issues",
             "Hardware Failure",
             "Software Installation",
-            "Application Downtime / Application Issues",
-            "Other"
+            "Application Down/ Application Issue",
+            "Others"
         )
         
         val descriptions = mapOf(
-            "Network Issue" to "Handles LAN/WiFi outages, VPN connectivity problems, internet downtime, firewall access, and internal network disruptions. Ensures stable, secure, and high-availability network infrastructure across all office locations.",
+            "Network Issues" to "Handles LAN/WiFi outages, VPN connectivity problems, internet downtime, firewall access, and internal network disruptions. Ensures stable, secure, and high-availability network infrastructure across all office locations.",
             "Hardware Failure" to "Manages laptop/desktop malfunctions, printer issues, peripheral failures, hardware diagnostics, and device replacements. Responsible for asset tracking, warranty coordination, and preventive hardware maintenance.",
             "Software Installation" to "Processes software installation requests, license activation, version upgrades, patch deployment, and tool configuration. Ensures compliance with organizational security policies and software standards.",
-            "Application Downtime / Application Issues" to "Handles production outages, portal errors (500/503), performance degradation, access issues, and application-level bugs. Coordinates with server/database teams to restore services within SLA timelines.",
-            "Other" to "Handles miscellaneous and cross-functional IT issues not classified under primary categories. Includes email configuration issues, account access requests, minor configuration problems, general system assistance, and user guidance."
+            "Application Down/ Application Issue" to "Handles production outages, portal errors (500/503), performance degradation, access issues, and application-level bugs. Coordinates with server/database teams to restore services within SLA timelines.",
+            "Others" to "Handles miscellaneous and cross-functional IT issues not classified under primary categories. Includes email configuration issues, account access requests, minor configuration problems, general system assistance, and user guidance."
         )
 
         val builder = androidx.appcompat.app.AlertDialog.Builder(this)
@@ -192,7 +192,11 @@ class CreateTeamActivity : AppCompatActivity() {
 
         // Filter Team Leads by the selected specialty
         val filteredLeads = teamLeads.filter { 
-            it.department_name?.trim().equals(specialty.trim(), ignoreCase = true) == true
+            val deptName = it.department_name?.trim() ?: ""
+            val spec = specialty.trim()
+            deptName.equals(spec, ignoreCase = true) || 
+            deptName.contains(spec, ignoreCase = true) || 
+            spec.contains(deptName, ignoreCase = true)
         }
 
         if (filteredLeads.isEmpty()) {
@@ -220,7 +224,11 @@ class CreateTeamActivity : AppCompatActivity() {
         }
 
         val filteredAgents = supportAgents.filter { 
-            it.department_name?.trim().equals(specialty.trim(), ignoreCase = true) == true
+            val deptName = it.department_name?.trim() ?: ""
+            val spec = specialty.trim()
+            deptName.equals(spec, ignoreCase = true) || 
+            deptName.contains(spec, ignoreCase = true) || 
+            spec.contains(deptName, ignoreCase = true)
         }
 
         if (filteredAgents.isEmpty()) {

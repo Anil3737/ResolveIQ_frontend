@@ -8,11 +8,11 @@ android {
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.simats.resolveiq_frontend"
+        applicationId = "com.simats.resolveiq"
         minSdk = 24
         targetSdk = 36
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "1.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -21,8 +21,16 @@ android {
     }
 
     buildTypes {
+        debug {
+            // ── Development: local Flask server (physical device on same Wi-Fi) ──
+            // Change this IP to match your PC's IPv4 address (run 'ipconfig' in cmd)
+            buildConfigField("String", "BASE_URL", "\"http://10.210.228.108:5000/\"")
+        }
         release {
-            isMinifyEnabled = false
+            // ── Production: cloud-hosted HTTPS backend ──
+            buildConfigField("String", "BASE_URL", "\"https://api.resolveiq.com/\"")
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -37,6 +45,7 @@ android {
     
     buildFeatures {
         viewBinding = true
+        buildConfig = true   // Required for BuildConfig.BASE_URL
     }
 
     packaging {
@@ -48,6 +57,7 @@ android {
 
 dependencies {
     implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation("com.google.android.material:material:1.13.0")
     implementation(libs.androidx.datastore.preferences)
