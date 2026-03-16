@@ -168,20 +168,6 @@
                     android:textStyle="bold"
                     android:letterSpacing="0.05" />
 
-                <ImageView
-                    android:layout_width="14dp"
-                    android:layout_height="14dp"
-                    android:layout_marginEnd="6dp"
-                    android:src="@drawable/ic_ai_analysis" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="AI ANALYSIS ACTIVE"
-                    android:textColor="#2563EB"
-                    android:textSize="10sp"
-                    android:textStyle="bold" />
-
             </LinearLayout>
 
             <EditText

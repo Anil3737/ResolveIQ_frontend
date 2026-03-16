@@ -17,6 +17,13 @@
 
     <style name="Theme.Resolveiq_frontend" parent="Base.Theme.Resolveiq_frontend" />
 
+    <!-- Modern Splash Screen API Theme -->
+    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenAnimatedIcon">@drawable/app_logo</item>
+        <item name="windowSplashScreenBackground">@android:color/white</item>
+        <item name="postSplashScreenTheme">@style/Theme.Resolveiq_frontend</item>
+    </style>
+
     <style name="CircleImage" parent="">
         <item name="cornerSize">50%</item>
     </style>
