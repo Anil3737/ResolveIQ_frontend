@@ -19,3 +19,31 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# Retrofit 2 rules
+-keepattributes Signature, InnerClasses, AnnotationDefault
+-keepclassmembers class * {
+    @retrofit2.http.* <methods>;
+}
+-dontwarn retrofit2.**
+-keep class retrofit2.** { *; }
+
+# OkHttp 3 rules
+-keepattributes Signature, InnerClasses, AnnotationDefault
+-keepclassmembers class okhttp3.** { *; }
+-dontwarn okhttp3.**
+-dontwarn okio.**
+-dontwarn javax.annotation.**
+-dontwarn org.conscrypt.**
+
+# Gson rules
+-keep class com.google.gson.** { *; }
+-keep class com.simats.resolveiq_frontend.data.model.** { *; }
+-keepattributes Signature, *Annotation*
+-keepclassmembers class com.simats.resolveiq_frontend.data.model.** {
+    <fields>;
+}
+
+# Preserve line numbers for debugging release crashes
+-keepattributes SourceFile, LineNumberTable
+-renamesourcefileattribute SourceFile

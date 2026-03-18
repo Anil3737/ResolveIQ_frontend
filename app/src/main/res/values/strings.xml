@@ -78,11 +78,6 @@
     
     <!-- Login Screen Additions -->
     <string name="remember_me">Remember me</string>
-    <string name="demo_credentials">Demo Credentials:</string>
-    <string name="admin_cred">Admin: admin@company.com / password</string>
-    <string name="team_lead_cred">Team Lead: lead@company.com / password</string>
-    <string name="agent_cred">Agent: agent@company.com / password</string>
-    <string name="employee_cred">Employee: employee@company.com / password</string>
     
     <!-- Create Ticket Screen -->
     <string name="it_service_ticket">IT Service Ticket</string>
