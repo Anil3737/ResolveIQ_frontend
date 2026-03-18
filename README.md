@@ -114,6 +114,6 @@ graph TD
 
 **J Chiranjevi Anil**  
 *Computer Science & Engineering*  
-**SIMATS (Saveetha Institute of Medical and Technical Sciences)**
+**SIMATS ENGINEERING**
 
 ---
