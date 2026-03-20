@@ -112,7 +112,7 @@ graph TD
 
 ## 👨‍💻 Developed By
 
-**J Chiranjevi Anil**  
+**Jada Chiranjevi Anil**  
 *Computer Science & Engineering*  
 **SIMATS ENGINEERING**
 
